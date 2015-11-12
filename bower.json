@@ -1,0 +1,14 @@
+{
+  "name": "cloud",
+  "version": "0.0.0",
+  "authors": [
+    "Kevin <hi@iamkevin.me>"
+  ],
+  "license": "MIT",
+  "dependencies": {
+  	"bootstrap": "~3.3",
+  	"font-awesome": "~4.4",
+    "startbootstrap-sb-admin-2": "~1",
+    "bootstrap-table": "~1.9"
+  }
+}
