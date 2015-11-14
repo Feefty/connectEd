@@ -12,7 +12,7 @@ body {
 }
 #wrapper {
   width: 100%;
-  background: #333333;
+  background: #333;
 }
 #page-wrapper {
   padding: 0 15px;
@@ -123,13 +123,13 @@ body {
   }
 }
 ul#side-menu li.active {
-  background: #333333;
+  background: #333;
 }
 ul#side-menu li > a:hover {
-  background: #666666;
+  background: #666;
 }
 ul#side-menu li > a.active {
-  background: #666666;
+  background: #666;
 }
 ul#side-menu li > a:focus {
   background: none;

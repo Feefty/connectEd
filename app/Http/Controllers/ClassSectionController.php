@@ -14,7 +14,7 @@ use Auth;
 
 class ClassSectionController extends Controller
 {   
-    public function getAPI($school_id)
+    public function getAPI($school_id, $section_id = null)
     {
         return ClassSection::select('class_sections.*', 'users.username as adviser')
                                 ->leftJoin('users', 'users.id', '=', 'class_sections.adviser_id')
@@ -71,9 +71,21 @@ class ClassSectionController extends Controller
         return redirect()->back()->with(compact('msg'));
     }
 
-    public function getView($school_id)
+    public function getView($section_id)
     {
-        return view('class.section.view');
+        $section = ClassSection::select('class_sections.*', 'profiles.*', 'schools.name as school')
+                                ->where('class_sections.id', $section_id)
+                                ->leftJoin('profiles', 'profiles.user_id', '=', 'class_sections.adviser_id')
+                                ->leftJoin('schools', 'schools.id', '=', 'class_sections.school_id');
+
+        if ( ! $section->exists())
+        {
+            return abort(404);
+        }
+
+        $section = $section->first();
+        
+        return view('class.section.view', compact('section'));
     }
 
     public function getEdit($school_id)

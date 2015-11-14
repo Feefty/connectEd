@@ -22,7 +22,7 @@ class GroupTableSeeder extends Seeder
         	[
         		'name'		=> 'School Admin',
         		'level'		=> 25,
-        		'description'=> 'Facilitator of the school',,
+        		'description'=> 'Facilitator of the school',
         		'created_at'=> new \DateTime
         	],
         	[

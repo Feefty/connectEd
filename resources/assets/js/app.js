@@ -25,3 +25,7 @@ function actionUpdateClassSectionFormatter(value, row) {
 function actionClassSectionFormatter(value, row) {
 	return ["<a href='/class/section/edit/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Edit'><i class='fa fa-pencil'></i></a>"].join(" ");
 }
+
+function userProfile(value, row) {
+	return "<a href='/user/"+ row.username +"'>"+ row.name +"</a>";
+}

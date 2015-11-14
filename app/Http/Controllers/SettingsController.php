@@ -32,7 +32,7 @@ class SettingsController extends Controller
         
     	try
     	{
-    		$data = $request->only('first_name', 'last_name', 'middle_name', 'birthday', 'address');
+    		$data = $request->only('first_name', 'last_name', 'middle_name', 'birthday', 'address', 'gender');
 
     		$user = $request->user();
     		$profile = Profile::where('user_id', $user->id);

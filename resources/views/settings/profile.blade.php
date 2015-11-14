@@ -52,6 +52,18 @@
 							<input type="date" name="birthday" id="birthday" class="form-control"  value="{{ $profile->birthday }}">
 						</div>
 						<div class="form-group">
+							<label for="gender">Gender</label>
+							<select id="gender" name="gender" class="form-control">
+								@foreach (config('gender') as $row => $col)
+									@if ($profile->gender == $row)
+										<option value="{{ $row }}" selected>{{ $col }}</option>
+									@else
+										<option value="{{ $row }}">{{ $col }}</option>
+									@endif
+								@endforeach
+							</select>
+						</div>
+						<div class="form-group">
 							<label for="address">Address</label>
 							<textarea id="address" name="address" class="form-control">{{ $profile->address }}</textarea>
 						</div>

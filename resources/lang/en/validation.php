@@ -127,6 +127,7 @@ return [
         'user'                  => 'User',
         'school'                => 'School',
         'school_id'             => 'School',
+        'class_section_id'      => 'Calss Section',
     ],
 
 ];
