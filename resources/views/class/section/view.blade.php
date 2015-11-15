@@ -7,7 +7,7 @@
 			<div class="col-md-8 col-md-offset-2">
 				<div class="panel panel-default margin-lg-top">
 					<div class="panel-heading">
-						<strong>Section {{ $section->name }}</strong> <span class="text-warning">{{ config('grade_level')[$section->level] }}</span>
+						<strong>Section {{ $section->name }}</strong> <span class="text-warning small">{{ config('grade_level')[$section->level] }}</span>
 					</div>
 					<div class="panel-body">
 						@if (count($errors) > 0)
