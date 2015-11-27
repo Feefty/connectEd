@@ -101,8 +101,8 @@
 						<thead>
 							<tr>
 								<th data-field="name">Name</th>
-								<th data-field="adviser">Adviser</th>
-								<th data-field="level">Level</th>
+								<th data-formatter="fullNameFormatter">Adviser</th>
+								<th data-formatter="gradeLevelFormatter">Level</th>
 								<th data-field="year">Year</th>
 								@can ('update-class-section')
 								<th data-formatter="actionUpdateClassSectionFormatter">Actions</th>

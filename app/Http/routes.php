@@ -44,6 +44,17 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('/class/student/api/{section_id}/section', 'ClassStudentController@getAPIBySection')->where(['section_id' => '[0-9]+']);
 	Route::get('/class/student/api/{section_id}/school', 'ClassStudentController@getAPIBySchool')->where(['section_id' => '[0-9]+']);
 	Route::post('/class/student/add', 'ClassStudentController@postAdd');
+	Route::post('/class/subject/add', 'ClassSectionController@postAddSubject');
+	Route::post('/class/subject/edit', 'ClassSubjectController@postEdit');
+	Route::get('/class/subject/api/{section_id}', 'ClassSubjectController@getAPI')->where(['section_id' => '[0-9]+']);
+	Route::get('/class/subject/edit/{class_subject_id}', 'ClassSubjectController@getEdit')->where(['class_subject_id' => '[0-9]+']);
+	Route::get('/class/subject/delete/{class_subject_id}', 'ClassSubjectController@getDelete')->where(['class_subject_id' => '[0-9]+']);
+	Route::get('/class/subject/view/{class_subject_id}', 'ClassSubjectController@getView')->where(['class_subject_id' => '[0-9]+']);
+	Route::get('/class/subject/schedule/{class_subject_id}', 'SubjectScheduleController@getAPI')->where(['class_subject_id' => '[0-9]+']);
+	Route::post('/class/subject/schedule/add', 'SubjectScheduleController@postAdd');
+	Route::get('/class/subject/schedule/delete/{id}', 'SubjectScheduleController@getDelete')->where(['id' => '[0-9]+']);
+	Route::get('/class/subject/schedule/edit/{id}', 'SubjectScheduleController@getEdit')->where(['id' => '[0-9]+']);
+	Route::post('/class/subject/schedule/edit', 'SubjectScheduleController@postEdit');
 
 	Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function()
 	{

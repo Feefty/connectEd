@@ -42,7 +42,7 @@
 									    		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 									    		<h4 class="modal-title" id="modalLabel">Create a New Class</h4>
 									   		</div>
-								    		<form action="{{ action('ClassController@postAdd') }}" method="POST">
+								    		<form action="{{ action('ClassSectionController@postAdd') }}" method="POST">
 									    		<div class="modal-body">
 								    				{!! csrf_field() !!}
 								    				<div class="form-group">

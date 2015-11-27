@@ -128,6 +128,9 @@ return [
         'school'                => 'School',
         'school_id'             => 'School',
         'class_section_id'      => 'Calss Section',
+        'day'                   => 'Day',
+        'time_start'            => 'Time Start',
+        'time_end'              => 'Time End'
     ],
 
 ];
