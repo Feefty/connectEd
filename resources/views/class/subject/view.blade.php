@@ -98,7 +98,7 @@
 								<tr>
 									<th data-formatter="dayFormatter">Day</th>
 									<th data-field="time">Time</th>
-									<th data-formatter="actionClassSubjectScheduleFormatter">Actions</th>
+									<th data-formatter="actionClassSubjectScheduleFormatter" data-align="center">Actions</th>
 								</tr>
 							</thead>
 						</table>

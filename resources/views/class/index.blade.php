@@ -139,7 +139,7 @@
 								<thead>
 									<tr>
 										<th data-formatter="subjectFormatter">Subject</th>
-										<th data-formatter="subjectClassFormatter">Actions</th>
+										<th data-formatter="subjectClassFormatter" data-align="center">Actions</th>
 									</tr>
 								</thead>
 							</table>

@@ -69,7 +69,13 @@ class AuthController extends Controller
         ]);
 
         Profile::insert([
-            'user_id'   => $user->id
+            'user_id'       => $user->id,
+            'first_name'    => $data['first_name'],
+            'middle_name'   => $data['middle_name'],
+            'last_name'     => $data['last_name'],
+            'gender'        => $data['gender'],
+            'birthday'      => $data['birthday'],
+            'address'       => $data['address']
         ]);
 
         return $user;

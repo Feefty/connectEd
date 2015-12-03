@@ -68,13 +68,43 @@ return [
 
 	'class-section' => [
 		'create'	=> 25,
-		'delete'	=> 5,
+		'delete'	=> 25,
 		'update'	=> 5,
-		'read'		=> 5
+		'read'		=> 5,
+	],
+
+	'class-subject' => [
+		'create'	=> 25,
+		'delete'	=> 25,
+		'update'	=> 5,
+		'read'		=> 5,
+		'manage'	=> 5
+	],
+
+	'class-student' => [
+		'create'	=> 25,
+		'delete'	=> 25,
+		'update'	=> 5,
+		'read'		=> 5,
 	],
 
 	'student-class' => [
 		'read'		=> 2,
 		'add'		=> 5,
 	],
+
+	'school-member' => [
+		'create'	=> 25,
+		'delete'	=> 25,
+		'update'	=> 5,
+		'read'		=> 5,
+	],
+
+	'subject-schedule' => [
+		'create'	=> 25,
+		'delete'	=> 25,
+		'update'	=> 25,
+		'read'		=> 5,
+	]
+
 ];

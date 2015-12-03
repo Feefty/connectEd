@@ -8,11 +8,17 @@ use App\Http\Requests\PostAddSubjectScheduleFormRequest;
 use App\Http\Requests\PostEditSubjectScheduleFormRequest;
 use App\Http\Controllers\Controller;
 use App\SubjectSchedule;
+use Gate;
 
 class SubjectScheduleController extends Controller
 {
 	public function getAPI($id)
 	{
+        if (Gate::denies('read-subject-schedule'))
+        {
+            return abort(401);
+        }
+
 		return SubjectSchedule::select('*', \DB::raw('CONCAT(subject_schedules.time_start, " - ", subject_schedules.time_end) as time'))
 									->where('class_subject_id', (int) $id)
 									->get();
@@ -20,6 +26,11 @@ class SubjectScheduleController extends Controller
 
     public function getEdit($id)
     {
+        if (Gate::denies('update-subject-schedule'))
+        {
+            return abort(401);
+        }
+
         $subject_schedule = SubjectSchedule::findOrFail((int) $id);
 
         return view('class.subject.schedule.edit', compact('subject_schedule'));
@@ -81,6 +92,11 @@ class SubjectScheduleController extends Controller
 
         try
         {
+            if (Gate::denies('delete-subject-schedule'))
+            {
+                return abort(401);
+            }
+
             if (SubjectSchedule::where('id', $id)->exists())
             {
                 SubjectSchedule::where('id', $id)->delete();

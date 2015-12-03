@@ -32,7 +32,7 @@
 						@endif
 
 						<div id="toolbar">
-							@can ('add-member-school')
+							@can ('add-school-member')
 								<form action="{{ action('SchoolMemberController@postAdd') }}" method="POST" class="form-inline">
 			                    	{!! csrf_field() !!}
 			                    	<input type="hidden" name="school_id" value="{{ $school->school_id }}">

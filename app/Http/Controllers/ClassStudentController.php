@@ -8,12 +8,19 @@ use App\Http\Requests\PostAddClassStudentFormRequest;
 use App\Http\Controllers\Controller;
 use App\ClassStudent;
 use App\ClassSection;
+use App\SchoolMember;
 use App\User;
+use Gate;
 
 class ClassStudentController extends Controller
 {
     public function getAPIBySection($section_id)
     {
+        if (Gate::denies('read-class-student'))
+        {
+            abort(401);
+        }
+
     	return ClassStudent::select('class_students.*', \DB::raw('CONCAT(profiles.first_name, " ", profiles.last_name) as name, IF(gender=1, "Male", "Female") as gender'))
                             ->leftJoin('profiles', 'profiles.user_id', '=', 'class_students.student_id')
                             ->where('class_section_id', $section_id)->get();
@@ -35,6 +42,12 @@ class ClassStudentController extends Controller
             }
 
             $data['student_id'] = $user->pluck('id');
+            $school_id = ClassSection::where('id', $data['class_section_id'])->pluck('school_id');
+
+            if ( ! SchoolMember::where('user_id', $data['student_id'])->where('school_id', $school_id)->exists())
+            {
+                throw new \Exception(trans('class_student.not_member.error'));
+            }
 
         	ClassStudent::create($data);
 

@@ -69,6 +69,14 @@ function actionClassSubjectScheduleFormatter(value, row) {
 			"<a href='/class/subject/schedule/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete'><i class='fa fa-remove'></i></a>"].join(" ");
 }
 
+function statusFormatter(value, row) {
+	if (row.status == 1) {
+		return "<span class='text-success'>Active</span>";
+	} else {
+		return "<span class='text-muted'>Inactive</span>";
+	}
+}
+
 function dayFormatter(value, row) {
 	return days[row.day];
 }

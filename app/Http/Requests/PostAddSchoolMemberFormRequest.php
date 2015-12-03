@@ -14,7 +14,7 @@ class PostAddSchoolMemberFormRequest extends Request
      */
     public function authorize()
     {
-        return Gate::allows('add-member-school');
+        return Gate::allows('add-school-member');
     }
 
     /**

@@ -20,15 +20,15 @@
 						{!! csrf_field() !!}
 						<div class="form-group">
 							<label for="username">Username</label>
-							<input type="text" name="username" id="username" class="form-control" value="{{ old('username') }}">
+							<input type="text" name="username" id="username" class="form-control" value="{{ old('username') }}" required>
 						</div>
 						<div class="form-group">
 							<label for="email">E-mail</label>
-							<input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}">
+							<input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" required>
 						</div>
 						<div class="form-group">
 							<label for="password">Password</label>
-							<input type="password" name="password" id="password" class="form-control">
+							<input type="password" name="password" id="password" class="form-control" required>
 						</div>
 						<div class="form-group">
 							<label for="password_confirmation">Confirm Password</label>
@@ -42,6 +42,49 @@
 								<option value="2">School</option>
 							</select>
 						</div>
+
+						<hr>
+						<h3>Profile Information</h3>
+
+						<div class="form-group">
+							<label for="first_name">First Name</label>
+							<input type="text" name="first_name" id="first_name" class="form-control" value="{{ old('first_name') }}" required>
+						</div>
+
+						<div class="form-group">
+							<label for="middle_name">Middle Name</label>
+							<input type="text" name="middle_name" id="middle_name" class="form-control" value="{{ old('middle_name') }}" placeholder="Optional">
+						</div>
+
+						<div class="form-group">
+							<label for="last_name">Last Name</label>
+							<input type="text" name="last_name" id="last_name" class="form-control" value="{{ old('last_name') }}" required>
+						</div>
+
+						<div class="form-group">
+							<label for="address">Address</label>
+							<textarea name="address" id="address" class="form-control" required>{{ old('address') }}</textarea>
+						</div>
+
+						<div class="form-group">
+							<label for="birthday">Birthday</label>
+							<input type="date" name="birthday" id="birthday" class="form-control" value="{{ old('birthday') }}" required>
+						</div>
+
+						<div class="form-group">
+							<label for="gender">Gender</label>
+							<div class="radio">
+								<label>
+									<input type="radio" name="gender" value="1" checked>
+									Male
+								</label>
+								<label>
+									<input type="radio" name="gender" value="0">
+									Female
+								</label>
+							</div>
+						</div>
+
 						<button class="btn btn-primary">Register</button>
 					</form>
 				</div>

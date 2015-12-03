@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use Gate;
 
 class PostAddClassSubjectScheduleFormRequest extends Request
 {
@@ -13,7 +14,7 @@ class PostAddClassSubjectScheduleFormRequest extends Request
      */
     public function authorize()
     {
-        return true;
+        return Gate::allows('create-class-subject');
     }
 
     /**

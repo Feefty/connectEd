@@ -14,7 +14,7 @@
 						</tr>
                     	<tr>
                     		<td><label>Gender</label></td>
-                    		<td>{{ config('gender')[$profile->gender or 1] }}</td>
+                    		<td>{{ config('gender')[$profile->gender] }}</td>
                     	</tr>
                     	<tr>
                     		<td><label>Birthday</label></td>

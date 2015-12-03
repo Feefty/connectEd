@@ -11,11 +11,17 @@ use App\SubjectSchedule;
 use App\ClassSection;
 use App\Subject;
 use App\SchoolMember;
+use Gate;
 
 class ClassSubjectController extends Controller
 {
 	public function getAPI($section_id)
 	{
+        if (Gate::denies('read-class-subject'))
+        {
+            abort(401);
+        }
+
 		return ClassSubject::select('class_subjects.*', 'users.username', \DB::raw('CONCAT(profiles.first_name, " ", profiles.last_name) as teacher'), 'subjects.name as subject')
 							->leftJoin('users', 'users.id', '=', 'class_subjects.teacher_id')
 							->leftJoin('profiles', 'profiles.user_id', '=', 'class_subjects.teacher_id')
@@ -26,6 +32,11 @@ class ClassSubjectController extends Controller
 
 	public function getEdit($id)
 	{
+        if (Gate::denies('update-class-subject'))
+        {
+            abort(401);
+        }
+
 		$class_subject = ClassSubject::findOrFail($id);
 		$class_section = ClassSection::findOrFail($class_subject->class_section_id);
         $subjects = Subject::orderBy('name')->get();
@@ -74,6 +85,11 @@ class ClassSubjectController extends Controller
 
 	public function getView($id)
 	{
+        if (Gate::denies('read-class-subject'))
+        {
+            abort(401);
+        }
+
 		$class_subject = ClassSubject::select('class_sections.name as section', 'class_sections.level as section_level', 'class_subjects.*', 'users.username', \DB::raw('CONCAT(profiles.first_name, " ", profiles.last_name) as teacher'), 'subjects.name as subject')
 							->leftJoin('users', 'users.id', '=', 'class_subjects.teacher_id')
 							->leftJoin('profiles', 'profiles.user_id', '=', 'class_subjects.teacher_id')
@@ -101,6 +117,11 @@ class ClassSubjectController extends Controller
 
         try
         {
+            if (Gate::denies('delete-class-subject'))
+            {
+                return abort(401);
+            }
+
             if (ClassSubject::where('id', $id)->exists())
             {
                 ClassSubject::where('id', $id)->delete();

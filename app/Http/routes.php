@@ -37,6 +37,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('/class/section/api/{school_id}/{section_id?}', 'ClassSectionController@getAPI')->where(['school_id' => '[0-9]+', 'section_id' => '[0-9]+']);
 	Route::get('/class/section/view/{section_id}', 'ClassSectionController@getView')->where(['section_id' => '[0-9]+']);
 	Route::get('/class/section/edit/{section_id}', 'ClassSectionController@getEdit')->where(['section_id' => '[0-9]+']);
+	Route::post('/class/section/edit', 'ClassSectionController@postEdit');
 	Route::get('/school/member', 'SchoolMemberController@getIndex');
 	Route::get('/school/member/api/{school_id}', 'SchoolMemberController@getAPI')->where(['school_id' => '[0-9]+']);
 	Route::post('/school/member/add', 'SchoolMemberController@postAdd');

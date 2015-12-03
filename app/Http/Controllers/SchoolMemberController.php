@@ -15,6 +15,11 @@ class SchoolMemberController extends Controller
 {
 	public function getAPI($school_id)
 	{
+        if (Gate::denies('read-school-member'))
+        {
+            return abort(401);
+        }
+
 		$school_members = SchoolMember::select('school_members.*', 'users.username', 'groups.name as group')
 										->leftJoin('users', 'users.id', '=', 'school_members.user_id')
 										->leftJoin('groups', 'groups.id', '=', 'users.group_id')
@@ -32,6 +37,11 @@ class SchoolMemberController extends Controller
 
     public function getIndex()
     {
+        if (Gate::denies('read-school-member'))
+        {
+            return abort(401);
+        }
+
     	$user = Auth::user();
     	$school = School::leftJoin('school_members', 'school_members.school_id', '=', 'schools.id')
     					->where('school_members.user_id', $user->id)->first();
@@ -90,7 +100,7 @@ class SchoolMemberController extends Controller
 
         try
         {
-            if (Gate::denies('delete-member-school'))
+            if (Gate::denies('delete-school-member'))
             {
                 return abort(401);
             }

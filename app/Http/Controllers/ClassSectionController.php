@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostAddClassSectionFormRequest;
 use App\Http\Requests\PostAddClassSubjectScheduleFormRequest;
+use App\Http\Requests\PostEditClassSectionFormRequest;
 use App\Http\Controllers\Controller;
 use Gate;
 use App\Subject;
@@ -18,6 +19,11 @@ class ClassSectionController extends Controller
 {   
     public function getAPI($school_id, $section_id = null)
     {
+        if (Gate::denies('read-class-section'))
+        {
+            abort(401);
+        }
+
         return ClassSection::select('class_sections.*', \DB::raw('CONCAT(profiles.first_name, " ", profiles.last_name) as full_name'), 'profiles.user_id')
                                 ->leftJoin('profiles', 'profiles.user_id', '=', 'class_sections.adviser_id')
                                 ->where('class_sections.school_id', $school_id)
@@ -26,6 +32,11 @@ class ClassSectionController extends Controller
 
     public function getIndex()
     {
+        if (Gate::denies('read-class-section'))
+        {
+            abort(401);
+        }
+
         $school_id = SchoolMember::where('user_id', Auth::user()->id)->pluck('school_id');
 
         if ( ! $school_id)
@@ -75,6 +86,11 @@ class ClassSectionController extends Controller
 
     public function getView($section_id)
     {
+        if (Gate::denies('read-class-section'))
+        {
+            abort(401);
+        }
+
         $section = ClassSection::select('class_sections.*', 'profiles.*', 'schools.name as school')
                                 ->where('class_sections.id', $section_id)
                                 ->leftJoin('profiles', 'profiles.user_id', '=', 'class_sections.adviser_id')
@@ -100,6 +116,11 @@ class ClassSectionController extends Controller
 
     public function getEdit($school_id)
     {
+        if (Gate::denies('update-class-section'))
+        {
+            abort(401);
+        }
+
         $class_section = ClassSection::where('school_id', $school_id);
 
         if ( ! $class_section->exists())
@@ -109,7 +130,38 @@ class ClassSectionController extends Controller
 
         $class_section = $class_section->first();
 
-        return view('class.section.edit', compact('class_section'));
+        $teachers = SchoolMember::select('users.username', 'users.id')
+                                    ->leftJoin('users', 'users.id', '=', 'school_members.user_id')
+                                    ->leftJoin('groups', 'groups.id', '=', 'users.group_id')
+                                    ->where('school_members.school_id', $class_section->school_id)
+                                    ->where('groups.level', config('school.teacher_level'))
+                                    ->get();
+
+        return view('class.section.edit', compact('class_section', 'teachers'));
+    }
+
+    public function postEdit(PostEditClassSectionFormRequest $request)
+    {
+        $msg = [];
+
+        try
+        {
+            $id = (int) $request->id;
+
+            $data = $request->only('name', 'level', 'year', 'status');
+            $data['adviser_id'] = (int) $request->adviser;
+            $data['updated_at'] = new \DateTime;
+
+            ClassSection::where('id', $id)->update($data);
+
+            $msg = trans('class_section.edit.success');
+        }
+        catch (\Exception $e)
+        {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+
+        return redirect()->back()->with(compact('msg'));
     }
 
     public function postAddSubject(PostAddClassSubjectScheduleFormRequest $request)

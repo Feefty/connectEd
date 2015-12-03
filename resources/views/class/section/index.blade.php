@@ -104,10 +104,11 @@
 								<th data-formatter="fullNameFormatter">Adviser</th>
 								<th data-formatter="gradeLevelFormatter">Level</th>
 								<th data-field="year">Year</th>
+								<th data-formatter="statusFormatter">Status</th>
 								@can ('update-class-section')
-								<th data-formatter="actionUpdateClassSectionFormatter">Actions</th>
+								<th data-formatter="actionUpdateClassSectionFormatter" data-align="center">Actions</th>
 								@else
-								<th data-formatter="actionClassSectionFormatter">Actions</th>
+								<th data-formatter="actionClassSectionFormatter" data-align="center">Actions</th>
 								@endcan
 							</tr>
 						</thead>
