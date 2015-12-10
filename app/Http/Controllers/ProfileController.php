@@ -19,4 +19,15 @@ class ProfileController extends Controller
     						->where('user_id', $request->user()->id)->first();
     	return view('profile.index', compact('profile'));
     }
+
+    public function getUser($id)
+    {
+        $profile = Profile::select('*', \DB::raw('CONCAT(
+                            profiles.first_name,
+                            IF(profiles.middle_name <> "",CONCAT(" ",profiles.middle_name," ")," "),
+                            profiles.last_name
+                        ) as name'))
+                            ->where('user_id', $id)->first();
+        return view('profile.user', compact('profile'));
+    }
 }

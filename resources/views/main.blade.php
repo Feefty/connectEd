@@ -23,6 +23,7 @@
 		    <div class="collapse navbar-collapse" id="bs-navbar-collapse">
 		     	<ul class="nav navbar-nav">
 			        <li><a href="{{ action('HomeController@getIndex') }}">Home</a></li>
+			        <li><a href="{{ action('RoomController@getIndex') }}">My Room</a></li>
 			        <li><a href="#">Course Calendar</a></li>
 			        @can ('read-class-section')
 			        <li><a href="{{ action('ClassSectionController@getIndex') }}">Sections</a></li>
@@ -37,6 +38,7 @@
 			        	<li><a href="{{ action('Auth\AuthController@getLogin') }}">Sign In</a></li>
 			        	<li><a href="{{ action('Auth\AuthController@getRegister') }}">Register</a></li>
 			        @else
+			        	<li><a href="{{ action('NotificationController@getIndex') }}"><i class="fa fa-envelope-o"></i></a></li>
 				        <li class="dropdown">
 			          		<a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->username }} <span class="caret"></span></a>
 			          		<ul class="dropdown-menu">

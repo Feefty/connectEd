@@ -18,6 +18,7 @@ Route::post('/login', 'Auth\AuthController@postLogin');
 Route::get('/register', 'Auth\AuthController@getRegister');
 Route::post('/register', 'Auth\AuthController@postRegister');
 Route::get('/logout', 'Auth\AuthController@getLogout');
+Route::get('/user/{id}', 'ProfileController@getUser')->where(['id' => '[0-9]+']);
 
 Route::group(['middleware' => 'auth'], function()
 {
@@ -56,6 +57,12 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('/class/subject/schedule/delete/{id}', 'SubjectScheduleController@getDelete')->where(['id' => '[0-9]+']);
 	Route::get('/class/subject/schedule/edit/{id}', 'SubjectScheduleController@getEdit')->where(['id' => '[0-9]+']);
 	Route::post('/class/subject/schedule/edit', 'SubjectScheduleController@postEdit');
+
+	// Room
+	Route::get('/myroom', 'RoomController@getIndex');
+
+	// Notification
+	Route::get('/notifications', 'NotificationController@getIndex');
 
 	Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function()
 	{
