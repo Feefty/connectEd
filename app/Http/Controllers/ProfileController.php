@@ -16,7 +16,9 @@ class ProfileController extends Controller
                             IF(profiles.middle_name <> "",CONCAT(" ",profiles.middle_name," ")," "),
                             profiles.last_name
                         ) as name'))
+
     						->where('user_id', $request->user()->id)->first();
+        //$profile = auth()->user()->profile;
     	return view('profile.index', compact('profile'));
     }
 

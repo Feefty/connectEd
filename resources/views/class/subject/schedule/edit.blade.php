@@ -7,7 +7,7 @@
 			<div class="col-md-8 col-md-offset-2">
 				<div class="panel panel-default margin-lg-top">
 					<div class="panel-heading">
-						<a href="{{ action('ClassSubjectController@getView', $subject_schedule->class_subject_id) }}"><i class="fa fa-arrow-left"></i></a> Subject Schedule Edit
+						<a href="{{ \URL::previous() }}"><i class="fa fa-arrow-left"></i></a> Subject Schedule Edit
 					</div>
 					<div class="panel-body">
 						@if (count($errors) > 0)

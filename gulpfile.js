@@ -15,7 +15,7 @@ var vendorDir = './resources/assets/vendor/';
 var publicDir = './public/';
 var lessPaths = [
 	vendorDir + 'bootstrap/less',
-	vendorDir + 'font-awesome/less'
+	vendorDir + 'font-awesome/less',
 ];
 
 elixir(function(mix) {

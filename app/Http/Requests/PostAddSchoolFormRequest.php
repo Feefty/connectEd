@@ -14,7 +14,7 @@ class PostAddSchoolFormRequest extends Request
      */
     public function authorize()
     {
-        return ! Gate::denies('create-school');
+        return Gate::allows('create-school');
     }
 
     /**

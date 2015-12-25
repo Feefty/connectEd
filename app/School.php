@@ -8,4 +8,14 @@ class School extends Model
 {
    	protected $table = 'schools';
    	protected $fillable = ['name', 'description', 'address', 'created_at', 'updated_at'];
+
+   	public function member()
+   	{
+   		return $this->hasMany('\App\SchoolMember', 'school_id');
+   	}
+
+   	public function exam()
+   	{
+   		return $this->hasMany('\App\Exam', 'school_id');
+   	}
 }

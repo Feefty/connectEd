@@ -7,6 +7,7 @@
 			<div class="col-md-8 col-md-offset-2">
 				<div class="panel panel-default margin-lg-top">
 					<div class="panel-heading">
+						<a href="{{ \URL::previous() }}"><i class="fa fa-arrow-left"></i></a> 
 						<strong>Section {{ $section->name }}</strong> <span class="text-warning small">{{ config('grade_level')[$section->level] }}</span>
 					</div>
 					<div class="panel-body">
@@ -33,9 +34,7 @@
 
 						@can ('manage-class-subject')
 
-							<button type="button" class="btn btn-default btn-xs margin-lg-bottom" data-toggle="modal" data-target="#viewClassSchedulesModal">Manage Subjects</button>
-
-							<div class="modal fade" id="viewClassSchedulesModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+							<div class="modal fade" id="viewSubjectModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
 								<div class="modal-dialog" role="document">
 									<div class="modal-content">
 										<div class="modal-header">
@@ -45,7 +44,7 @@
 								   		<div class="modal-body">
 								   			<div id="toolbar2">
 								   				@can ('create-class-subject')
-								   					<button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#addSubjectForm">Add Subject</button>
+								   					<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#addSubjectForm">Add Subject</button>
 								   				@endcan
 								   			</div>
 
@@ -78,8 +77,8 @@
 									   					<div class="form-group">
 									   						<label>Schedules</label>
 
-									   						<div class="schedule-items">
-									   							<div class="row well">
+									   						<div class="add-more-items">
+									   							<div class="row">
 										   							<div class="col-md-4">
 										   								<label>Day</label>
 										   								<select name="day[]" class="form-control">
@@ -99,10 +98,12 @@
 										   						</div>
 									   						</div>
 
-									   							<div id="schedule-holder"></div>
+									   						<div id="add-more-holder"></div>
 
-									   						<button type="button" id="add-more-schedule" class="btn btn-info">Add More Schedule</button>
-									   						<button type="submit" class="btn btn-primary">Create</button>
+									   						<div class="margin-lg-top">
+									   							<button type="button" id="add-more" class="btn btn-info">Add More Schedule</button>
+									   							<button type="submit" class="btn btn-primary">Create</button>
+									   						</div>
 									   					</div>
 
 									   				</form>
@@ -122,7 +123,57 @@
 								   		</div>
 								   	</div>
 								</div>
-							</div>
+							</div><!-- end of class subject modal -->
+
+						@endcan
+
+						@can ('manage-class-section-code')
+
+							<div class="modal fade" id="viewClassCodeModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+								    		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								    		<h4 class="modal-title" id="modalLabel">Class Code</h4>
+								   		</div>
+								   		<div class="modal-body">
+								   			<div id="toolbar3">
+								   				@can ('create-class-section-code')
+								   					<button type="button" class="btn btn-default" data-toggle="collapse" data-target="#generateClassCodeForm">Generate Class Code</button>
+								   				@endcan
+								   			</div>
+
+								   			@can ('create-class-subject')
+									   			<div id="generateClassCodeForm" class="collapse margin-lg-top">
+									   				<form action="{{ action('ClassSectionCodeController@postGenerate') }}" method="POST">
+									   					{!! csrf_field() !!}
+									   					<input type="hidden" name="class_section_id" value="{{ $section->id }}">
+
+									   					<div class="form-group">
+									   						<label for="amount">Amount</label>
+									   						<input type="number" name="amount" id="amount" class="form-control">
+									   					</div>
+
+								   						<button type="submit" class="btn btn-primary">Generate</button>
+
+									   				</form>
+									   			</div>
+								   			@endcan
+
+									   		<table data-toggle="table" data-url="{{ action('ClassSectionCodeController@getApi') }}?section_id={{ $section->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar3">
+												<thead>
+													<tr>
+														<th data-field="code" data-sortable="true">Code</th>
+														<th data-formatter="statusFormatter" data-sortable="true">Status</th>
+														<th data-field="created_at" data-sortable="true">Date Added</th>
+														<th data-formatter="actionClassCodeFormatter" data-align="center">Actions</th>
+													</tr>
+												</thead>
+											</table>
+								   		</div>
+								   	</div>
+								</div>
+							</div><!-- end of class section code modal -->
 
 						@endcan
 
@@ -139,20 +190,13 @@
 						</table>
 
 						<div id="toolbar">
-							@can ('create-class-student')
-		                    <form action="{{ action('ClassStudentController@postAdd') }}" method="POST" class="form-inline">
-		                    	{!! csrf_field() !!}
-		                    	<input type="hidden" name="class_section_id" value="{{ $section->id }}">
-		                    	<div class="form-group">
-		             				<div class="input-group">
-		                    			<input type="text" class="form-control" name="username" placeholder="Enter Username">
-		                    			<span class="input-group-btn">
-		             						<button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i></button>
-		             					</span>
-		             				</div>
-		                    	</div>
-		                    </form>
-		                    @endcan
+							<div class="dropdown">
+								<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
+								<ul class="dropdown-menu">
+									<li><a href="#viewSubjectModal" data-toggle="modal">Subjects</a></li>
+									<li><a href="#viewClassCodeModal" data-toggle="modal">Class Code</a></li>
+								</ul>
+							</div>
 						</div>
 
 						<table data-toggle="table" data-url="{{ action('ClassStudentController@getAPIBySection', $section->id) }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">

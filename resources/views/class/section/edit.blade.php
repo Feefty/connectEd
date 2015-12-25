@@ -7,7 +7,7 @@
 			<div class="col-md-8 col-md-offset-2">
 				<div class="panel panel-default margin-lg-top">
 					<div class="panel-heading">
-						Class Section Edit
+						<a href="{{ \URL::previous() }}"><i class="fa fa-arrow-left"></i></a> Class Section Edit
 					</div>
 					<div class="panel-body">
 						@if (count($errors) > 0)

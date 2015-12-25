@@ -130,7 +130,17 @@ return [
         'class_section_id'      => 'Calss Section',
         'day'                   => 'Day',
         'time_start'            => 'Time Start',
-        'time_end'              => 'Time End'
+        'time_end'              => 'Time End',
+        'title'                 => 'Title',
+        'content'               => 'Content',
+        'file'                  => 'File',
+        'school_code'           => 'School Code',
+        'class_code'            => 'Class Code',
+        'exam_type'             => 'Type',
+        'start_date'            => 'Date Start',
+        'start_time'            => 'Time Start',
+        'end_date'              => 'Date End',
+        'end_time'              => 'Time End',
     ],
 
 ];

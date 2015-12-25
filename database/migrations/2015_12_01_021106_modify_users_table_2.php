@@ -12,10 +12,6 @@ class ModifyUsersTable2 extends Migration
      */
     public function up()
     {
-        Schema::table('users', function(Blueprint $t)
-        {
-            $t->string('code')->nullable();
-        });
     }
 
     /**
@@ -25,9 +21,5 @@ class ModifyUsersTable2 extends Migration
      */
     public function down()
     {
-        Schema::table('users', function(Blueprint $t)
-        {
-            $t->dropColumn('code');
-        });
     }
 }

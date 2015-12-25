@@ -9,7 +9,7 @@
 </head>
 <body>
 
-	<nav class="navbar navbar-inverse">
+	<nav class="navbar navbar-default navbar-fixed-top">
 	  	<div class="container-fluid">
 		    <div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse" aria-expanded="false">
@@ -23,22 +23,26 @@
 		    <div class="collapse navbar-collapse" id="bs-navbar-collapse">
 		     	<ul class="nav navbar-nav">
 			        <li><a href="{{ action('HomeController@getIndex') }}">Home</a></li>
-			        <li><a href="{{ action('RoomController@getIndex') }}">My Room</a></li>
-			        <li><a href="#">Course Calendar</a></li>
-			        @can ('read-class-section')
-			        <li><a href="{{ action('ClassSectionController@getIndex') }}">Sections</a></li>
+			        @can ('manage-lesson')
+			        	<li><a href="{{ action('LessonController@getIndex') }}">Lessons</a></li>
 			        @endcan
-			        <li><a href="{{ action('AchievementController@getIndex') }}">Achievements</a></li>
+			        @can ('read-my-room', 'strict')
+			        	<li><a href="{{ action('RoomController@getIndex') }}">My Room</a></li>
+			        @endcan
+			        @can ('read-class-section')
+			        	<li><a href="{{ action('ClassSectionController@getIndex') }}">Sections</a></li>
+			        @endcan
 			        @can ('read-member-school')
 			        	<li><a href="{{ action('SchoolMemberController@getIndex') }}">Members</a></li>
 			        @endcan
+			        <li><a href="{{ action('ExamController@getIndex') }}">Exams</a></li>
 		      	</ul>
 		      	<ul class="nav navbar-nav navbar-right">
 		      		@if ( ! auth()->check())
 			        	<li><a href="{{ action('Auth\AuthController@getLogin') }}">Sign In</a></li>
 			        	<li><a href="{{ action('Auth\AuthController@getRegister') }}">Register</a></li>
 			        @else
-			        	<li><a href="{{ action('NotificationController@getIndex') }}"><i class="fa fa-envelope-o"></i></a></li>
+			        	<li><a href="{{ action('NotificationController@getIndex') }}"><i class="fa fa-bell"></i></a></li>
 				        <li class="dropdown">
 			          		<a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->username }} <span class="caret"></span></a>
 			          		<ul class="dropdown-menu">

@@ -14,7 +14,7 @@ class PostAddUserFormRequest extends Request
      */
     public function authorize()
     {
-        return ! Gate::denies('add-user');
+        return Gate::allows('create-user');
     }
 
     /**

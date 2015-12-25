@@ -21,7 +21,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="" href="{{ action('Admin\DashboardController@getIndex') }}"><img src="{{ asset('/img/logo.png') }}" class="img-brand" alt="{{ config('app.brand') }}"></a>
+                <a class="navbar-brand" href="{{ action('Admin\DashboardController@getIndex') }}"><img src="{{ asset('/img/logo.png') }}" class="img-brand" alt="{{ config('app.brand') }}"></a>
             </div>
 
             <ul class="nav navbar-top-links navbar-right">
@@ -64,6 +64,10 @@
                                 </li>
                                 <li>
                                     <a href="{{ action('Admin\GradeController@getIndex') }}">Grades</a>
+                                </li>
+                                <li>
+                                    <a href="{{ action('Admin\ExamController@getIndex') }}">
+                                    Exams</a>
                                 </li>
                                 <li>
                                     <a href="{{ action('Admin\PageController@getIndex') }}">Pages</a>

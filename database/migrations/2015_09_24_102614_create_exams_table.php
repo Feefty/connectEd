@@ -15,7 +15,7 @@ class CreateExamsTable extends Migration
         Schema::create('exams', function(Blueprint $t)
         {
             $t->increments('id');
-            $t->integer('type_id');
+            $t->integer('exam_type_id');
             $t->string('title');
             $t->integer('created_by');
             $t->date('date_start');

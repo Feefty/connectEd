@@ -11,6 +11,7 @@ use App\SubjectSchedule;
 use App\ClassSection;
 use App\Subject;
 use App\SchoolMember;
+use App\Lesson;
 use Gate;
 
 class ClassSubjectController extends Controller
@@ -59,19 +60,14 @@ class ClassSubjectController extends Controller
         {
             $id = (int) $request->id;
 
-            $class_subject = ClassSubject::where('id', $id);
-
-            if ( ! $class_subject->exists())
-            {
-                throw new \Exception('class_subject.not_found');
-            }
+            $class_subject = ClassSubject::findOrFail($id);
 
             $data = $request->only('room');
             $data['subject_id']	= $request->subject;
             $data['teacher_id']	= $request->teacher;
             $data['updated_at'] = new \DateTime;
 
-            ClassSubject::where('id', $id)->update($data);
+            ClassSubject::findOrFail($id)->update($data);
 
             $msg = trans('class_subject.edit.success');
         }
@@ -90,25 +86,25 @@ class ClassSubjectController extends Controller
             abort(401);
         }
 
-		$class_subject = ClassSubject::select('class_sections.name as section', 'class_sections.level as section_level', 'class_subjects.*', 'users.username', \DB::raw('CONCAT(profiles.first_name, " ", profiles.last_name) as teacher'), 'subjects.name as subject')
+		$class_subject = ClassSubject::select('class_sections.name as section', 'class_sections.level as section_level', 'class_subjects.*', 'users.username', \DB::raw('CONCAT(profiles.first_name, " ", profiles.last_name) as teacher'))
 							->leftJoin('users', 'users.id', '=', 'class_subjects.teacher_id')
 							->leftJoin('profiles', 'profiles.user_id', '=', 'class_subjects.teacher_id')
-							->leftJoin('subjects', 'subjects.id', '=', 'class_subjects.subject_id')
 							->leftJoin('class_sections', 'class_sections.id', '=', 'class_subjects.class_section_id')
-							->where('class_subjects.id', (int) $id);
-
-		if ( ! $class_subject->exists())
-		{
-			return abort(404);
-		}
-
-		$class_subject = $class_subject->first();
+							->findOrFail($id);
 
 		$schedules = SubjectSchedule::select('*', \DB::raw('CONCAT(subject_schedules.time_start, " - ", subject_schedules.time_end) as time'))
 									->where('class_subject_id', (int) $id)
 									->get();
 
-		return view('class.subject.view', compact('class_subject', 'schedules'));
+        $subject = Subject::findOrFail($class_subject->subject_id);
+        $class_section = ClassSection::findOrFail($class_subject->class_section_id);
+        $lessons = Lesson::select('lessons.*', \DB::raw('CONCAT(profiles.first_name, " ", profiles.last_name) as posted_by'))
+                            ->where('school_id', $class_section->school_id)
+                            ->leftJoin('profiles', 'profiles.user_id', '=', 'lessons.posted_by')
+                            ->orderBy('title')
+                            ->get();
+
+		return view('class.subject.view', compact('class_subject', 'schedules', 'subject', 'lessons'));
 	}
 
 	public function getDelete($id)
@@ -122,14 +118,7 @@ class ClassSubjectController extends Controller
                 return abort(401);
             }
 
-            if (ClassSubject::where('id', $id)->exists())
-            {
-                ClassSubject::where('id', $id)->delete();
-            }
-            else
-            {
-                throw new \Exception(trans('class_subject.add.success'));
-            }
+            ClassSubject::findOrFail($id)->delete();
             
             $msg = trans('class_subject.delete.success');
         }

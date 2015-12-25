@@ -32,6 +32,10 @@ function actionMemberSchoolFormatter(value, row) {
 	return ["<a href='/admin/school/member/"+ row.id +"/delete' class='btn btn-default btn-xs' onclick='return confirm(\"Are you sure you want to delete this school member?\")'><i class='fa fa-remove'></i> Delete</a>"].join(" ");
 }
 
+function actionExamTypeFormatter(value, row) {
+	return ["<a href='/admin/exam/type/delete/"+ row.id +"' class='btn btn-default btn-xs' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-remove'></i> Delete</a>"].join(" ");
+}
+
 function usernameFormatter(value, row) {
 	return "<a href='/admin/user/"+ row.id +"/view'>"+ row.username +"</a>";
 }

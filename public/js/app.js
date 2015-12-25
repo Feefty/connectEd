@@ -23,9 +23,20 @@ var gradeLevels = [
 ];
 
 $(function() {
-	$('#add-more-schedule').on('click', function() {
-		$content = $('.schedule-items').first().html();
-		$('#schedule-holder').append($content);
+	$('#add-more, [data-toggle="add-more"]').on('click', function() {
+		var target = $(this).data('target');
+
+		if (target != "undefined") {
+			$content = $('[data-id="'+ target +'"]').first().html();
+			$('[data-holder="'+ target +'"]').append($content);
+		} else {
+			$content = $('.add-more-items').first().html();
+			$('#add-more-holder').append($content);
+		}
+	});
+	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+	    $('.dropdown-menu li.active').removeClass('active');
+	    $(this).parent('li').addClass('active');
 	});
 });
 
@@ -38,7 +49,7 @@ function fullNameFormatter(value, row) {
 }
 
 function actionSchoolMemberFormatter(value, row) {
-	return ["<a href='/school/member/"+ row.id +"/delete' class='btn btn-default btn-xs' onclick='return confirm(\"Are you sure you want to delete this school member?\")'><i class='fa fa-remove'></i> Delete</a>"].join(" ");
+	return ["<a href='/school/member/"+ row.id +"/delete' class='btn btn-default btn-xs' onclick='return confirm(\"Are you sure you want to delete this school member?\")'><i class='fa fa-remove'></i></a>"].join(" ");
 }
 
 function subjectFormatter(value, row) {
@@ -60,13 +71,61 @@ function userProfile(value, row) {
 
 function actionClassSubjectFormatter(value, row) {
 	return ["<a href='/class/subject/edit/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Edit'><i class='fa fa-pencil'></i></a>",
-			"<a href='/class/subject/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete'><i class='fa fa-remove'></i></a>",
+			"<a href='/class/subject/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-remove'></i></a>",
 			"<a href='/class/subject/view/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='View'><i class='fa fa-eye'></i></a>"].join(" ");
 }
 
 function actionClassSubjectScheduleFormatter(value, row) {
 	return ["<a href='/class/subject/schedule/edit/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Edit'><i class='fa fa-pencil'></i></a>",
-			"<a href='/class/subject/schedule/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete'><i class='fa fa-remove'></i></a>"].join(" ");
+			"<a href='/class/subject/schedule/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-remove'></i></a>"].join(" ");
+}
+
+function actionLessonFormatter(value, row) {
+	return ["<a href='/lesson/edit/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Edit'><i class='fa fa-pencil'></i></a>",
+			"<a href='/lesson/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete' onclick='return confirm(\"Are you sure you want to delete this item? All of its file will be deleted.\")'><i class='fa fa-remove'></i></a>",
+			"<a href='/lesson/view/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='View'><i class='fa fa-eye'></i></a>"].join(" ");
+}
+
+function classSectionSubjectFormat(value, row) {
+	return "<a href='/class/subject/view/"+ row.id +"'>"+ row.subject +"</a>";
+}
+
+function actionClassSubjectLessonFormatter(value, row) {
+	return ["<a href='/class/subject/lesson/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-remove'></i></a>",
+			"<a href='/lesson/view/"+ row.lesson_id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='View'><i class='fa fa-eye'></i></a>"].join(" ");
+}
+
+function actionSchoolCodeFormatter(value, row) {
+	return [
+		"<a href='/school/code/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-remove'></i></a>"
+	].join(" ");
+}
+
+function actionClassCodeFormatter(value, row) {
+	return [
+		"<a href='/class/section/code/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-remove'></i></a>"
+	].join(" ");
+}
+
+function lessonFormatter(value, row) {
+	return "<a href='/lesson/view/"+ row.lesson_id +"'>"+ row.title +"</a>";
+}
+
+function actionExamQuestionFormatter(value, row) {
+	return ["<a href='/exam/question/edit/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Edit'><i class='fa fa-pencil'></i></a>",
+			"<a href='/exam/question/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-remove'></i></a>",
+			"<a href='/exam/question/view/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='View'><i class='fa fa-eye'></i></a>"].join(" ");
+}
+
+function actionExamQuestionAnswerFormatter(value, row) {
+	return ["<a href='/exam/question/answer/edit/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Edit'><i class='fa fa-pencil'></i></a>",
+			"<a href='/exam/question/answer/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-remove'></i></a>"].join(" ");
+}
+
+function actionExamFormatter(value, row) {
+	return ["<a href='/exam/edit/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Edit'><i class='fa fa-pencil'></i></a>",
+			"<a href='/exam/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-remove'></i></a>",
+			"<a href='/exam/view/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='View'><i class='fa fa-eye'></i></a>"].join(" ");
 }
 
 function statusFormatter(value, row) {
@@ -75,6 +134,14 @@ function statusFormatter(value, row) {
 	} else {
 		return "<span class='text-muted'>Inactive</span>";
 	}
+}
+
+function subjectNameFormatter(value, row) {
+	return '['+ row.subject.code +'] '+ row.subject.name +' - '+ row.subject.description;
+}
+
+function examTypeFormatter(value, row) {
+	return row.exam_type.name;
 }
 
 function dayFormatter(value, row) {

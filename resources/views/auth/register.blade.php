@@ -42,6 +42,10 @@
 								<option value="2">School</option>
 							</select>
 						</div>
+						<div>
+							<label for="school_code">School Code</label>
+							<input type="text" name="school_code" id="school_code" class="form-control" value="{{ old('school_code') }}">
+						</div>
 
 						<hr>
 						<h3>Profile Information</h3>

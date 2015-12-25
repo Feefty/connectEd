@@ -5,7 +5,7 @@
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
-				<div class="panel-heading">Class Sections</div>
+				<div class="panel-heading"><a href="{{ \URL::previous() }}"><i class="fa fa-arrow-left"></i></a> Class Sections</div>
 				<div class="panel-body">
 					@if (count($errors) > 0)
 					    <div class="alert alert-danger">
@@ -30,7 +30,7 @@
 
 					<div id="toolbar">
 						@can ('create-class-section')
-                    		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addClassSectionModal"><i class="fa fa-plus"></i> Create</button>
+                    		<button type="button" class="btn btn-default" data-toggle="modal" data-target="#addClassSectionModal"><i class="fa fa-plus"></i> Create</button>
                     	@endcan
 					</div>
 

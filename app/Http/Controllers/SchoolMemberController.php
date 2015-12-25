@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\PostAddSchoolMemberFormRequest;
+use App\Http\Requests\PostGenerateSchoolMemberFormRequest;
 use App\Http\Controllers\Controller;
 use App\SchoolMember;
+use App\SchoolCode;
 use App\School;
 use App\User;
 use Auth;
 use Gate;
+use Hashids;
 
 class SchoolMemberController extends Controller
 {
@@ -20,19 +23,11 @@ class SchoolMemberController extends Controller
             return abort(401);
         }
 
-		$school_members = SchoolMember::select('school_members.*', 'users.username', 'groups.name as group')
-										->leftJoin('users', 'users.id', '=', 'school_members.user_id')
-										->leftJoin('groups', 'groups.id', '=', 'users.group_id')
-										->where('school_id', $school_id)->get();
-
-		if ($school_members->count())
-		{
-			return $school_members;
-		}
-		else
-		{
-			return abort(404);
-		}
+		return SchoolMember::select('school_members.*', 'users.username', 'groups.name as group')
+							->leftJoin('users', 'users.id', '=', 'school_members.user_id')
+							->leftJoin('groups', 'groups.id', '=', 'users.group_id')
+							->where('school_id', $school_id)
+                            ->get();
 	}
 
     public function getIndex()
@@ -44,14 +39,52 @@ class SchoolMemberController extends Controller
 
     	$user = Auth::user();
     	$school = School::leftJoin('school_members', 'school_members.school_id', '=', 'schools.id')
-    					->where('school_members.user_id', $user->id)->first();
-
-    	if ( ! $school)
-    	{
-    		return abort(404);
-    	}
+    					->where('school_members.user_id', $user->id)
+                        ->first();
 
         return view('school.member.index', compact('school'));
+    }
+
+    public function postGenerate(PostGenerateSchoolMemberFormRequest $request)
+    {
+        $msg = [];
+
+        try
+        {
+            $data = [];
+            $amount = (int) $request->amount;
+            $school_id = (int) $request->school_id;
+            $group_id = (int) $request->group;
+
+            if (SchoolCode::where('school_id', $school_id)->count() >= config('school.max_code'))
+            {
+                throw new \Exception(trans('school.max_code_reahed'));
+            }
+
+            for ($i = 0; $i < $amount; $i++)
+            {
+                $count = SchoolCode::count();
+
+                $hash = Hashids::encode($count);
+                $data = [
+                    'code'          => $hash,
+                    'created_at'    => new \DateTime,
+                    'school_id'     => $school_id,
+                    'status'        => false,
+                    'group_id'      => $group_id,
+                ];
+
+                SchoolCode::create($data);
+            }
+
+            $msg = trans('school_code.add.success');
+        }
+        catch (\Exception $e)
+        {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+
+        return redirect()->back()->with(compact('msg'));
     }
 
     public function postAdd(PostAddSchoolMemberFormRequest $request)
@@ -82,7 +115,7 @@ class SchoolMemberController extends Controller
         		'created_at' 	=> new \DateTime
         	];
 
-            SchoolMember::insert($data);
+            SchoolMember::create($data);
 
             $msg = trans('school.add.member');
         }
@@ -105,14 +138,7 @@ class SchoolMemberController extends Controller
                 return abort(401);
             }
             
-            if (SchoolMember::where('id', $id)->exists())
-            {
-                SchoolMember::where('id', $id)->delete();
-            }
-            else
-            {
-                throw new \Exception(trans('school.member_not_found'));
-            }
+            SchoolMember::findOrFail($id)->delete();
             
             $msg = trans('school.delete.success.member');
         }

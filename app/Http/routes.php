@@ -39,10 +39,20 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('/class/section/view/{section_id}', 'ClassSectionController@getView')->where(['section_id' => '[0-9]+']);
 	Route::get('/class/section/edit/{section_id}', 'ClassSectionController@getEdit')->where(['section_id' => '[0-9]+']);
 	Route::post('/class/section/edit', 'ClassSectionController@postEdit');
+	
+	// School Member
 	Route::get('/school/member', 'SchoolMemberController@getIndex');
 	Route::get('/school/member/api/{school_id}', 'SchoolMemberController@getAPI')->where(['school_id' => '[0-9]+']);
 	Route::post('/school/member/add', 'SchoolMemberController@postAdd');
 	Route::get('/school/member/{school_id}/delete', 'SchoolMemberController@getDelete')->where(['school_id' => '[0-9]+']);
+	Route::post('/school/member/generate', 'SchoolMemberController@postGenerate');
+
+	// School Code
+	Route::controller('/school/code', 'SchoolCodeController');
+
+	// Class Section Code
+	Route::controller('/class/section/code', 'ClassSectionCodeController');
+
 	Route::get('/class/student/api/{section_id}/section', 'ClassStudentController@getAPIBySection')->where(['section_id' => '[0-9]+']);
 	Route::get('/class/student/api/{section_id}/school', 'ClassStudentController@getAPIBySchool')->where(['section_id' => '[0-9]+']);
 	Route::post('/class/student/add', 'ClassStudentController@postAdd');
@@ -59,10 +69,24 @@ Route::group(['middleware' => 'auth'], function()
 	Route::post('/class/subject/schedule/edit', 'SubjectScheduleController@postEdit');
 
 	// Room
-	Route::get('/myroom', 'RoomController@getIndex');
+	Route::controller('/myroom', 'RoomController');
 
 	// Notification
 	Route::get('/notifications', 'NotificationController@getIndex');
+
+	// Lesson
+	Route::controller('lesson', 'LessonController');
+
+	// Class Subject Lesson
+	Route::controller('class/subject/lesson', 'ClassSubjectLessonController');
+
+	Route::controller('exam/question/answer', 'ExamQuestionAnswerController');
+
+	// Exam Question
+	Route::controller('exam/question', 'ExamQuestionController');
+
+	// Exam
+	Route::controller('exam', 'ExamController');
 
 	Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function()
 	{
@@ -109,5 +133,11 @@ Route::group(['middleware' => 'auth'], function()
 		Route::get('/grade', 'GradeController@getIndex');
 
 		Route::get('/page', 'PageController@getIndex');
+
+		// Exam Type
+		Route::controller('exam/type', 'ExamTypeController');
+
+		// Exam
+		Route::controller('exam', 'ExamController');
 	});
 });

@@ -11,6 +11,7 @@ return [
 	'member_not_found'	=> "School member was not found.",
 	'delete.success.member' => "You have deleted the school member.",
 	'exists.member'		=> "The user is already have a school.",
-	'low_level.member'	=> "The user is too low level to join as school member."
+	'low_level.member'	=> "The user is too low level to join as school member.",
+	'max_code_reached'	=> "Your school have reached the maximum code to be generate.",
 
 ];

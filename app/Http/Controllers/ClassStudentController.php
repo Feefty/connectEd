@@ -23,7 +23,8 @@ class ClassStudentController extends Controller
 
     	return ClassStudent::select('class_students.*', \DB::raw('CONCAT(profiles.first_name, " ", profiles.last_name) as name, IF(gender=1, "Male", "Female") as gender'))
                             ->leftJoin('profiles', 'profiles.user_id', '=', 'class_students.student_id')
-                            ->where('class_section_id', $section_id)->get();
+                            ->where('class_section_id', $section_id)
+                            ->get();
     }
 
     public function postAdd(PostAddClassStudentFormRequest $request)
@@ -42,7 +43,7 @@ class ClassStudentController extends Controller
             }
 
             $data['student_id'] = $user->pluck('id');
-            $school_id = ClassSection::where('id', $data['class_section_id'])->pluck('school_id');
+            $school_id = (int) ClassSection::firstOrFail((int) $data['class_section_id'])->school_id;
 
             if ( ! SchoolMember::where('user_id', $data['student_id'])->where('school_id', $school_id)->exists())
             {

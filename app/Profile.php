@@ -9,6 +9,8 @@ class Profile extends Model
     protected $table = 'profiles';
     protected $fillable = ['first_name', 'middle_name', 'last_name', 'birthday', 'address', 'gender', 'user_id'];
     public $timestamps = false;
+    protected $primaryKey = null;
+    public $incrementing = false;
 
     public function user()
     {

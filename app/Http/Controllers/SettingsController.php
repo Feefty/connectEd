@@ -15,14 +15,15 @@ use Gate;
 
 class SettingsController extends Controller
 {
-    public function getProfile(Request $request)
+    public function getProfile()
     {
         if (Gate::denies('profile-settings'))
         {
             abort(401);
         }
 
-    	$profile = Profile::where('user_id', $request->user()->id)->first();
+        $profile = Profile::where('user_id', auth()->user()->id)->first();
+
     	return view('settings.profile', compact('profile'));
     }
 
@@ -34,19 +35,8 @@ class SettingsController extends Controller
     	{
     		$data = $request->only('first_name', 'last_name', 'middle_name', 'birthday', 'address', 'gender');
 
-    		$user = $request->user();
-    		$profile = Profile::where('user_id', $user->id);
-    		$data['updated_at'] = new \DateTime;
-
-    		if ($profile->exists())
-    		{
-    			Profile::where('user_id', $user->id)->update($data);
-    		}
-    		else
-    		{
-    			$data['user_id'] = $user->id;
-    			Profile::create($data);
-    		}
+            Profile::where('user_id', auth()->user()->id)
+                    ->update($data);
 
     		$msg = trans('settings.update.success');
     	}

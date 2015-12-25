@@ -105,18 +105,9 @@ class GroupController extends Controller
                 throw new \Exception(trans('error.unauthorized.action'));
             }
 
-            $group = Group::where('id', $id);
-
-            if ($group->exists())
-            {
-                Group::where('id', $id)->delete();
-                $msg = trans('group.delete.success');
-            }
-            else
-            {
-                throw new \Exception(trans('group.not_found'));
-            }
-
+            $group = Group::findOrFail($id)->delete();
+            
+            $msg = trans('group.delete.success');
         }
         catch (\Exception $e)
         {

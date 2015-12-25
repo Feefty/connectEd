@@ -10,7 +10,7 @@
 					<table class="table">
 						<tr>
 							<td><label>Name</label></td>
-							<td>{{ $profile->name or '-' }}</td>
+							<td>{{ $profile->first_name }}</td>
 						</tr>
                     	<tr>
                     		<td><label>Gender</label></td>

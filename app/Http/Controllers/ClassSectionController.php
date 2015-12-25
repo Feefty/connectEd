@@ -92,17 +92,10 @@ class ClassSectionController extends Controller
         }
 
         $section = ClassSection::select('class_sections.*', 'profiles.*', 'schools.name as school')
-                                ->where('class_sections.id', $section_id)
                                 ->leftJoin('profiles', 'profiles.user_id', '=', 'class_sections.adviser_id')
-                                ->leftJoin('schools', 'schools.id', '=', 'class_sections.school_id');
-
+                                ->leftJoin('schools', 'schools.id', '=', 'class_sections.school_id')
+                                ->firstOrFail($section_id);
         $subjects = Subject::orderBy('name')->get();
-        if ( ! $section->exists())
-        {
-            return abort(404);
-        }
-
-        $section = $section->first();
         $teachers = SchoolMember::select('profiles.*', 'users.username', 'users.id')
                                     ->leftJoin('users', 'users.id', '=', 'school_members.user_id')
                                     ->leftJoin('groups', 'groups.id', '=', 'users.group_id')
@@ -152,7 +145,7 @@ class ClassSectionController extends Controller
             $data['adviser_id'] = (int) $request->adviser;
             $data['updated_at'] = new \DateTime;
 
-            ClassSection::where('id', $id)->update($data);
+            ClassSection::firstOrFail($id)->update($data);
 
             $msg = trans('class_section.edit.success');
         }
