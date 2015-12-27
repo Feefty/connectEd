@@ -27,11 +27,16 @@
 							<p>{{ session()->get('msg') }}</p>
 						</div>
 					@endif
-
+					
 					<div id="toolbar">
-						@can ('create-class-section')
-                    		<button type="button" class="btn btn-default" data-toggle="modal" data-target="#addClassSectionModal"><i class="fa fa-plus"></i> Create</button>
-                    	@endcan
+						<div class="dropdown">
+							<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
+							<ul class="dropdown-menu">
+								@can ('create-class-section')
+									<li><a href="#addClassSectionModal" data-toggle="modal"><i class="fa fa-plus"></i> Create</a></li>
+								@endcan
+							</ul>
+						</div>
 					</div>
 
 					@can ('create-class-section')
@@ -41,7 +46,7 @@
 							      	<form action="{{ action('ClassSectionController@postAdd') }}" method="post">
 							    		<div class="modal-header">
 							        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							        		<h4 class="modal-title" id="myModalLabel">Creating a Class Section</h4>
+							        		<h4 class="modal-title" id="myModalLabel">Class Section</h4>
 							      		</div>
 								      	<div class="modal-body">
 								      		{!! csrf_field() !!}

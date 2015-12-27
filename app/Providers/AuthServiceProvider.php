@@ -34,8 +34,7 @@ class AuthServiceProvider extends ServiceProvider
             foreach ($key as $row => $level)
             {
                 $gate->define($row .'-'. $ability, function($user, $rules = 'greater') use ($level) {
-                    $group = auth()->user()->level;
-                    //dd($group);
+                    $group = $user->group->level;
                     $result = false;
 
                     switch ($rules)

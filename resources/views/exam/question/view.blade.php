@@ -19,6 +19,7 @@
 								@if ($exam_question->category == 'multiplechoice' ||
 									 $exam_question->category == 'identification')
 								<li><a href="#viewAddAnswerModal" data-toggle="modal"><i class="fa fa-plus"></i> Add Answer</a></li>
+								@endif
 							</ul>
 						</div>
 					</div>
@@ -26,7 +27,7 @@
 					<div class="modal fade" id="viewAddAnswerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 						<div class="modal-dialog" role="document">
 					 		<div class="modal-content">
-						      	<form action="{{ action('ExamQuestionAnswer@postAdd') }}" method="post">
+						      	<form action="{{ action('ExamQuestionAnswerController@postAdd') }}" method="post">
 						    		<div class="modal-header">
 						        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						        		<h4 class="modal-title" id="myModalLabel">Exam Question Answer</h4>

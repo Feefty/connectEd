@@ -107,21 +107,14 @@ class ClassSectionController extends Controller
         return view('class.section.view', compact('section', 'subjects', 'teachers'));
     }
 
-    public function getEdit($school_id)
+    public function getEdit($id)
     {
         if (Gate::denies('update-class-section'))
         {
             abort(401);
         }
 
-        $class_section = ClassSection::where('school_id', $school_id);
-
-        if ( ! $class_section->exists())
-        {
-            return abort(404);
-        }
-
-        $class_section = $class_section->first();
+        $class_section = ClassSection::findOrFail($id);
 
         $teachers = SchoolMember::select('users.username', 'users.id')
                                     ->leftJoin('users', 'users.id', '=', 'school_members.user_id')
@@ -145,8 +138,8 @@ class ClassSectionController extends Controller
             $data['adviser_id'] = (int) $request->adviser;
             $data['updated_at'] = new \DateTime;
 
-            ClassSection::firstOrFail($id)->update($data);
-
+            ClassSection::findOrFail($id)->update($data);
+            
             $msg = trans('class_section.edit.success');
         }
         catch (\Exception $e)

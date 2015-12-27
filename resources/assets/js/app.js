@@ -23,6 +23,7 @@ var gradeLevels = [
 ];
 
 $(function() {
+	$('[data-toggle="select2"]').select2();
 	$('#add-more, [data-toggle="add-more"]').on('click', function() {
 		var target = $(this).data('target');
 

@@ -68,6 +68,17 @@
 							@endcan
 						</div>
 
+						<div id="toolbar3">
+							@can ('manage-class-subject')
+							<div class="dropdown">
+								<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
+								<ul class="dropdown-menu">
+									<li><a href="#addExamModal" data-toggle="modal"><i class="fa fa-plus"></i> Add Exam</a></li>
+								</ul>
+							</div>
+							@endcan
+						</div>
+
 						<div class="modal fade" id="addScheduleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 							<div class="modal-dialog" role="document">
 						 		<div class="modal-content">
@@ -142,9 +153,77 @@
 						  	</div>
 						</div><!-- end of modal -->
 
+						<div class="modal fade" id="addExamModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+							<div class="modal-dialog" role="document">
+						 		<div class="modal-content">
+							      	<form action="{{ action('ClassSubjectLessonController@postAdd') }}" method="post">
+							    		<div class="modal-header">
+							        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							        		<h4 class="modal-title" id="myModalLabel">Exam</h4>
+							      		</div>
+								      	<div class="modal-body">
+								      		{!! csrf_field() !!}
+
+								      		<input type="hidden" name="class_subject_id" value="{{ $class_subject->id }}">
+
+								      		<div class="form-group">
+								      			<label for="exam">Exam</label>
+								      			<select id="exam" name="exam" class="form-control">
+								      				@forelse ($exams as $row)
+								      					<option value="{{ $row->id }}">{{ $row->title .' - '. $row->exam_type->name }}</option>
+								      				@empty
+								      					<option>No available exam</option>
+								      				@endforelse
+								      			</select>
+								      		</div>
+
+							   				<div class="form-group">
+									   			<label for="start">Start</label>
+							   					<div class="row">
+							   						<div class="col-md-6">
+									   					<input type="date" name="start_date" id="start" class="form-control" placeholder="YYYY-MM-DD">
+								   					</div>
+							   						<div class="col-md-6">
+									   					<input type="time" name="start_time" class="form-control" placeholder="HH:MM">
+								   					</div>
+							   					</div>
+							   				</div>
+
+
+							   				<div class="form-group">
+									   			<label for="end">End</label>
+							   					<div class="row">
+							   						<div class="col-md-6">
+									   					<input type="date" name="end_date" id="end" class="form-control" placeholder="YYYY-MM-DD">
+								   					</div>
+							   						<div class="col-md-6">
+									   					<input type="time" name="end_time" class="form-control" placeholder="HH:MM">
+								   					</div>
+							   					</div>
+							   				</div>
+
+							   				<div class="form-group">
+							   					<label for="user">Users</label>
+							   					<select id="user" name="users" class="form-control" data-toggle="select2" multiple>
+							   						@foreach ($users as $row)
+							   							<option value="{{ $row->id }}">[{{ $row->username }}] {{ $user->profile->first_name .' '. $user->profile->last_name }}</option>
+							   						@endforeach
+							   					</select>
+							   				</div>
+								      	</div>
+								      	<div class="modal-footer">
+								        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								        	<button type="submit" class="btn btn-primary">Add</button>
+								      	</div>
+							      	</form>
+						    	</div>
+						  	</div>
+						</div><!-- end of modal -->
+
 						<ul class="nav nav-tabs">
 							<li class="active"><a data-toggle="tab" href="#schedules-tab">Schedules</a></li>
 							<li><a data-toggle="tab" href="#lessons-tab">Lessons</a></li>
+							<li><a data-toggle="tab" href="#exams-tab">Exams</a></li>
 						</ul>
 
 						<div class="tab-content">
@@ -171,6 +250,23 @@
 									<thead>
 										<tr>
 											<th colspan="4" data-align="center">Lessons</th>
+										</tr>
+										<tr>
+											<th data-formatter="lessonFormatter">Title</th>
+											<th data-field="created_at">Date Added</th>
+											@can ('manage-subject-schedule')
+												<th data-formatter="actionClassSubjectLessonFormatter" data-align="center">Actions</th>
+											@endcan
+										</tr>
+									</thead>
+								</table>
+							</div><!-- end of lessons tab -->
+
+							<div id="exams-tab" class="tab-pane fade">
+								<table data-toggle="table" data-url="{{ action('ClassSubjectLessonController@getApi', $class_subject->id) }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar3">
+									<thead>
+										<tr>
+											<th colspan="4" data-align="center">Exams</th>
 										</tr>
 										<tr>
 											<th data-formatter="lessonFormatter">Title</th>

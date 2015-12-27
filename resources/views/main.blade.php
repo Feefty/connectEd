@@ -29,13 +29,15 @@
 			        @can ('read-my-room', 'strict')
 			        	<li><a href="{{ action('RoomController@getIndex') }}">My Room</a></li>
 			        @endcan
-			        @can ('read-class-section')
+			        @can ('read-class-section', 'strict')
 			        	<li><a href="{{ action('ClassSectionController@getIndex') }}">Sections</a></li>
 			        @endcan
-			        @can ('read-member-school')
+			        @can ('read-school-member', 'strict')
 			        	<li><a href="{{ action('SchoolMemberController@getIndex') }}">Members</a></li>
 			        @endcan
+			        @can ('read-exam', 'strict')
 			        <li><a href="{{ action('ExamController@getIndex') }}">Exams</a></li>
+			        @endcan
 		      	</ul>
 		      	<ul class="nav navbar-nav navbar-right">
 		      		@if ( ! auth()->check())

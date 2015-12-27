@@ -51,9 +51,6 @@ return [
 		'delete'	=> ADMIN_LEVEL,
 		'read'		=> ADMIN_LEVEL,
 		'api'		=> ADMIN_LEVEL,
-		'read-member'	=> TEACHER_LEVEL,
-		'add-member'	=> TEACHER_LEVEL,
-		'delete-member'	=> SCHOOL_LEVEL,
 	],
 
 	'subject' => [
@@ -92,7 +89,10 @@ return [
 		'create'	=> SCHOOL_LEVEL,
 		'delete'	=> SCHOOL_LEVEL,
 		'update'	=> TEACHER_LEVEL,
-		'read'		=> TEACHER_LEVEL,
+		'read' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
 	],
 
 	'class-subject' => [
@@ -146,27 +146,69 @@ return [
 	],
 
 	'exam' => [
-		'create'	=> SCHOOL_LEVEL,
-		'delete'	=> SCHOOL_LEVEL,
-		'update'	=> SCHOOL_LEVEL,
-		'read'		=> TEACHER_LEVEL,
-		'manage'	=> SCHOOL_LEVEL,
+		'create' => [
+			TEACHER_LEVEL
+		],
+		'delete' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+		'update' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+		'read' => [
+			SCHOOL_LEVEL,
+			TEACHER_LEVEL
+		],
+		'manage' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
 	],
 
 	'exam-question' => [
-		'create'	=> SCHOOL_LEVEL,
-		'delete'	=> SCHOOL_LEVEL,
-		'update'	=> SCHOOL_LEVEL,
-		'read'		=> TEACHER_LEVEL,
-		'manage'	=> SCHOOL_LEVEL,
+		'create' => [
+			TEACHER_LEVEL
+		],
+		'delete' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+		'update' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+		'read' => [
+			SCHOOL_LEVEL,
+			TEACHER_LEVEL
+		],
+		'manage' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
 	],
 
 	'exam-question-answer' => [
-		'create'	=> SCHOOL_LEVEL,
-		'delete'	=> SCHOOL_LEVEL,
-		'update'	=> SCHOOL_LEVEL,
-		'read'		=> TEACHER_LEVEL,
-		'manage'	=> SCHOOL_LEVEL,
+		'create' => [
+			TEACHER_LEVEL
+		],
+		'delete' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+		'update' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+		'read' => [
+			SCHOOL_LEVEL,
+			TEACHER_LEVEL
+		],
+		'manage' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
 	],
 
 

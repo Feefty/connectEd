@@ -29,7 +29,8 @@ elixir(function(mix) {
     	.scripts([
     		'jquery/dist/jquery.js',
             'bootstrap/dist/js/bootstrap.js',
-            'bootstrap-table/dist/bootstrap-table.js'
+            'bootstrap-table/dist/bootstrap-table.js',
+            'select2/dist/js/select2.full.min.js'
     	], 'public/js/app.vendor.js', vendorDir)
         .scripts([
             'app.js'
@@ -55,6 +56,7 @@ elixir(function(mix) {
         .styles([
             publicDir + 'css/app.vendor.css',
             vendorDir + 'bootstrap-table/dist/bootstrap-table.css',
+            vendorDir + 'select2/dist/css/select2.min.css',
             publicDir + 'css/app.css'
         ], 'public/css/all.app.css');
 });

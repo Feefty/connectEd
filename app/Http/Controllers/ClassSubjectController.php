@@ -12,6 +12,7 @@ use App\ClassSection;
 use App\Subject;
 use App\SchoolMember;
 use App\Lesson;
+use App\Exam;
 use Gate;
 
 class ClassSubjectController extends Controller
@@ -91,6 +92,12 @@ class ClassSubjectController extends Controller
 							->leftJoin('profiles', 'profiles.user_id', '=', 'class_subjects.teacher_id')
 							->leftJoin('class_sections', 'class_sections.id', '=', 'class_subjects.class_section_id')
 							->findOrFail($id);
+        $school_id = SchoolMember::where('user_id', auth()->user()->id)->pluck('school_id');
+        $exams = Exam::where('school_id', $school_id)
+                        ->where('subject_id', $class_subject->subject_id)
+                        ->orderBy('title', 'desc')
+                        ->with('exam_type')
+                        ->get();
 
 		$schedules = SubjectSchedule::select('*', \DB::raw('CONCAT(subject_schedules.time_start, " - ", subject_schedules.time_end) as time'))
 									->where('class_subject_id', (int) $id)
@@ -103,8 +110,9 @@ class ClassSubjectController extends Controller
                             ->leftJoin('profiles', 'profiles.user_id', '=', 'lessons.posted_by')
                             ->orderBy('title')
                             ->get();
-
-		return view('class.subject.view', compact('class_subject', 'schedules', 'subject', 'lessons'));
+        $users = User::leftJoin('class_students', 'class_students.student_id', '=', 'users.id');
+		return view('class.subject.view', 
+                    compact('class_subject', 'schedules', 'subject', 'lessons', 'exams', 'users'));
 	}
 
 	public function getDelete($id)

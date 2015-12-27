@@ -40,6 +40,9 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('/class/section/edit/{section_id}', 'ClassSectionController@getEdit')->where(['section_id' => '[0-9]+']);
 	Route::post('/class/section/edit', 'ClassSectionController@postEdit');
 	
+	// Class Subject Exam
+	Route::controller('class/subject/exam', 'ClassSubjectExamController');
+
 	// School Member
 	Route::get('/school/member', 'SchoolMemberController@getIndex');
 	Route::get('/school/member/api/{school_id}', 'SchoolMemberController@getAPI')->where(['school_id' => '[0-9]+']);
@@ -80,6 +83,7 @@ Route::group(['middleware' => 'auth'], function()
 	// Class Subject Lesson
 	Route::controller('class/subject/lesson', 'ClassSubjectLessonController');
 
+	// Exam Question Answer
 	Route::controller('exam/question/answer', 'ExamQuestionAnswerController');
 
 	// Exam Question
