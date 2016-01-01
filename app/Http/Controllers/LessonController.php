@@ -20,17 +20,17 @@ class LessonController extends Controller
 {
 	public function getApi(Request $request)
 	{
-		$lesson = Lesson::select('lessons.*', 'subjects.name as subject', \DB::raw('CONCAT(profiles.first_name, " ", profiles.last_name) as posted_by'))
-							->leftJoin('subjects', 'subjects.id', '=', 'lessons.subject_id')
-							->leftJoin('profiles', 'profiles.user_id', '=', 'lessons.posted_by');
-
+		$lesson = Lesson::with('file', 'subject', 'user.profile');
+                        
 		if ($request->has('school_id'))
 		{
-			$lesson = $lesson->where('lessons.school_id', (int) $request->school_id);
+            $school_id = (int) $request->school_id;
+			$lesson = $lesson->whereHas('school', function($query) use($school_id) {
+                $query->where('id', $school_id);
+            });
 		}
 
-		return $lesson->with('file')
-						->get();
+        return $lesson->get();
 	}
 
     public function getIndex()
@@ -44,20 +44,15 @@ class LessonController extends Controller
 
     public function getView($lesson_id)
     {
-    	$lesson = Lesson::select('schools.name as school_name', 'subjects.*', 'lessons.*', 'subjects.name as subject', \DB::raw('CONCAT(profiles.first_name, " ", profiles.last_name) as posted_by'))
-    						->leftJoin('subjects', 'subjects.id', '=', 'lessons.subject_id')
-    						->leftJoin('schools', 'schools.id', '=', 'lessons.school_id')
-    						->leftJoin('profiles', 'profiles.user_id', '=', 'lessons.posted_by')
-    						->findOrFail($lesson_id);
-
+    	$lesson = Lesson::with('subject', 'school', 'user.profile')
+                        ->findOrFail($lesson_id);
     	return view('lesson.view', compact('lesson'));
     }
 
     public function getFile($file_id)
     {
-    	$lesson_file = LessonFile::leftJoin('lessons', 'lessons.id', '=', 'lesson_files.lesson_id')
-    							->findOrFail($file_id);
-    	$file = config('lesson.file.path').$lesson_file->subject_id.'/'.$lesson_file->file_name;
+    	$lesson_file = LessonFile::with('lesson')->findOrFail($file_id);
+    	$file = config('lesson.file.path').$lesson_file->lesson->subject_id.'/'.$lesson_file->file_name;
     	
     	$fs = Storage::getDriver();
     	$stream = $fs->readStream($file);
@@ -98,11 +93,9 @@ class LessonController extends Controller
         try
         {
         	LessonFile::findOrFail($id)->delete();
-    		$lesson_files = LessonFile::select('lesson_files.*', 'lessons.subject_id')
-    								->leftJoin('lessons', 'lessons.id', '=', 'lesson_files.lesson_id')
-    								->findOrFail($id);
+    		$lesson_files = LessonFile::with('lesson')->findOrFail($id);
 
-    		Storage::delete(config('lesson.file.path').$lesson_files->subject_id .'/'. $lesson_files->file_name);
+    		Storage::delete(config('lesson.file.path').$lesson_files->lesson->subject_id .'/'. $lesson_files->file_name);
 
             
             $msg = trans('lesson.delete.success');

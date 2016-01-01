@@ -44,16 +44,9 @@ class SubjectScheduleController extends Controller
         {
             $id = (int) $request->id;
 
-            $subject_schedule = SubjectSchedule::where('id', $id);
-
-            if ( ! $subject_schedule->exists())
-            {
-                throw new \Exception('subject_schedule.not_found');
-            }
-
             $data = $request->only('day', 'time_start', 'time_end');
 
-            SubjectSchedule::where('id', $id)->update($data);
+            SubjectSchedule::findOrFail($id)->update($data);
 
             $msg = trans('subject_schedule.edit.success');
         }
@@ -97,14 +90,7 @@ class SubjectScheduleController extends Controller
                 return abort(401);
             }
 
-            if (SubjectSchedule::where('id', $id)->exists())
-            {
-                SubjectSchedule::where('id', $id)->delete();
-            }
-            else
-            {
-                throw new \Exception(trans('subject_schedule.not_found'));
-            }
+            SubjectSchedule::findOrFail('id', $id)->delete();
             
             $msg = trans('subject_schedule.delete.success');
         }

@@ -29,8 +29,7 @@ class ExamController extends Controller
 
     public function getIndex(Request $request)
     {
-    	$user = $request->user();
-    	$school_id = SchoolMember::where('user_id', $user->id)->pluck('school_id');
+    	$school_id = auth()->user()->school_member->school_id;
     	$exam_types = ExamType::orderBy('name', 'asc')->get();
     	$subjects = Subject::orderby('name', 'asc')->get();
 
@@ -61,8 +60,6 @@ class ExamController extends Controller
             $data = $request->only('title');
             $data['subject_id'] = $request->subject;
             $data['exam_type_id'] = $request->exam_type;
-            $data['start'] = $request->start_date .' '. $request->start_time;
-            $data['end'] = $request->end_date .' '. $request->end_time;
 
             Exam::findOrFail($request->exam_id)->update($data);
 
@@ -82,8 +79,7 @@ class ExamController extends Controller
 
         try
         {
-        	$user = $request->user();
-        	$school_id = SchoolMember::where('user_id', $user->id)->pluck('school_id');
+            $school_id = auth()->user()->school_member->school_id;
         	
         	if (is_null($school_id))
         	{
@@ -92,8 +88,6 @@ class ExamController extends Controller
 
             $data = $request->only('title');
             $data['exam_type_id'] = (int) $request->exam_type;
-            $data['start'] = $request->start_date .' '. $request->start_time;
-            $data['end'] = $request->end_date .' '. $request->end_time;
             $data['subject_id'] = $request->subject;
             $data['school_id'] = $school_id;
             $data['created_by'] = $user->id;

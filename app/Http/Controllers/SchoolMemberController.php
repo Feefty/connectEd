@@ -23,10 +23,8 @@ class SchoolMemberController extends Controller
             return abort(401);
         }
 
-		return SchoolMember::select('school_members.*', 'users.username', 'groups.name as group')
-							->leftJoin('users', 'users.id', '=', 'school_members.user_id')
-							->leftJoin('groups', 'groups.id', '=', 'users.group_id')
-							->where('school_id', $school_id)
+		return SchoolMember::with('user.group', 'user.profile')
+                            ->where('school_id', $school_id)
                             ->get();
 	}
 
@@ -37,10 +35,7 @@ class SchoolMemberController extends Controller
             return abort(401);
         }
 
-    	$user = Auth::user();
-    	$school = School::leftJoin('school_members', 'school_members.school_id', '=', 'schools.id')
-    					->where('school_members.user_id', $user->id)
-                        ->first();
+    	$school = auth()->user()->school_member->school;
 
         return view('school.member.index', compact('school'));
     }
@@ -93,9 +88,8 @@ class SchoolMemberController extends Controller
 
         try
         {
-        	$user = User::select('users.*', 'groups.level')
-        				->leftJoin('groups', 'groups.id', '=', 'users.group_id')
-        				->where('username', $request->username)
+        	$user = User::with('group')
+                        ->where('username', $request->username)
         				->first();
         	$school_member = SchoolMember::where('user_id', $user->id);
 
@@ -104,7 +98,7 @@ class SchoolMemberController extends Controller
         		throw new \Exception(trans('school.exists.member'));
         	}
 
-        	if ($user->level < config('school.member_min_group_level'))
+        	if ($user->group->level < config('school.member_min_group_level'))
         	{
         		throw new \Exception(trans('school.low_level.member'));
         	}

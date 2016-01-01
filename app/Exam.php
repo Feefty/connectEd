@@ -23,4 +23,14 @@ class Exam extends Model
     {
     	return $this->belongsTo('\App\Subject');
     }
+
+    public function school()
+    {
+        return $this->belongsTo('\App\School');
+    }
+
+    public function class_subject_exam()
+    {
+        return $this->hasOne('\App\ClassSubjectExam');
+    }
 }

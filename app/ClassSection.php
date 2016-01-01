@@ -18,4 +18,14 @@ class ClassSection extends Model
     {
     	return $this->hasMany('\App\ClassStudent', 'class_section_id');
     }
+
+    public function school()
+    {
+        return $this->belongsTo('\App\School');
+    }
+
+    public function teacher()
+    {
+        return $this->belongsTo('\App\User', 'adviser_id');
+    }
 }

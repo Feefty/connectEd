@@ -21,9 +21,10 @@ class ClassStudentController extends Controller
             abort(401);
         }
 
-    	return ClassStudent::select('class_students.*', \DB::raw('CONCAT(profiles.first_name, " ", profiles.last_name) as name, IF(gender=1, "Male", "Female") as gender'))
-                            ->leftJoin('profiles', 'profiles.user_id', '=', 'class_students.student_id')
-                            ->where('class_section_id', $section_id)
+        return ClassStudent::with('student.profile')
+                            ->whereHas('class_section', function($query) use($section_id) {
+                                $query->where('id', $section_id);
+                            })
                             ->get();
     }
 

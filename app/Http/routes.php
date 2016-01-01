@@ -40,6 +40,8 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('/class/section/edit/{section_id}', 'ClassSectionController@getEdit')->where(['section_id' => '[0-9]+']);
 	Route::post('/class/section/edit', 'ClassSectionController@postEdit');
 	
+	Route::controller('class/subject/exam/user', 'ClassSubjectExamUserController');
+
 	// Class Subject Exam
 	Route::controller('class/subject/exam', 'ClassSubjectExamController');
 

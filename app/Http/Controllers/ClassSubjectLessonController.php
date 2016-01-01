@@ -13,9 +13,8 @@ class ClassSubjectLessonController extends Controller
 {
 	public function getApi($class_subject)
 	{
-		return ClassSubjectLesson::select('class_subject_lessons.*', 'lessons.title')
-								->leftJoin('lessons', 'lessons.id', '=', 'class_subject_lessons.lesson_id')
-								->where('class_subject_lessons.class_subject_id', $class_subject)
+		return ClassSubjectLesson::with('lesson')
+                                ->where('class_subject_id', $class_subject)
 								->get();
 	}
 

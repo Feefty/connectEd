@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\PostAddExamQuestionFormRequest;
+use App\Http\Requests\PostEditExamQuestionFormRequest;
 use App\Http\Controllers\Controller;
 use App\ExamQuestion;
 use App\ExamQuestionAnswer;
@@ -37,9 +38,24 @@ class ExamQuestionController extends Controller
         return view('exam.question.edit', compact('exam_question'));
     }
 
-    public function postEdit()
+    public function postEdit(PostEditExamQuestionFormRequest $request)
     {
-        
+        $msg = [];
+
+        try
+        {
+            $data = $request->only('question', 'time_limit');
+            
+            ExamQuestion::findOrFail((int) $request->exam_question_id)->update($data);
+
+            $msg = trans('exam_question.edit.success');
+        }
+        catch (\Exception $e)
+        {
+            return redirect()->back()->withErrors($msg);
+        }
+
+        return redirect()->back()->with(compact('msg'));
     }
 
 	public function postAdd(PostAddExamQuestionFormRequest $request)

@@ -66,7 +66,7 @@
 									   						<label for="teacher">Teacher</label>
 									   						<select id="teacher" name="teacher" class="form-control">
 									   							@foreach ($teachers as $row)
-									   								<option value="{{ $row->id }}">{{ $row->first_name }} {{ $row->last_name }}</option>
+									   								<option value="{{ $row->id }}">{{ ucwords($row->profile->first_name .' '. $row->profile->last_name) }}</option>
 									   							@endforeach
 									   						</select>
 									   					</div>
@@ -113,8 +113,8 @@
 									   		<table data-toggle="table" data-url="{{ action('ClassSubjectController@getAPI', $section->id) }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar2">
 												<thead>
 													<tr>
-														<th data-field="subject">Subject</th>
-														<th data-field="teacher">Teacher</th>
+														<th data-formatter="subjectNameFormatter">Subject</th>
+														<th data-formatter="teacherProfileNameFormatter">Teacher</th>
 														<th data-field="room">Room</th>
 														<th data-formatter="actionClassSubjectFormatter" data-align="center">Actions</th>
 													</tr>
@@ -179,13 +179,13 @@
 
 						<table class="table">
 							<tr>
-								<td><strong>Adviser:</strong> {{ ucfirst(strtolower($section->first_name)) }} {{ ucfirst(strtolower($section->last_name)) }}</td>
+								<td><strong>Adviser:</strong> {{ ucwords($section->teacher->profile->first_name .' '. $section->teacher->profile->last_name) }}</td>
 							</tr>
 							<tr>
 								<td><strong>Year:</strong> {{ $section->year }} - {{ $section->year+1 }}</td>
 							</tr>
 							<tr>
-								<td><strong>School:</strong> {{ $section->school }}</td>
+								<td><strong>School:</strong> {{ $section->school->name }}</td>
 							</tr>
 						</table>
 

@@ -44,7 +44,7 @@
 						</form>
 					@else
 						<ul class="list-inline">
-							<li><strong>Adviser:</strong> <a href="#">{{ $section->adviser }}</a></li>
+							<li><strong>Adviser:</strong> <a href="#">{{ ucwords($section->teacher->profile->first_name .' '. $section->teacher->profile->last_name) }}</a></li>
 						</ul>
 
 						<ul class="nav nav-tabs">
@@ -59,8 +59,8 @@
 								<table data-toggle="table" data-url="{{ action('ClassStudentController@getAPIBySection', $section->id) }}">
 									<thead>
 										<tr>
-											<th data-field="name" data-sortable="true">Name</th>
-											<th data-field="gender" data-sortable="true">Gender</th>
+											<th data-formatter="studentProfileNameFormatter" data-sortable="true">Name</th>
+											<th data-formatter="studentProfileGenderFormatter" data-sortable="true">Gender</th>
 										</tr>
 									</thead>
 								</table>
@@ -71,8 +71,8 @@
 								<table data-toggle="table" data-url="{{ action('ClassSubjectController@getAPI', $section->id) }}">
 									<thead>
 										<tr>
-											<th data-formatter="classSectionSubjectFormat" data-sortable="true">Subject</th>
-											<th data-field="teacher" data-sortable="true">Teacher</th>
+											<th data-formatter="classSubjectNameFormatter" data-sortable="true">Subject</th>
+											<th data-formatter="teacherProfileNameFormatter" data-sortable="true">Teacher</th>
 										</tr>
 									</thead>
 								</table>

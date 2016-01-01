@@ -27,10 +27,6 @@ class PostEditExamFormRequest extends Request
             'exam_id'       => 'required|exists:exams,id',
             'title'         => 'required|max:255',
             'exam_type'     => 'required|exists:exam_types,id',
-            'start_date'    => 'required|date_format:Y-m-d',
-            'start_time'    => 'required|date_format:H:i',
-            'end_date'      => 'required|date_format:Y-m-d',
-            'end_time'      => 'required|date_format:H:i',
             'subject'       => 'required|exists:subjects,id',
         ];
     }

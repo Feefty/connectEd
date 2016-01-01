@@ -39,16 +39,31 @@ class User extends Model implements AuthenticatableContract,
 
     public function profile()
     {
-        return $this->belongsTo('\App\Profile', 'user_id', null);
+        return $this->hasOne('\App\Profile');
+    }
+
+    public function class_section()
+    {
+        return $this->hasOne('\App\ClassSection', 'teacher_id');
+    }
+
+    public function class_student()
+    {
+        return $this->hasOne('\App\ClassStudent', 'student_id');
     }
 
     public function school_member()
     {
-        return $this->belongsTo('\App\SchoolMember', 'user_id');
+        return $this->hasOne('\App\SchoolMember');
     }
 
     public function group()
     {
         return $this->belongsTo('\App\Group');
+    }
+
+    public function student_exam_question_answer()
+    {
+        return $this->hasMany('\App\StudentExamQuestionAnswer');
     }
 }

@@ -15,18 +15,13 @@ class RoomController extends Controller
 {
     public function getIndex()
     {
-    	$user_id = Auth::user()->id;
-    	$section_id = ClassStudent::where('student_id', $user_id)
-                                ->pluck('class_section_id');
+    	$section_id = Auth::user()->class_student->class_section_id;
         $section = null;
 
     	if ($section_id)
     	{
-    		$section = ClassSection::select('class_sections.*', \DB::raw('CONCAT(profiles.first_name, " ", profiles.last_name) as adviser'))
-    								->leftJoin('profiles', 'profiles.user_id', '=', 'class_sections.adviser_id')
-    								->findOrFail($section_id);
+    		$section = ClassSection::with('teacher.profile')->findOrFail($section_id);
     	}
-
 
     	return view('room.index', compact('section'));
     }

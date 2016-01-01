@@ -18,4 +18,9 @@ class School extends Model
    	{
    		return $this->hasMany('\App\Exam', 'school_id');
    	}
+
+      public function lesson()
+      {
+         return $this->hasMany('\App\Lesson', 'school_id');
+      }
 }

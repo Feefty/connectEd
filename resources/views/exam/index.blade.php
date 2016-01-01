@@ -73,30 +73,6 @@
 						   					</select>
 						   				</div>
 
-						   				<div class="form-group">
-								   			<label for="start">Start</label>
-						   					<div class="row">
-						   						<div class="col-md-6">
-								   					<input type="date" name="start_date" id="start" class="form-control" placeholder="YYYY-MM-DD">
-							   					</div>
-						   						<div class="col-md-6">
-								   					<input type="time" name="start_time" class="form-control" placeholder="HH:MM">
-							   					</div>
-						   					</div>
-						   				</div>
-
-						   				<div class="form-group">
-								   			<label for="end">End</label>
-						   					<div class="row">
-						   						<div class="col-md-6">
-								   					<input type="date" name="end_date" id="end" class="form-control" placeholder="YYYY-MM-DD">
-							   					</div>
-						   						<div class="col-md-6">
-								   					<input type="time" name="end_time" class="form-control" placeholder="HH:MM">
-							   					</div>
-						   					</div>
-						   				</div>
-
 					   					<button type="submit" class="btn btn-primary">Create</button>
 						   			</form>
 						   		</div>
@@ -110,8 +86,6 @@
 								<th data-field="title" data-sortable="true">Title</th>
 								<th data-formatter="examTypeFormatter" data-sortable="true">Type</th>
 								<th data-formatter="subjectNameFormatter" data-sortable="true">Subject</th>
-								<th data-field="start" data-sortable="true">Start</th>
-								<th data-field="end" data-sortable="true">End</th>
 								<th data-field="created_at" data-sortable="true">Date Added</th>
 								@can ('manage-subject-schedule')
 									<th data-formatter="actionExamFormatter" data-align="center"></th>

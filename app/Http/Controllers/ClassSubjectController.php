@@ -13,6 +13,7 @@ use App\Subject;
 use App\SchoolMember;
 use App\Lesson;
 use App\Exam;
+use App\User;
 use Gate;
 
 class ClassSubjectController extends Controller
@@ -24,12 +25,7 @@ class ClassSubjectController extends Controller
             abort(401);
         }
 
-		return ClassSubject::select('class_subjects.*', 'users.username', \DB::raw('CONCAT(profiles.first_name, " ", profiles.last_name) as teacher'), 'subjects.name as subject')
-							->leftJoin('users', 'users.id', '=', 'class_subjects.teacher_id')
-							->leftJoin('profiles', 'profiles.user_id', '=', 'class_subjects.teacher_id')
-							->leftJoin('subjects', 'subjects.id', '=', 'class_subjects.subject_id')
-							->where('class_subjects.class_section_id', (int) $section_id)
-							->get();
+        return ClassSubject::with('teacher.profile', 'subject')->orderBy('created_at', 'desc')->get();
 	}
 
 	public function getEdit($id)
@@ -42,13 +38,12 @@ class ClassSubjectController extends Controller
 		$class_subject = ClassSubject::findOrFail($id);
 		$class_section = ClassSection::findOrFail($class_subject->class_section_id);
         $subjects = Subject::orderBy('name')->get();
-        $teachers = SchoolMember::select('profiles.*', 'users.username', 'users.id')
-                                    ->leftJoin('users', 'users.id', '=', 'school_members.user_id')
-                                    ->leftJoin('groups', 'groups.id', '=', 'users.group_id')
-                                    ->leftJoin('profiles', 'profiles.user_id', '=', 'users.id')
-                                    ->where('school_members.school_id', $class_section->school_id)
-                                    ->where('groups.level', config('school.teacher_level'))
-                                    ->get();
+        $teachers = User::with('profile')
+                        ->whereHas('group', function($query) {
+                            $query->where('level', config('school.teacher_level'));
+                        })->whereHas('school_member', function($query) use($section) {
+                            $query->where('school_id', $section->school_id);
+                        })->get();
 
 		return view('class.subject.edit', compact('class_subject', 'teachers', 'subjects'));
 	}
@@ -87,32 +82,26 @@ class ClassSubjectController extends Controller
             abort(401);
         }
 
-		$class_subject = ClassSubject::select('class_sections.name as section', 'class_sections.level as section_level', 'class_subjects.*', 'users.username', \DB::raw('CONCAT(profiles.first_name, " ", profiles.last_name) as teacher'))
-							->leftJoin('users', 'users.id', '=', 'class_subjects.teacher_id')
-							->leftJoin('profiles', 'profiles.user_id', '=', 'class_subjects.teacher_id')
-							->leftJoin('class_sections', 'class_sections.id', '=', 'class_subjects.class_section_id')
-							->findOrFail($id);
-        $school_id = SchoolMember::where('user_id', auth()->user()->id)->pluck('school_id');
-        $exams = Exam::where('school_id', $school_id)
-                        ->where('subject_id', $class_subject->subject_id)
-                        ->orderBy('title', 'desc')
-                        ->with('exam_type')
+        $school_id = auth()->user()->school_member->school_id;
+
+        $class_subject = ClassSubject::with('class_section', 'teacher.profile', 'subject.exam')
+                                ->whereHas('subject.exam', function($query) use($school_id) {
+                                    $query->where('school_id', $school_id);
+                                })
+                                ->findOrFail($id);
+        $lessons = Lesson::with('user.profile')
+                        ->whereHas('school', function($query) use($class_subject) {
+                            $query->where('id', $class_subject->class_section->id);
+                        })
+                        ->orderBy('title')
                         ->get();
-
-		$schedules = SubjectSchedule::select('*', \DB::raw('CONCAT(subject_schedules.time_start, " - ", subject_schedules.time_end) as time'))
-									->where('class_subject_id', (int) $id)
-									->get();
-
-        $subject = Subject::findOrFail($class_subject->subject_id);
-        $class_section = ClassSection::findOrFail($class_subject->class_section_id);
-        $lessons = Lesson::select('lessons.*', \DB::raw('CONCAT(profiles.first_name, " ", profiles.last_name) as posted_by'))
-                            ->where('school_id', $class_section->school_id)
-                            ->leftJoin('profiles', 'profiles.user_id', '=', 'lessons.posted_by')
-                            ->orderBy('title')
-                            ->get();
-        $users = User::leftJoin('class_students', 'class_students.student_id', '=', 'users.id');
-		return view('class.subject.view', 
-                    compact('class_subject', 'schedules', 'subject', 'lessons', 'exams', 'users'));
+        $users = User::with('profile')
+                    ->whereHas('class_student.class_section', function($query) use($class_subject) {
+                        $query->where('id', $class_subject->id);
+                    })
+                    ->orderBy('username')
+                    ->get();
+		return view('class.subject.view', compact('class_subject', 'lessons', 'users'));
 	}
 
 	public function getDelete($id)

@@ -97,8 +97,8 @@
 						<thead>
 							<tr>
 								<th data-field="title">Title</th>
-								<th data-field="subject">Subject</th>
-								<th data-field="posted_by">Posted By</th>
+								<th data-formatter="subjectNameFormatter">Subject</th>
+								<th data-formatter="userProfileNameFormatter">Posted By</th>
 								<th data-field="created_at">Date Created</th>
 								<th data-formatter="actionLessonFormatter" data-align="center">Actions</th>
 							</tr>

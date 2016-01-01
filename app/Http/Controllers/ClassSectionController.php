@@ -13,6 +13,7 @@ use App\SchoolMember;
 use App\ClassSection;
 use App\SubjectSchedule;
 use App\ClassSubject;
+use App\User;
 use Auth;
 
 class ClassSectionController extends Controller
@@ -24,10 +25,7 @@ class ClassSectionController extends Controller
             abort(401);
         }
 
-        return ClassSection::select('class_sections.*', \DB::raw('CONCAT(profiles.first_name, " ", profiles.last_name) as full_name'), 'profiles.user_id')
-                                ->leftJoin('profiles', 'profiles.user_id', '=', 'class_sections.adviser_id')
-                                ->where('class_sections.school_id', $school_id)
-                                ->get();
+        return ClassSection::with('teacher.profile')->where('school_id', $school_id)->get();
     }
 
     public function getIndex()
@@ -44,12 +42,11 @@ class ClassSectionController extends Controller
             return abort(404);
         }
 
-        $teachers = SchoolMember::select('users.username', 'users.id')
-                                    ->leftJoin('users', 'users.id', '=', 'school_members.user_id')
-                                    ->leftJoin('groups', 'groups.id', '=', 'users.group_id')
-                                    ->where('school_members.school_id', $school_id)
-                                    ->where('groups.level', config('school.teacher_level'))
-                                    ->get();
+        $teachers = User::with('profile')->whereHas('group', function($query) {
+            $query->where('level', config('school.teacher_level'));
+        })->whereHas('school_member', function($query) use($school_id) {
+            $query->where('school_id', $school_id);
+        })->get();
 
         return view('class.section.index', compact('teachers', 'school_id'));
     }
@@ -60,7 +57,7 @@ class ClassSectionController extends Controller
 
         try
         {
-            $school_id = SchoolMember::where('user_id', Auth::user()->id)->pluck('school_id');
+            $school_id = Auth::user()->school_member->school_id;
 
             if ( ! $school_id)
             {
@@ -91,18 +88,14 @@ class ClassSectionController extends Controller
             abort(401);
         }
 
-        $section = ClassSection::select('class_sections.*', 'profiles.*', 'schools.name as school')
-                                ->leftJoin('profiles', 'profiles.user_id', '=', 'class_sections.adviser_id')
-                                ->leftJoin('schools', 'schools.id', '=', 'class_sections.school_id')
-                                ->firstOrFail($section_id);
+        $section = ClassSection::with('school', 'teacher.profile')->findOrFail($section_id);
         $subjects = Subject::orderBy('name')->get();
-        $teachers = SchoolMember::select('profiles.*', 'users.username', 'users.id')
-                                    ->leftJoin('users', 'users.id', '=', 'school_members.user_id')
-                                    ->leftJoin('groups', 'groups.id', '=', 'users.group_id')
-                                    ->leftJoin('profiles', 'profiles.user_id', '=', 'users.id')
-                                    ->where('school_members.school_id', $section->school_id)
-                                    ->where('groups.level', config('school.teacher_level'))
-                                    ->get();
+        $teachers = User::with('profile')
+                        ->whereHas('group', function($query) {
+                            $query->where('level', config('school.teacher_level'));
+                        })->whereHas('school_member', function($query) use($section) {
+                            $query->where('school_id', $section->school_id);
+                        })->get();
 
         return view('class.section.view', compact('section', 'subjects', 'teachers'));
     }
@@ -116,12 +109,12 @@ class ClassSectionController extends Controller
 
         $class_section = ClassSection::findOrFail($id);
 
-        $teachers = SchoolMember::select('users.username', 'users.id')
-                                    ->leftJoin('users', 'users.id', '=', 'school_members.user_id')
-                                    ->leftJoin('groups', 'groups.id', '=', 'users.group_id')
-                                    ->where('school_members.school_id', $class_section->school_id)
-                                    ->where('groups.level', config('school.teacher_level'))
-                                    ->get();
+        $teachers = User::with('profile')
+                        ->whereHas('group', function($query) {
+                            $query->where('level', config('school.teacher_level'));
+                        })->whereHas('school_member', function($query) use($section) {
+                            $query->where('school_id', $section->school_id);
+                        })->get();
 
         return view('class.section.edit', compact('class_section', 'teachers'));
     }

@@ -29,14 +29,10 @@
 						</div>
 					@endif
 
-					<h2 >{{ $exam->title }}</h2>
+					<h2 >{{ $exam->title }} <small>$exam->exam_type->name</small></h2>
 					<ul class="list-inline">
-						<li><i class="fa fa-file-text-o"></i> {{ $exam->exam_type->name }}</li>
 						<li><i class="fa fa-book"></i> {{ '['. $exam->subject->code .'] '. $exam->subject->name .' - '. $exam->subject->description }}</li>
 						<li><i class="fa fa-clock-o"></i> {{ $exam->created_at }}</li>
-					</ul>
-					<ul class="list-inline text-warning">
-						<li><i class="fa fa-calendar"></i> The exam will start at {{ date('g:iA M. j, Y', strtotime($exam->start)) }} and end at {{ date('g:iA M. j, Y', strtotime($exam->end)) }} (GMT +8)</li>
 					</ul>
 
 					<div id="toolbar">
@@ -217,7 +213,7 @@
 										<div class="tab-pane fade" id="essay">
 											<form method="POST" action="{{ action('ExamQuestionController@postAdd') }}">
 												{!! csrf_field() !!}
-												<input type="hidden" name="category" value="trueorfalse">
+												<input type="hidden" name="category" value="essay">
 												<input type="hidden" name="exam_id" value="{{ $exam->id }}">
 
 												<div class="form-group">
@@ -268,7 +264,7 @@
 										<div class="tab-pane fade" id="fillintheblank">
 											<form method="POST" action="{{ action('ExamQuestionController@postAdd') }}">
 												{!! csrf_field() !!}
-												<input type="hidden" name="category" value="trueorfalse">
+												<input type="hidden" name="category" value="fillintheblank">
 												<input type="hidden" name="exam_id" value="{{ $exam->id }}">
 
 												<div class="form-group">

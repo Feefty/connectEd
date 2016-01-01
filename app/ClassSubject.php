@@ -13,4 +13,24 @@ class ClassSubject extends Model
     {
     	return $this->hasMany('\App\SubjectSchedule', 'class_subject_id');
     }
+    
+    public function teacher()
+    {
+    	return $this->belongsTo('\App\User', 'teacher_id');
+    }
+
+    public function class_section()
+    {
+    	return $this->belongsTo('\App\ClassSection');
+    }
+
+    public function subject()
+    {
+    	return $this->belongsTo('\App\Subject');
+    }
+
+    public function class_subject_exam()
+    {
+        return $this->hasMany('\App\ClassSubjectExam');
+    }
 }

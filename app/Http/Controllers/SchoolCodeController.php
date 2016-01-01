@@ -12,15 +12,14 @@ class SchoolCodeController extends Controller
 {
     public function getApi(Request $request)
     {
-    	$school_code = SchoolCode::select('school_codes.*', 'groups.name as membership')
-                                ->leftJoin('groups', 'groups.id', '=', 'school_codes.group_id');
+    	$school_code = SchoolCode::with('group');
 
     	if ($request->has('school_id'))
     	{
-    		$school_code = $school_code->where('school_codes.school_id', (int) $request->school_id);
+    		$school_code = $school_code->where('school_id', (int) $request->school_id);
     	}
 
-    	return $school_code->orderBy('school_codes.created_at', 'desc')->get();
+    	return $school_code->orderBy('created_at', 'desc')->get();
     }
 
     public function getDelete($id)

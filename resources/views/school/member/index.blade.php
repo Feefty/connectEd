@@ -58,7 +58,7 @@
 							   		<div class="modal-body">
 							   			<form method="POST" action="{{ action('SchoolMemberController@postGenerate') }}">
 							   				{!! csrf_field() !!}
-							   				<input type="hidden" name="school_id" value="{{ $school->school_id }}">
+							   				<input type="hidden" name="school_id" value="{{ $school->id }}">
 
 							   				<div class="form-group">
 							   					<label for="amount">Amount</label>
@@ -91,11 +91,11 @@
 						<div class="tab-content">
 							
 							<div id="lists-tab" class="tab-pane fade in active">
-								<table data-toggle="table" data-url="{{ action('SchoolMemberController@getAPI', $school->school_id) }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
+								<table data-toggle="table" data-url="{{ action('SchoolMemberController@getAPI', $school->id) }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
 									<thead>
 										<tr>
-			                    			<th data-formatter="usernameFormatter" data-sortable="true">Username</th>
-			                    			<th data-sortable="true" data-field="group">Group</th>
+			                    			<th data-formatter="userProfileNameFormatter" data-sortable="true">Name</th>
+			                    			<th data-sortable="true" data-formatter="userGroupNameFormatter">Group</th>
 			                    			<th data-formatter="statusFormatter">Status</th>
 			                    			<th data-field="created_at" data-sortable="true">Date Added</th>
 			                    			@can ('delete-school-member')
@@ -107,11 +107,11 @@
 							</div><!-- end of lists tab -->
 							
 							<div id="codes-tab" class="tab-pane fade">
-								<table data-toggle="table" data-url="{{ action('SchoolCodeController@getApi') }}?school_id={{ $school->school_id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar2">
+								<table data-toggle="table" data-url="{{ action('SchoolCodeController@getApi') }}?school_id={{ $school->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar2">
 									<thead>
 										<tr>
 			                    			<th data-field="code" data-sortable="true">Code</th>
-			                    			<th data-field="membership" data-sortable="true">Membership</th>
+			                    			<th data-formatter="groupNameFormatter" data-sortable="true">Membership</th>
 			                    			<th data-formatter="statusFormatter" data-sortable="true">Status</th>
 			                    			<th data-field="created_at" data-sortable="true">Date Added</th>
 			                    			@can ('delete-school-code')

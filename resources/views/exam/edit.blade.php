@@ -64,30 +64,6 @@
 		   					</select>
 		   				</div>
 
-		   				<div class="form-group">
-				   			<label for="start">Start</label>
-		   					<div class="row">
-		   						<div class="col-md-6">
-				   					<input type="date" name="start_date" id="start" class="form-control" placeholder="YYYY-MM-DD" value="{{ date('Y-m-d', strtotime($exam->start)) }}">
-			   					</div>
-		   						<div class="col-md-6">
-				   					<input type="time" name="start_time" class="form-control" placeholder="HH:MM" value="{{ date('H:i', strtotime($exam->start)) }}">
-			   					</div>
-		   					</div>
-		   				</div>
-
-		   				<div class="form-group">
-				   			<label for="end">End</label>
-		   					<div class="row">
-		   						<div class="col-md-6">
-				   					<input type="date" name="end_date" id="end" class="form-control" placeholder="YYYY-MM-DD" value="{{ date('Y-m-d', strtotime($exam->end)) }}">
-			   					</div>
-		   						<div class="col-md-6">
-				   					<input type="time" name="end_time" class="form-control" placeholder="HH:MM" value="{{ date('H:i', strtotime($exam->end)) }}">
-			   					</div>
-		   					</div>
-		   				</div>
-
 						<button type="submit" class="btn btn-primary">Save Changes</button>
 					</form>
 

@@ -119,7 +119,10 @@ return [
 		'create'	=> SCHOOL_LEVEL,
 		'delete'	=> SCHOOL_LEVEL,
 		'update'	=> TEACHER_LEVEL,
-		'read'		=> TEACHER_LEVEL,
+		'read'		=> [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
 	],
 
 	'school-code' => [
@@ -165,6 +168,7 @@ return [
 			TEACHER_LEVEL,
 			SCHOOL_LEVEL
 		],
+		'take' => STUDENT_LEVEL
 	],
 
 	'exam-question' => [

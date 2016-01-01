@@ -58,7 +58,7 @@
 							      				<label for="adviser">Adviser</label>
 							      				<select id="adviser" name="adviser" class="form-control">
 							      					@foreach ($teachers as $row)
-							      						<option value="{{ $row->id }}">{{ $row->username }}</option>
+							      						<option value="{{ $row->id }}">{{ '['. $row->username .'] '. ucwords($row->profile->first_name .' '. $row->profile->last_name) }}</option>
 							      					@endforeach
 							      				</select>
 							      			</div>
@@ -74,7 +74,7 @@
 							      				<label for="year">Year</label>
 							      				<select id="year" name="year" class="form-control">
 							      					@for ($y = date('Y'); $y >= 1990; $y--)
-							      						<option value="{{ $y }}">{{ $y }}</option>
+							      						<option value="{{ $y }}">{{ $y }} - {{ $y+1 }}</option>
 							      					@endfor
 							      				</select>
 							      			</div>
@@ -106,7 +106,7 @@
 						<thead>
 							<tr>
 								<th data-field="name">Name</th>
-								<th data-formatter="fullNameFormatter">Adviser</th>
+								<th data-formatter="teacherProfileNameFormatter">Adviser</th>
 								<th data-formatter="gradeLevelFormatter">Level</th>
 								<th data-field="year">Year</th>
 								<th data-formatter="statusFormatter">Status</th>

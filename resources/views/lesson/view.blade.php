@@ -10,10 +10,10 @@
 					<h2>{{ $lesson->title }}</h2>
 
 					<ul class="list-inline small">
-						<li>{{ $lesson->school_name }}</li>
-						<li>{{ $lesson->posted_by }}</li>
-						<li>{{ '['. $lesson->code .'] '.$lesson->subject .' '. $lesson->level .' - '. $lesson->description }}</li>
-						<li>{{ $lesson->created_at->diffForHumans() }}</li>
+						<li><i class="fa fa-building"></i> {{ $lesson->school->name }}</li>
+						<li><i class="fa fa-user"></i> {{ ucwords($lesson->user->profile->first_name .' '. $lesson->user->profile->last_name) }}</li>
+						<li><i class="fa fa-book"></i> {{ '['. $lesson->subject->code .'] '.$lesson->subject->subject .' '. $lesson->subject->level .' - '. $lesson->subject->description }}</li>
+						<li><i class="fa fa-clock-o"></i> {{ $lesson->created_at->diffForHumans() }}</li>
 					</ul>
 
 					{!! nl2br($lesson->content) !!}
