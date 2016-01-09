@@ -12,12 +12,14 @@ use App\User;
 use App\ExamQuestion;
 use App\ExamQuestionAnswer;
 use App\StudentExamQuestionAnswer;
+use App\Assessment;
+use App\Profile;
 
 class ClassSubjectExamController extends Controller
 {
     public function getApi(Request $request)
     {
-        $class_subject_exam = new ClassSubjectExam;
+        $class_subject_exam = ClassSubjectExam::with('exam.exam_type');
 
         if ($request->has('class_subject_id'))
         {
@@ -31,11 +33,16 @@ class ClassSubjectExamController extends Controller
     {
         $id = (int) $id;
         $class_subject_exam = ClassSubjectExam::findOrFail($id);
-        $users = User::with('profile')
-                    ->whereHas('class_student.class_section.subject.class_subject_exam', function($query) use($id) {
-                        $query->where('id', $id);
+        $users = Profile::whereHas('user.class_student.class_section.subject.class_subject_exam', function($query) use($id) {
+                        return $query->where('id', $id);
                     })
-                    ->orderBy('created_at', 'desc')
+                    ->whereNotIn('id', function($query) use($id) {
+                        $query->select('user_id')
+                                ->from('class_subject_exam_users')
+                                ->whereRaw('class_subject_exam_users.class_subject_exam_id = '. $id);
+                    })
+                    ->orderBy('last_name')
+                    ->orderBy('first_name')
                     ->get();
 
         return view('class.exam.view', compact('class_subject_exam', 'users'));
@@ -52,6 +59,9 @@ class ClassSubjectExamController extends Controller
         $user_questions_taken_count = auth()
                                 ->user()
                                 ->student_exam_question_answer()
+                                ->whereHas('exam_question.exam', function($query) use($id) {
+                                    $query->where('id', (int) $id);
+                                })
                                 ->groupBy('exam_question_id')
                                 ->get()
                                 ->count();
@@ -87,9 +97,15 @@ class ClassSubjectExamController extends Controller
                             ->first();
     }
 
-    public function getGrade($exam_id)
+    public function getGrade($exam_id, $student_id = null)
     {
         $data = [];
+
+        if (is_null($student_id))
+        {
+            $student_id = auth()->user()->id;
+        }
+
         $data['total'] = ExamQuestionAnswer::whereHas('exam_question.exam', function($query) use($exam_id) {
                                             $query->where('id', (int) $exam_id);
                                          })
@@ -97,6 +113,7 @@ class ClassSubjectExamController extends Controller
         $data['score'] = StudentExamQuestionAnswer::whereHas('exam_question.exam', function($query) use($exam_id) {
                                                     $query->where('id', (int) $exam_id);
                                                  })
+                                                ->where('user_id', $student_id)
                                                 ->sum('points');
         return $data;
     }
@@ -110,6 +127,8 @@ class ClassSubjectExamController extends Controller
         ]);
 
         $exam_question_id = (int) $request->exam_question_id;
+        $class_subject_id = (int) $request->class_subject_id;
+        $class_student_id = (int) $request->class_student_id;
 
         $student_answer = StudentExamQuestionAnswer::where(['user_id' => $request->user()->id, 'exam_question_id' => $exam_question_id])->exists();
 
@@ -130,11 +149,46 @@ class ClassSubjectExamController extends Controller
                 'created_at'        => new \DateTime
             ]);
 
-            return response(null, 200);
+            $exam_question = ExamQuestion::with('exam.author')->findOrFail($exam_question_id);
+
+            $user_questions_taken_count = auth()
+                                ->user()
+                                ->student_exam_question_answer()
+                                ->whereHas('exam_question.exam', function($query) use($exam_question) {
+                                    $query->where('id', $exam_question->exam_id);
+                                })
+                                ->groupBy('exam_question_id')
+                                ->get()
+                                ->count();
+            $exam_questions_count = ExamQuestion::where('exam_id', $exam_question->exam_id)
+                                                ->groupBy('id')
+                                                ->get()
+                                                ->count();
+                                                        
+            if ($exam_questions_count >= $user_questions_taken_count)
+            {
+                $grade = $this->getGrade($exam_question->exam_id);
+
+                $class_student = ClassStudent::where('student_id', auth()->user()->id)->where('status', 1)->orderBy('created_at', 'desc')->first();
+
+                $data = [
+                    'score'                 => $grade['score'],
+                    'total'                 => $grade['total'],
+                    'source'                => 'Examination',
+                    'status'                => 1,
+                    'class_student_id'      => $class_student->id,
+                    'class_subject_exam_id' => (int) $request->class_subject_exam_id,
+                    'class_subject_id'      => (int) $request->class_subject_id,
+                ];
+
+                Assessment::create($data);
+            }                                   
+
+            return ["status" => "success"];
         }
         else
         {
-            return response(null, 422)->json(['msg' => 'You have already answered this question.']);
+            return response()->json(['msg' => 'You have already answered this question.'], 422);
         }
     }
 

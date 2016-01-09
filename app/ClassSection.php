@@ -11,12 +11,12 @@ class ClassSection extends Model
 
     public function subject()
     {
-    	return $this->hasMany('\App\ClassSubject', 'class_section_id');
+    	return $this->hasMany('\App\ClassSubject');
     }
 
     public function student()
     {
-    	return $this->hasMany('\App\ClassStudent', 'class_section_id');
+    	return $this->hasMany('\App\ClassStudent');
     }
 
     public function school()

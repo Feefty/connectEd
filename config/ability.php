@@ -90,7 +90,6 @@ return [
 		'delete'	=> SCHOOL_LEVEL,
 		'update'	=> TEACHER_LEVEL,
 		'read' => [
-			TEACHER_LEVEL,
 			SCHOOL_LEVEL
 		],
 	],
@@ -98,8 +97,22 @@ return [
 	'class-subject' => [
 		'create'	=> SCHOOL_LEVEL,
 		'delete'	=> SCHOOL_LEVEL,
-		'update'	=> TEACHER_LEVEL,
+		'update'	=> SCHOOL_LEVEL,
 		'read'		=> STUDENT_LEVEL,
+		'manage'	=> TEACHER_LEVEL
+	],
+
+	'class-subject-exam' => [
+		'create'	=> TEACHER_LEVEL,
+		'delete'	=> TEACHER_LEVEL,
+		'read'		=> STUDENT_LEVEL,
+		'manage'	=> TEACHER_LEVEL
+	],
+
+	'class-subject-exam-user' => [
+		'create'	=> TEACHER_LEVEL,
+		'delete'	=> TEACHER_LEVEL,
+		'read'		=> TEACHER_LEVEL,
 		'manage'	=> TEACHER_LEVEL
 	],
 
@@ -118,11 +131,8 @@ return [
 	'school-member' => [
 		'create'	=> SCHOOL_LEVEL,
 		'delete'	=> SCHOOL_LEVEL,
-		'update'	=> TEACHER_LEVEL,
-		'read'		=> [
-			TEACHER_LEVEL,
-			SCHOOL_LEVEL
-		],
+		'update'	=> SCHOOL_LEVEL,
+		'read'		=> SCHOOL_LEVEL,
 	],
 
 	'school-code' => [
@@ -137,7 +147,7 @@ return [
 		'delete'	=> SCHOOL_LEVEL,
 		'update'	=> SCHOOL_LEVEL,
 		'read'		=> STUDENT_LEVEL,
-		'manage'	=> TEACHER_LEVEL,
+		'manage'	=> SCHOOL_LEVEL,
 	],
 
 	'class-section-code' => [
@@ -161,6 +171,7 @@ return [
 			SCHOOL_LEVEL
 		],
 		'read' => [
+			STUDENT_LEVEL,
 			SCHOOL_LEVEL,
 			TEACHER_LEVEL
 		],
@@ -213,6 +224,57 @@ return [
 			TEACHER_LEVEL,
 			SCHOOL_LEVEL
 		],
+	],
+
+	'assessment' => [
+		'create' => [
+			TEACHER_LEVEL
+		],
+		'delete' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+		'update' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+		'read' => [
+			STUDENT_LEVEL,
+			SCHOOL_LEVEL,
+			TEACHER_LEVEL
+		],
+		'manage' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+	],
+
+	'attendance' => [
+		'create' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+		'delete' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+		'update' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+		'read' => [
+			STUDENT_LEVEL,
+			SCHOOL_LEVEL,
+			TEACHER_LEVEL
+		],
+		'manage' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+	],
+
+	'my-class' => [
+		'read' => TEACHER_LEVEL
 	],
 
 

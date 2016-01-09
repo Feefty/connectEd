@@ -11,7 +11,7 @@ class ClassSubject extends Model
 
     public function schedule()
     {
-    	return $this->hasMany('\App\SubjectSchedule', 'class_subject_id');
+    	return $this->hasMany('\App\SubjectSchedule');
     }
     
     public function teacher()
@@ -32,5 +32,10 @@ class ClassSubject extends Model
     public function class_subject_exam()
     {
         return $this->hasMany('\App\ClassSubjectExam');
+    }
+
+    public function subject_schedule()
+    {
+        return $this->hasMany('\App\SubjectSchedule');
     }
 }

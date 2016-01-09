@@ -15,7 +15,7 @@ class RoomController extends Controller
 {
     public function getIndex()
     {
-    	$section_id = Auth::user()->class_student->class_section_id;
+    	$section_id = @Auth::user()->class_student->class_section_id;
         $section = null;
 
     	if ($section_id)

@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PostSaveSettingsProfileFormRequest;
 use App\Http\Requests\PostSaveSettingsPasswordFormRequest;
 use App\Http\Requests\PostSaveSettingsEmailFormRequest;
+use App\Http\Requests\PostAddPhotoFormRequest;
 use App\Http\Controllers\Controller;
 use App\Profile;
 use App\User;
 use Hash;
 use Gate;
+use Image;
 
 class SettingsController extends Controller
 {
@@ -47,6 +49,55 @@ class SettingsController extends Controller
 
     	return redirect()->back()->with(compact('msg'));
     }
+
+    public function getPhoto()
+    {
+        $profile = auth()->user()->profile;
+        return view('settings.photo', compact('profile'));
+    }
+
+    public function postPhoto(PostAddPhotoFormRequest $request)
+    {
+        $msg = [];
+
+        try
+        {
+            $photo = $request->file('photo');
+
+            if ($photo->isValid())
+            {
+                $name = time() .'_'. str_random(15) .'.'. $photo->getClientOriginalExtension();
+                $path = public_path() . config('profile.photo.path') . $name;
+                Image::make($photo)->fit(200, 250)->save($path);
+
+                $user = $request->user()->profile;
+
+                if ( ! empty($user->photo) && ! is_null($user->photo))
+                {
+                    if (file_exists($file_name = public_path() . config('profile.photo.path') . $user->photo))
+                    {
+                        unlink($file_name);
+                    }
+                }
+
+                $user->photo = $name;
+                $user->save();
+
+                $msg = trans('settings.update.success');
+            }
+            else
+            {
+                throw new \Exception(trans('settings.photo.failed'));
+            }
+        }
+        catch (\Exception $e)
+        {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+
+        return redirect()->back()->with(compact('msg'));
+    }
+
     public function getPassword()
     {
         if (Gate::denies('password-settings'))

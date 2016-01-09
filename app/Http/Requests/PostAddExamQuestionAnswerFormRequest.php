@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
+use Gate;
 
 class PostAddExamQuestionAnswerFormRequest extends Request
 {
@@ -13,7 +14,7 @@ class PostAddExamQuestionAnswerFormRequest extends Request
      */
     public function authorize()
     {
-        return true;
+        return Gate::allows('create-exam-question-answer');
     }
 
     /**

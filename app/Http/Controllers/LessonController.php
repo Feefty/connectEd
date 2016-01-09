@@ -15,11 +15,17 @@ use File;
 use Validator;
 use Storage;
 use Response;
+use Gate;
 
 class LessonController extends Controller
 {
 	public function getApi(Request $request)
 	{
+        if (Gate::denies('read-lesson'))
+        {
+            return abort(401);
+        }
+
 		$lesson = Lesson::with('file', 'subject', 'user.profile');
                         
 		if ($request->has('school_id'))
@@ -35,6 +41,11 @@ class LessonController extends Controller
 
     public function getIndex()
     {
+        if (Gate::denies('read-lesson'))
+        {
+            return abort(401);
+        }
+
     	$subjects = Subject::orderBy('name', 'asc')
     						->get();
     	$school_id = SchoolMember::where('user_id', auth()->user()->id)
@@ -51,6 +62,11 @@ class LessonController extends Controller
 
     public function getFile($file_id)
     {
+        if (Gate::denies('read-lesson'))
+        {
+            return abort(401);
+        }
+
     	$lesson_file = LessonFile::with('lesson')->findOrFail($file_id);
     	$file = config('lesson.file.path').$lesson_file->lesson->subject_id.'/'.$lesson_file->file_name;
     	
@@ -72,6 +88,11 @@ class LessonController extends Controller
 
         try
         {
+            if (Gate::denies('delete-lesson'))
+            {
+               throw new \Exception(trans('error.unauthorized.action'));
+            }
+
         	$lesson = Lesson::findOrFail($id);
 	    	$lesson->file()->delete();
 	    	$lesson->delete();
@@ -92,6 +113,11 @@ class LessonController extends Controller
 
         try
         {
+            if (Gate::denies('delete-lesson'))
+            {
+               throw new \Exception(trans('error.unauthorized.action'));
+            }
+
         	LessonFile::findOrFail($id)->delete();
     		$lesson_files = LessonFile::with('lesson')->findOrFail($id);
 
@@ -110,6 +136,11 @@ class LessonController extends Controller
 
     public function getEdit($id)
     {
+        if (Gate::denies('update-lesson'))
+        {
+            return abort(401);
+        }
+
     	$lesson = Lesson::with('file')
     						->findOrFail($id);
     	$subjects = Subject::orderBy('name')

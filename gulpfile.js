@@ -33,7 +33,8 @@ elixir(function(mix) {
             'bootstrap-select/dist/js/bootstrap-select.min.js'
     	], 'public/js/app.vendor.js', vendorDir)
         .scripts([
-            'app.js'
+            'app.js',
+            publicDir + 'js/jasny-bootstrap.min.js'
         ], 'public/js/app.js')
         .scripts([
             'jquery/dist/jquery.js',
@@ -57,6 +58,7 @@ elixir(function(mix) {
             publicDir + 'css/app.vendor.css',
             vendorDir + 'bootstrap-table/dist/bootstrap-table.css',
             vendorDir + 'bootstrap-select/dist/css/bootstrap-select.min.css',
+            publicDir + 'css/jasny-bootstrap.min.css',
             publicDir + 'css/app.css'
         ], 'public/css/all.app.css');
 });

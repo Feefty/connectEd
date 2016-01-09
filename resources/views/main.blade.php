@@ -23,21 +23,27 @@
 
 		    <div class="collapse navbar-collapse" id="bs-navbar-collapse">
 		     	<ul class="nav navbar-nav">
-			        <li><a href="{{ action('HomeController@getIndex') }}">Home</a></li>
-			        @can ('manage-lesson')
-			        	<li><a href="{{ action('LessonController@getIndex') }}">Lessons</a></li>
-			        @endcan
+			        <li><a href="{{ action('HomeController@getIndex') }}"><i class="fa fa-home"></i> Home</a></li>
 			        @can ('read-my-room', 'strict')
-			        	<li><a href="{{ action('RoomController@getIndex') }}">My Room</a></li>
+			        	<li><a href="{{ action('RoomController@getIndex') }}"><i class="fa fa-umbrella"></i> My Room</a></li>
+			        @endcan
+			        @can ('read-my-class', 'strict')
+			        	<li><a href="{{ action('MyClassController@getIndex') }}"><i class="fa fa-hourglass-1"></i> My Class</a></li>
+			        @endcan
+			        @can ('manage-lesson')
+			        	<li><a href="{{ action('LessonController@getIndex') }}"><i class="fa fa-book"></i> Lessons</a></li>
+			        @endcan
+			        @can ('read-assessment', 'strict')
+			        	<li><a href="{{ action('AssessmentController@getIndex') }}"><i class="fa fa-line-chart"></i> Assessment</a></li>
 			        @endcan
 			        @can ('read-class-section', 'strict')
 			        	<li><a href="{{ action('ClassSectionController@getIndex') }}">Sections</a></li>
 			        @endcan
 			        @can ('read-school-member', 'strict')
-			        	<li><a href="{{ action('SchoolMemberController@getIndex') }}">Members</a></li>
+			        	<li><a href="{{ action('SchoolMemberController@getIndex') }}"><i class="fa fa-users"></i> Members</a></li>
 			        @endcan
 			        @can ('read-exam', 'strict')
-			        <li><a href="{{ action('ExamController@getIndex') }}">Exams</a></li>
+			        <li><a href="{{ action('ExamController@getIndex') }}"><i class="fa fa-file-text"></i> Exams</a></li>
 			        @endcan
 		      	</ul>
 		      	<ul class="nav navbar-nav navbar-right">
@@ -46,6 +52,7 @@
 			        	<li><a href="{{ action('Auth\AuthController@getRegister') }}">Register</a></li>
 			        @else
 			        	<li><a href="{{ action('NotificationController@getIndex') }}"><i class="fa fa-bell"></i></a></li>
+			        	<li><a href="#"><i class="fa fa-envelope"></i></a></li>
 				        <li class="dropdown">
 			          		<a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->username }} <span class="caret"></span></a>
 			          		<ul class="dropdown-menu">

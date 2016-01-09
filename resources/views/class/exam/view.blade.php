@@ -62,7 +62,7 @@
 							   					<label for="user">Users</label>
 							   					<select id="user" name="users[]" class="form-control" data-toggle="select" multiple>
 							   						@foreach ($users as $row)
-							   							<option value="{{ $row->id }}">[{{ $row->username }}] {{ ucwords($row->profile->first_name .' '. $row->profile->last_name) }}</option>
+							   							<option value="{{ $row->id }}">{{ ucwords($row->last_name .', '. $row->first_name) }}</option>
 							   						@endforeach
 							   					</select>
 							   				</div>
@@ -76,7 +76,7 @@
 						  	</div>
 						</div><!-- end of modal -->
 
-						<table data-toggle="table" data-url="{{ action('ClassSubjectExamUserController@getApi', $class_subject_exam->id) }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
+						<table data-toggle="table" data-url="{{ action('ClassSubjectExamUserController@getApi') }}?class_subject_exam_id={{ $class_subject_exam->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
 							<thead>
 								<tr>
 									<th colspan="4" data-align="center">Users</th>
@@ -84,7 +84,7 @@
 								<tr>
 									<th data-formatter="userProfileNameFormatter">Name</th>
 									<th data-field="created_at">Date Added</th>
-									@can ('manage-subject-schedule')
+									@can ('manage-class-subject-exam-user')
 										<th data-formatter="actionClassSubjectExamUserFormatter" data-align="center">Actions</th>
 									@endcan
 								</tr>

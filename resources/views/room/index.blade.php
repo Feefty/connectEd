@@ -56,7 +56,7 @@
 							
 							<div id="students-tab" class="tab-pane fade in active">
 								<h3><i class="fa fa-users"></i> Students</h3>
-								<table data-toggle="table" data-url="{{ action('ClassStudentController@getAPIBySection', $section->id) }}">
+								<table data-toggle="table" data-url="{{ action('ClassStudentController@getApi') }}?class_section_id={{ $section->id }}">
 									<thead>
 										<tr>
 											<th data-formatter="studentProfileNameFormatter" data-sortable="true">Name</th>
@@ -68,11 +68,12 @@
 
 							<div id="subjects-tab" class="tab-pane fade">
 								<h3><i class="fa fa-book"></i> Subjects</h3>
-								<table data-toggle="table" data-url="{{ action('ClassSubjectController@getAPI', $section->id) }}">
+								<table data-toggle="table" data-url="{{ action('ClassSubjectController@getApi') }}?class_section_id={{ $section->id }}">
 									<thead>
 										<tr>
 											<th data-formatter="classSubjectNameFormatter" data-sortable="true">Subject</th>
 											<th data-formatter="teacherProfileNameFormatter" data-sortable="true">Teacher</th>
+											<th data-field="room" data-sortable="true">Room</th>
 										</tr>
 									</thead>
 								</table>

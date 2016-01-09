@@ -14,18 +14,30 @@ use Gate;
 
 class ClassStudentController extends Controller
 {
-    public function getAPIBySection($section_id)
+    public function getApi(Request $request)
     {
         if (Gate::denies('read-class-student'))
         {
             abort(401);
         }
 
-        return ClassStudent::with('student.profile')
-                            ->whereHas('class_section', function($query) use($section_id) {
-                                $query->where('id', $section_id);
-                            })
-                            ->get();
+        $class_student = ClassStudent::with('student.profile');
+
+        if ($request->has('class_section_id'))
+        {
+            $class_student = $class_student->whereHas('class_section', function($query) use($request) {
+                                $query->where('id', (int) $request->class_section_id);
+                            });
+        }
+
+        if ($request->has('school_id'))
+        {
+            $class_student = $class_student->whereHas('class_section', function($query) use($request) {
+                                $query->where('school_id', (int) $request->school_id);
+                            });
+        }
+
+        return $class_student->get();
     }
 
     public function postAdd(PostAddClassStudentFormRequest $request)
@@ -54,6 +66,24 @@ class ClassStudentController extends Controller
         	ClassStudent::create($data);
 
             $msg = trans('class_student.add.success');
+        }
+        catch (\Exception $e)
+        {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+
+        return redirect()->back()->with(compact('msg'));
+    }
+
+    public function getDelete($id)
+    {
+        $msg = [];
+
+        try
+        {
+            ClassStudent::findOrFail((int) $id)->delete();
+
+            $msg = trans('class_student.delete.success');
         }
         catch (\Exception $e)
         {

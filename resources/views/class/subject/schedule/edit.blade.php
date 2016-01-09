@@ -35,6 +35,7 @@
 							
 							{!! csrf_field() !!}
 							<input type="hidden" name="id" value="{{ (int) $subject_schedule->id }}">
+							<input type="hidden" name="class_subject_id" value="{{ $subject_schedule->class_subject_id }}">
 
 			      			<div class="form-group">
 			      				<div class="row">

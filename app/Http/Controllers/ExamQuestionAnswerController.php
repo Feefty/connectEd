@@ -8,11 +8,17 @@ use App\Http\Requests\PostEditExamQuestionAnswerEditFormRequest;
 use App\Http\Requests\PostAddExamQuestionAnswerFormRequest;
 use App\Http\Controllers\Controller;
 use App\ExamQuestionAnswer;
+use Gate;
 
 class ExamQuestionAnswerController extends Controller
 {
     public function getApi(Request $request)
     {
+        if (Gate::denies('read-exam-question-answer'))
+        {
+            return abort(401);
+        }
+
     	$exam_question_answer = new ExamQuestionAnswer;
 
     	if ($request->has('exam_question_id'))
@@ -25,6 +31,11 @@ class ExamQuestionAnswerController extends Controller
 
     public function getEdit($id)
     {
+        if (Gate::denies('update-exam-question-answer'))
+        {
+            return abort(401);
+        }
+
     	$exam_question_answer = ExamQuestionAnswer::findOrFail($id);
     	return view('exam.question.answer.edit', compact('exam_question_answer'));
     }
@@ -87,6 +98,11 @@ class ExamQuestionAnswerController extends Controller
 
         try
         {
+            if (Gate::denies('delete-exam-question-answer'))
+            {
+                throw new \Exception(trans('error.unauthorized.action'));
+            }
+
             ExamQuestionAnswer::findOrFail($id)->delete();
 
             $msg = trans('exam_question_answer.delete.success');

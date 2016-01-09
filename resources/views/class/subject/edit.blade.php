@@ -54,9 +54,9 @@
 		   						<select id="teacher" name="teacher" class="form-control">
 		   							@foreach ($teachers as $row)
 		   								@if ($class_subject->teacher_id == $row->id)
-		   									<option value="{{ $row->id }}" selected>{{ $row->first_name }} {{ $row->last_name }}</option>
+		   									<option value="{{ $row->id }}" selected>{{ ucwords($row->profile->first_name .' '. $row->profile->last_name) }}</option>
 		   								@else
-		   									<option value="{{ $row->id }}">{{ $row->first_name }} {{ $row->last_name }}</option>
+		   									<option value="{{ $row->id }}">{{ ucwords($row->profile->first_name .' '. $row->profile->last_name) }}</option>
 		   								@endif
 		   							@endforeach
 		   						</select>
@@ -66,7 +66,8 @@
 		   						<input type="text" name="room" id="room" class="form-control" value='{{ $class_subject->room }}' required>
 		   					</div>
 
-			      			<button type="submit" class="btn btn-primary">Save</button>
+			      			<button type="submit" class="btn btn-primary">Save Changes</button>
+		   					<a class="btn btn-link" href="{{ action('ClassSubjectController@getView', $class_subject->id) }}">Cancel</a>
 						</form>
 					</div>
 				</div>

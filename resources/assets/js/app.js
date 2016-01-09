@@ -22,6 +22,12 @@ var gradeLevels = [
 	"4th Year High School"
 ];
 
+var attendanceStatuses = [
+	"Absent",
+	"Present",
+	"Late"
+];
+
 var question_duration;
 
 $(function() {
@@ -31,6 +37,7 @@ $(function() {
         }
 	});
 
+	$('[data-toggle="tooltip"]').tooltip();
 	$('[data-toggle="select"]').selectpicker();
 
 	$('#add-more, [data-toggle="add-more"]').on('click', function() {
@@ -50,14 +57,23 @@ $(function() {
 	    $(this).parent('li').addClass('active');
 	});
 
+	$('#attendance [name="date"]').on('change', function() {
+		$('#attendance .img-thumbnail')
+			.removeClass('bg-danger')
+			.removeClass('bg-warning')
+			.removeClass('bg-success');
+		});
+
 	$('#start-exam').on('click', function(e) {
 		var btn = $(this);
 		var exam_id = $(this).data('exam-id');
+		var class_subject_exam_id = $(this).data('class-subject-exam-id');
+		var class_subject_id = $(this).data('class-subject-id');
 		var $block = $('#exam-question-block');
 		var $answer_block = $('#question-answer-block', $block);
 		var $timer = 0;
 		var $content_msg = $('#content-msg');
-		$('#question-timer', $block).html("");
+		$('#question-timer').html("");
 		// hide the button
 		btn.hide();
 		// loading icon
@@ -107,7 +123,7 @@ $(function() {
 
 					// display the answers format
 					$answer_block.html($answer_formatted).hide().fadeIn();
-					$answer_block.append("<button type='button' onclick='submitAnswer("+ $timer +", "+ $question.id +", \""+ $question.category +"\")' class='btn btn-success'>Submit Answer</button>");	
+					$answer_block.append("<button type='button' onclick='submitAnswer("+ $timer +", "+ $question.id +", "+ class_subject_exam_id +", \""+ $question.category +"\", "+ class_subject_id +")' class='btn btn-success'>Submit Answer</button>");	
 				
 				});
 			}
@@ -132,7 +148,7 @@ $(function() {
 
 				// display the answers format
 				$answer_block.html($answer_formatted).hide().fadeIn();
-				$answer_block.append("<button type='button' onclick='submitAnswer("+ $timer +", "+ $question.id +", \""+ $question.category +"\")' class='btn btn-success'>Submit Answer</button>");	
+				$answer_block.append("<button type='button' onclick='submitAnswer("+ $timer +", "+ $question.id +", "+ class_subject_exam_id +", \""+ $question.category +"\", "+ class_subject_id +")' class='btn btn-success'>Submit Answer</button>");	
 			}
 
 			if (time_limit != 0) {
@@ -143,9 +159,7 @@ $(function() {
 						clearInterval(question_duration);
 						clearInterval(examTimer);
 
-						submitAnswer($timer, $question.id, $question.category);
-
-						$block.fadeOut();
+						submitAnswer($timer, $question.id, class_subject_exam_id, $question.category, class_subject_id);
 					}
 					$('#time-holder').html(time_limit--);
 				}, 1000); // every second
@@ -159,9 +173,44 @@ $(function() {
 			$('#question-block', $block).html(question_formatted).hide().fadeIn();
 		});
 	});
+
+	$('[data-toggle="table"]').on('load-success.bs.table', function() {
+		$('[data-toggle="tooltip"]').tooltip();
+	});
 });
 
-function submitAnswer(timer, exam_question_id, category) {
+function submitAttendance(status, user_id) {
+	var date = $('#attendance [name="date"]').val();
+	var class_subject_id = $('#attendance [name="class_subject_id"]').val();
+
+	if (date == '') {
+		alert('Date is required.');
+		return;
+	}
+
+	$.post('/attendance/add', { status: status, user_id: user_id, date: date, class_subject_id: class_subject_id }, function(data) {
+		$('.attendance-'+ user_id + ' .img-thumbnail')
+			.removeClass('bg-danger')
+			.removeClass('bg-warning')
+			.removeClass('bg-success');
+
+		switch (status) {
+			case 0:
+				$('.attendance-'+ user_id + ' .img-thumbnail').addClass('bg-danger');
+				break;
+			case 1:
+				$('.attendance-'+ user_id + ' .img-thumbnail').addClass('bg-success');
+				break;
+			case 2:
+				$('.attendance-'+ user_id + ' .img-thumbnail').addClass('bg-warning');
+				break;
+		}
+
+		$('#attendance-tab table').bootstrapTable('refresh');
+	});
+}
+
+function submitAnswer(timer, exam_question_id, class_subject_exam_id, category, class_subject_id) {
 	clearInterval(question_duration);
 
 	var $answer = '';
@@ -178,7 +227,7 @@ function submitAnswer(timer, exam_question_id, category) {
 		$answer = $('[name="answer[]"]').val();
 	}
 
-	$.post('/class/subject/exam/answer', { answer: $answer, timer: timer, exam_question_id: exam_question_id }, function(res) {
+	$.post('/class/subject/exam/answer', { answer: $answer, timer: timer, exam_question_id: exam_question_id, class_subject_exam_id: class_subject_exam_id, class_subject_id: class_subject_id }, function(res) {
 		$('#start-exam').click();
 	});
 }
@@ -187,7 +236,7 @@ function getExamGrade(exam_id) {
 	var $block = $('#exam-question-block');
 
 	$.get('/class/subject/exam/grade/'+ exam_id, function(data) {
-		$block.html("<h3 class='text-center'>Your grade</h3><h2 class='text-center'>"+ data.score +" / "+ data.total +" <small>"+ round((data.score/data.total)*100) +"%</small></h2>");
+		$block.html("<h3 class='text-center'>Your grade</h3><h2 class='text-center'>"+ data.score +" / "+ data.total +" <small>"+ Math.round((data.score/data.total)*100) +"%</small></h2>");
 	});
 }
 
@@ -204,7 +253,7 @@ function fullNameFormatter(value, row) {
 }
 
 function actionSchoolMemberFormatter(value, row) {
-	return ["<a href='/school/member/"+ row.id +"/delete' class='btn btn-default btn-xs' onclick='return confirm(\"Are you sure you want to delete this school member?\")'><i class='fa fa-remove'></i></a>"].join(" ");
+	return ["<a href='/school/member/delete/"+ row.id +"' class='btn btn-default btn-xs' onclick='return confirm(\"Are you sure you want to delete this school member?\")'><i class='fa fa-remove'></i></a>"].join(" ");
 }
 
 function subjectFormatter(value, row) {
@@ -217,7 +266,7 @@ function actionUpdateClassSectionFormatter(value, row) {
 }
 
 function actionClassSectionFormatter(value, row) {
-	return ["<a href='/class/section/edit/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Edit'><i class='fa fa-pencil'></i></a>"].join(" ");
+	return ["<a href='/class/student/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-remove'></i></a>",].join(" ");
 }
 
 function userProfile(value, row) {
@@ -236,6 +285,14 @@ function actionClassSubjectScheduleFormatter(value, row) {
 }
 
 function actionLessonFormatter(value, row) {
+	var user_id = $('[name="user_id"]').val();
+	var group_name = $('[name="group_name"]').val();
+	
+	if (row.posted_by != user_id && group_name == 'teacher')
+	{
+		return "<a href='/lesson/view/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='View'><i class='fa fa-eye'></i></a>";
+	}
+
 	return ["<a href='/lesson/edit/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Edit'><i class='fa fa-pencil'></i></a>",
 			"<a href='/lesson/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete' onclick='return confirm(\"Are you sure you want to delete this item? All of its file will be deleted.\")'><i class='fa fa-remove'></i></a>",
 			"<a href='/lesson/view/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='View'><i class='fa fa-eye'></i></a>"].join(" ");
@@ -272,6 +329,11 @@ function actionExamQuestionFormatter(value, row) {
 			"<a href='/exam/question/view/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='View'><i class='fa fa-eye'></i></a>"].join(" ");
 }
 
+
+function actionExamQuestionViewFormatter(value, row) {
+	return ["<a href='/exam/question/view/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='View'><i class='fa fa-eye'></i></a>"].join(" ");
+}
+
 function actionExamQuestionAnswerFormatter(value, row) {
 	return ["<a href='/exam/question/answer/edit/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Edit'><i class='fa fa-pencil'></i></a>",
 			"<a href='/exam/question/answer/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-remove'></i></a>"].join(" ");
@@ -292,8 +354,8 @@ function actionClassSubjectExamUserFormatter(value, row) {
 	return ["<a href='/class/subject/exam/user/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-remove'></i></a>"].join(" ");
 }
 
-function actionTakeClassSubjectExamFormatter(value, row) {
-	return "<a href='/class/subject/exam/take/"+ row.id +"' class='btn btn-link'><i class='fa fa-file-text'></i> Take Now</a>";
+function actionMyClassFormatter(value, row) {
+	return "<a href='/class/subject/view/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='View'><i class='fa fa-eye'></i></a>";
 }
 
 function statusFormatter(value, row) {
@@ -308,12 +370,16 @@ function examTitleFormatter(value, row) {
 	return row.exam.title;
 }
 
+function examTakeExamTitleFormatter(value, row) {
+	return "<a href='/class/subject/exam/take/"+ row.class_subject_exam.id +"'>"+ row.title +"</a>";
+}
+
 function takeExamTitleFormatter(value, row) {
 	return "<a href='/class/subject/exam/take/"+ row.id +"'>"+ row.exam.title +"</a>";
 }
 
 function lessonTitleFormatter(value, row) {
-	return row.lesson.title;
+	return "<a href='/lesson/view/"+ row.lesson.id +"'>"+ row.lesson.title +"</a>";
 }
 
 function subjectNameFormatter(value, row) {
@@ -321,17 +387,17 @@ function subjectNameFormatter(value, row) {
 }
 
 function userProfileNameFormatter(value, row) {
-	var name = ucwords(row.user.profile.first_name) +' '+ ucwords(row.user.profile.last_name);
+	var name = ucwords(row.user.profile.last_name) +', '+ ucwords(row.user.profile.first_name);
 	return '<a href="/user/'+ row.user.username +'">'+ name +'</a>';
 }
 
 function teacherProfileNameFormatter(value, row) {
-	var name = ucwords(row.teacher.profile.first_name) +' '+ ucwords(row.teacher.profile.last_name);
+	var name = ucwords(row.teacher.profile.last_name) +', '+ ucwords(row.teacher.profile.first_name);
 	return '<a href="/user/'+ row.teacher.username +'">'+ name +'</a>';
 }
 
 function studentProfileNameFormatter(value, row) {
-	var name = ucwords(row.student.profile.first_name) +' '+ ucwords(row.student.profile.last_name);
+	var name = ucwords(row.student.profile.last_name) +', '+ ucwords(row.student.profile.first_name);
 	return '<a href="/user/'+ row.student.username +'">'+ name +'</a>';
 }
 
@@ -377,4 +443,47 @@ function ucwords(str) {
     return (str + '').replace(/^([a-z])|\s+([a-z])/g, function ($1) {
         return $1.toUpperCase();
     });
+}
+
+function assessmentGradeFormatter(value, row) {
+	return  row.score +"/"+ row.total +" ("+ Math.round((row.score / row.total) * 100) +" %)";
+}
+
+function assessedProfileNameFormatter(value, row) {
+	var name = ucwords(row.assessed.profile.first_name) +' '+ ucwords(row.assessed.profile.last_name);
+	return '<a href="/user/'+ row.assessed.username +'">'+ name +'</a>';
+}
+
+function examTypeNameFormatter(value, row) {
+	return row.exam_type.name;
+}
+
+function examExamTypeNameFormatter(value, row) {
+	return row.exam.exam_type.name;
+}
+
+function schoolNameFormatter(value, row) {
+	return row.school.name;
+}
+
+function classSectionNameFormatter(value, row) {
+	return "["+ gradeLevels[row.class_section.level] + "] "+ row.class_section.name;
+}
+
+function attendanceStatusFormatter(value, row) {
+	var status;
+
+	switch (row.status) {
+		case 0:
+			status = "<i class='fa fa-times text-danger' data-toggle='tooltip' title='Absent'></i>";
+			break;
+		case 1:
+			status = "<i class='fa fa-check text-success' data-toggle='tooltip' title='Present'></i>";
+			break;
+		case 2:
+			status = "<i class='fa fa-exclamation text-warning' data-toggle='tooltip' title='Late'></i>";
+			break;
+	}
+
+	return status;
 }

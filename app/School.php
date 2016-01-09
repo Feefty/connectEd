@@ -11,16 +11,21 @@ class School extends Model
 
    	public function member()
    	{
-   		return $this->hasMany('\App\SchoolMember', 'school_id');
+   		return $this->hasMany('\App\SchoolMember');
    	}
 
    	public function exam()
    	{
-   		return $this->hasMany('\App\Exam', 'school_id');
+   		return $this->hasMany('\App\Exam');
    	}
 
       public function lesson()
       {
-         return $this->hasMany('\App\Lesson', 'school_id');
+         return $this->hasMany('\App\Lesson');
+      }
+
+      public function class_section()
+      {
+         return $this->hasMany('\App\ClassSection');
       }
 }

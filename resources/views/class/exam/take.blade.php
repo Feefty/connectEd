@@ -16,7 +16,7 @@
 						@if (strtotime($class_subject_exam->start) < time() && strtotime($class_subject_exam->end) > time())
 							<h2>{{ $class_subject_exam->exam->title }} <small>{{ $class_subject_exam->exam->exam_type->name }}</small></h2>
 							<ul class="list-inline">
-								<li>{!! $class_subject_exam->status == 1 ? '<i class="fa fa-lightbulb"></i> <span class="text-success">Active</span>' : '<i class="fa fa-lightbulb-o"></i> <span class="text-muted">Inactive</span>' !!}</li>
+								<li>{!! $class_subject_exam->status == 1 ? '<i class="fa fa-star"></i> <span class="text-success">Active</span>' : '<i class="fa fa-star-o"></i> <span class="text-muted">Inactive</span>' !!}</li>
 								<li><i class="fa fa-book"></i> {{ $class_subject_exam->exam->subject->name }}</li>
 								<li><i class="fa fa-calendar"></i> {{ $class_subject_exam->start .' to '. $class_subject_exam->end }}</li>
 							</ul>
@@ -24,7 +24,7 @@
 							<hr>
 
 							@if ($show_questions)
-								<button type="button" id="start-exam" data-exam-id="{{ $class_subject_exam->exam->id }}" class="btn btn-primary center-block">Start asnwering / Get grade</button>
+								<button type="button" id="start-exam" data-class-subject-exam-id="{{ $class_subject_exam->id }}" data-exam-id="{{ $class_subject_exam->exam->id }}" class="btn btn-primary center-block">Start asnwering</button>
 								<div id="exam-question-block">
 									<div id="question-block"></div>
 									<div id="question-answer-block"></div>

@@ -12,16 +12,35 @@ use App\ExamType;
 use App\Exam;
 use App\Subject;
 use App\User;
+use Gate;
 
 class ExamController extends Controller
 {
     public function getApi(Request $request)
     {
-        $exam = Exam::with('subject', 'exam_type');
-
-        if ($request->has('school_id'))
+        if (Gate::denies('read-exam'))
         {
-            $exam = $exam->where('school_id', $request->school_id);
+            return abort(401);
+        }
+
+        $exam = Exam::with('subject', 'exam_type', 'class_subject_exam.assessment');
+
+        switch (strtolower(auth()->user()->group->name))
+        {
+            case 'student':
+                $exam = $exam->whereHas('class_subject_exam.class_subject_exam_user', function($query) {
+                    $query->where('user_id', auth()->user()->id);
+                })->whereHas('class_subject_exam.assessment', function($query) {
+                    $query->where('student_id', auth()->user()->id);
+                });
+                break;
+            case 'school':
+            case 'teacher':
+                if ($request->has('school_id'))
+                {
+                    $exam = $exam->where('school_id', $request->school_id);
+                }
+                break;
         }
 
         return $exam->orderBy('created_at', 'desc')->get();
@@ -29,6 +48,11 @@ class ExamController extends Controller
 
     public function getIndex(Request $request)
     {
+        if (Gate::denies('read-exam'))
+        {
+            return abort(401);
+        }
+
     	$school_id = auth()->user()->school_member->school_id;
     	$exam_types = ExamType::orderBy('name', 'asc')->get();
     	$subjects = Subject::orderby('name', 'asc')->get();
@@ -38,6 +62,11 @@ class ExamController extends Controller
 
     public function getEdit($id)
     {
+        if (Gate::denies('update-exam'))
+        {
+            return abort(401);
+        }
+
         $exam = Exam::findOrFail($id);
         $exam_types = ExamType::orderBy('name', 'asc')->get();
         $subjects = Subject::orderby('name', 'asc')->get();
@@ -47,6 +76,11 @@ class ExamController extends Controller
 
     public function getView($id)
     {
+        if (Gate::denies('read-exam'))
+        {
+            return abort(401);
+        }
+
     	$exam = Exam::with('subject', 'exam_type')->findOrFail($id);
     	return view('exam.view', compact('exam'));
     }
@@ -90,7 +124,7 @@ class ExamController extends Controller
             $data['exam_type_id'] = (int) $request->exam_type;
             $data['subject_id'] = $request->subject;
             $data['school_id'] = $school_id;
-            $data['created_by'] = $user->id;
+            $data['created_by'] = auth()->user()->id;
 
             $exam = Exam::create($data);
             
@@ -110,6 +144,11 @@ class ExamController extends Controller
 
         try
         {
+            if (Gate::denies('delete-exam'))
+            {
+                throw new \Exception(trans('error.unauthorized.action'));
+            }
+
             Exam::findOrFail($id)->delete();
             $exam_question = ExamQuestion::where('exam_id', $id)->delete();
             ExamQuestionAnswer::where('exam_question_id', $exam_question->id)->delete();

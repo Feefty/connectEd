@@ -13,17 +13,24 @@
 					</div>
 
 					<div id="toolbar">
-						<div class="dropdown">
-							<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
-							<ul class="dropdown-menu">
-								@if ($exam_question->category == 'multiplechoice' ||
-									 $exam_question->category == 'identification')
-								<li><a href="#viewAddAnswerModal" data-toggle="modal"><i class="fa fa-plus"></i> Add Answer</a></li>
-								@endif
-							</ul>
-						</div>
+						@can ('manage-exam-question')
+							@if (strtolower(auth()->user()->group->name) == 'teacher' && $exam_question->exam->created_by == auth()->user()->id)
+								<div class="dropdown">
+									<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
+									<ul class="dropdown-menu">
+										@can ('create-exam-question-answer')
+												@if ($exam_question->category == 'multiplechoice' ||
+													 $exam_question->category == 'identification')
+												<li><a href="#viewAddAnswerModal" data-toggle="modal"><i class="fa fa-plus"></i> Add Answer</a></li>
+												@endif
+										@endcan
+									</ul>
+								</div>
+							@endif
+						@endcan
 					</div>
 
+					@can ('create-exam-question-answer')
 					<div class="modal fade" id="viewAddAnswerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 						<div class="modal-dialog" role="document">
 					 		<div class="modal-content">
@@ -93,6 +100,7 @@
 					    	</div>
 					  	</div>
 					</div><!-- end of modal -->
+					@endcan
 
 					<table data-toggle="table" data-url="{{ action('ExamQuestionAnswerController@getApi') }}?exam_question_id={{ $exam_question->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
 						<thead>
@@ -100,8 +108,10 @@
 								<th data-field="answer" data-sortable="true">Answer</th>
 								<th data-field="points" data-sortable="true">Points</th>
 								<th data-field="created_at" data-sortable="true">Date Added</th>
-								@can ('manage-subject-schedule')
+								@can ('manage-exam-question-answer')
+									@if (strtolower(auth()->user()->group->name) == 'teacher' && $exam_question->exam->created_by == auth()->user()->id)
 									<th data-formatter="actionExamQuestionAnswerFormatter" data-align="center"></th>
+									@endif
 								@endcan
 							</tr>
 						</thead>

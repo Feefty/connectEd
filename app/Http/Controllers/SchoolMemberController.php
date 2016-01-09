@@ -16,16 +16,21 @@ use Hashids;
 
 class SchoolMemberController extends Controller
 {
-	public function getAPI($school_id)
+	public function getApi(Request $request)
 	{
         if (Gate::denies('read-school-member'))
         {
             return abort(401);
         }
 
-		return SchoolMember::with('user.group', 'user.profile')
-                            ->where('school_id', $school_id)
-                            ->get();
+        $school_member = SchoolMember::with('user.group', 'user.profile');
+
+        if ($request->has('school_id'))
+        {
+            $school_member = $school_member->where('school_id', (int) $request->school_id);
+        }
+
+		return $school_member->get();
 	}
 
     public function getIndex()

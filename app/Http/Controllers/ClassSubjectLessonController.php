@@ -11,11 +11,16 @@ use App\ClassSubjectLesson;
 
 class ClassSubjectLessonController extends Controller
 {
-	public function getApi($class_subject)
+	public function getApi(Request $request)
 	{
-		return ClassSubjectLesson::with('lesson')
-                                ->where('class_subject_id', $class_subject)
-								->get();
+		$class_subject_lesson = ClassSubjectLesson::with('lesson');
+
+        if ($request->has('class_subject_id'))
+        {
+            $class_subject_lesson = $class_subject_lesson->where('class_subject_id', (int) $request->class_subject_id);
+        }
+
+        return $class_subject_lesson->get();
 	}
 
     public function postAdd(PostAddClassSubjectLessonFormRequest $request)

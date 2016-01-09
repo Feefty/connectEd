@@ -14,18 +14,31 @@ use App\SchoolMember;
 use App\Lesson;
 use App\Exam;
 use App\User;
+use App\Profile;
 use Gate;
 
 class ClassSubjectController extends Controller
 {
-	public function getAPI($section_id)
+	public function getApi(Request $request)
 	{
         if (Gate::denies('read-class-subject'))
         {
             abort(401);
         }
 
-        return ClassSubject::with('teacher.profile', 'subject')->orderBy('created_at', 'desc')->get();
+        $class_subject = ClassSubject::with('teacher.profile', 'subject', 'class_section');
+
+        if ($request->has('class_section_id'))
+        {
+            $class_subject = $class_subject->where('class_section_id', (int) $request->class_section_id);
+        }
+
+        if ($request->has('teacher_id') && strtolower(auth()->user()->group->name) == 'teacher')
+        {
+            $class_subject = $class_subject->where('teacher_id', (int) $request->teacher_id);
+        }
+
+        return $class_subject->orderBy('created_at', 'desc')->get();
 	}
 
 	public function getEdit($id)
@@ -41,8 +54,8 @@ class ClassSubjectController extends Controller
         $teachers = User::with('profile')
                         ->whereHas('group', function($query) {
                             $query->where('level', config('school.teacher_level'));
-                        })->whereHas('school_member', function($query) use($section) {
-                            $query->where('school_id', $section->school_id);
+                        })->whereHas('school_member', function($query) use($class_section) {
+                            $query->where('school_id', $class_section->school_id);
                         })->get();
 
 		return view('class.subject.edit', compact('class_subject', 'teachers', 'subjects'));
@@ -82,24 +95,27 @@ class ClassSubjectController extends Controller
             abort(401);
         }
 
-        $school_id = auth()->user()->school_member->school_id;
+        if (strtolower(auth()->user()->group->name) == 'teacher')
+        {
+            if ( ! ClassSubject::where('teacher_id', auth()->user()->id)->where('id', (int) $id)->exists())
+            {
+                return abort(401);
+            }
+        }
 
         $class_subject = ClassSubject::with('class_section', 'teacher.profile', 'subject.exam')
-                                ->whereHas('subject.exam', function($query) use($school_id) {
-                                    $query->where('school_id', $school_id);
-                                })
-                                ->findOrFail($id);
+                                ->findOrFail((int) $id);
         $lessons = Lesson::with('user.profile')
                         ->whereHas('school', function($query) use($class_subject) {
                             $query->where('id', $class_subject->class_section->id);
                         })
                         ->orderBy('title')
                         ->get();
-        $users = User::with('profile')
-                    ->whereHas('class_student.class_section', function($query) use($class_subject) {
+        $users = Profile::whereHas('user.class_student.class_section', function($query) use($class_subject) {
                         $query->where('id', $class_subject->id);
                     })
-                    ->orderBy('username')
+                    ->orderBy('last_name')
+                    ->orderBy('first_name')
                     ->get();
 		return view('class.subject.view', compact('class_subject', 'lessons', 'users'));
 	}
@@ -112,7 +128,7 @@ class ClassSubjectController extends Controller
         {
             if (Gate::denies('delete-class-subject'))
             {
-                return abort(401);
+                throw new \Exception(trans('error.unauthorized.action'));
             }
 
             ClassSubject::findOrFail($id)->delete();

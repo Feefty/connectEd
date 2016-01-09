@@ -24,4 +24,9 @@ class ClassSubjectExam extends Model
     {
         return $this->hasMany('\App\ClassSubjectExamUser');
     }
+
+    public function assessment()
+    {
+        return $this->hasMany('\App\Assessment');
+    }
 }

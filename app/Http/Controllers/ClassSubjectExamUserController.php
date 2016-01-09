@@ -12,14 +12,18 @@ class ClassSubjectExamUserController extends Controller
 {
     public function getApi(Request $request)
     {
-        $class_subject_exam_user = ClassSubjectExamUser::with('user.profile', 'class_subject_exam')->orderBy('created_at', 'desc');
+        $class_subject_exam_user = ClassSubjectExamUser::select('class_subject_exam_users.*')->with('user.profile', 'class_subject_exam')->orderBy('created_at', 'desc');
 
         if ($request->has('class_subject_exam_id'))
         {
             $class_subject_exam_user = $class_subject_exam_user->where('class_subject_exam_id', (int) $request->get('class_subject_exam_id'));
         }
 
-        return $class_subject_exam_user->get();
+        return $class_subject_exam_user
+                        ->leftJoin('profiles', 'profiles.user_id', '=', 'class_subject_exam_users.user_id')
+                        ->orderBy('profiles.last_name')
+                        ->orderBy('profiles.first_name')
+                        ->get();
     }
 
     public function postAdd(PostAddClassSubjectExamUserFormRequest $request)

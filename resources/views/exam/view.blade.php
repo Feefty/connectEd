@@ -29,19 +29,28 @@
 						</div>
 					@endif
 
-					<h2 >{{ $exam->title }} <small>$exam->exam_type->name</small></h2>
+					<h2 >{{ $exam->title }} <small>{{ $exam->exam_type->name }}</small></h2>
 					<ul class="list-inline">
 						<li><i class="fa fa-book"></i> {{ '['. $exam->subject->code .'] '. $exam->subject->name .' - '. $exam->subject->description }}</li>
 						<li><i class="fa fa-clock-o"></i> {{ $exam->created_at }}</li>
 					</ul>
 
+					<input type="hidden" id="user_id" value="{{ auth()->user()->id }}">
+					<input type="hidden" id="group_name" value="{{ auth()->user()->group->name }}">
+
 					<div id="toolbar">
-						<div class="dropdown">
-							<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
-							<ul class="dropdown-menu">
-								<li><a href="#viewAddQuestionItemModal" data-toggle="modal"><i class="fa fa-plus"></i> Add Item</a></li>
-							</ul>
-						</div>
+						@can ('manage-exam-question')
+							@if (strtolower(auth()->user()->group->name) == 'teacher' && $exam->created_by == auth()->user()->id)
+							<div class="dropdown">
+								<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
+								<ul class="dropdown-menu">
+									@can ('create-exam-question')
+										<li><a href="#viewAddQuestionItemModal" data-toggle="modal"><i class="fa fa-plus"></i> Add Item</a></li>
+									@endcan
+								</ul>
+							</div>
+							@endif
+						@endcan
 					</div>
 					<div class="modal fade" id="viewAddQuestionItemModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
 						<div class="modal-dialog" role="document">
@@ -323,8 +332,12 @@
 								<th data-field="question" data-sortable="true">Question</th>
 								<th data-field="category" data-sortable="true">Category</th>
 								<th data-field="time_limit" data-sortable="true">Time Limit</th>
-								@can ('manage-subject-schedule')
+								@can ('manage-exam')
+									@if (strtolower(auth()->user()->group->name) == 'teacher' && $exam->created_by == auth()->user()->id)
 									<th data-formatter="actionExamQuestionFormatter" data-align="center"></th>
+									@else
+									<th data-formatter="actionExamQuestionViewFormatter" data-align="center"></th>
+									@endif
 								@endcan
 							</tr>
 						</thead>

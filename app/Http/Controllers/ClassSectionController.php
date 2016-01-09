@@ -13,6 +13,7 @@ use App\SchoolMember;
 use App\ClassSection;
 use App\SubjectSchedule;
 use App\ClassSubject;
+use App\School;
 use App\User;
 use Auth;
 
@@ -88,6 +89,14 @@ class ClassSectionController extends Controller
             abort(401);
         }
 
+        if (auth()->user()->group->name == 'Teacher')
+        {
+            if ( ! ClassSection::where('adviser_id', auth()->user()->id)->where('id', (int) $section_id)->exists())
+            {
+                return abort(401);
+            }
+        }
+
         $section = ClassSection::with('school', 'teacher.profile')->findOrFail($section_id);
         $subjects = Subject::orderBy('name')->get();
         $teachers = User::with('profile')
@@ -112,8 +121,8 @@ class ClassSectionController extends Controller
         $teachers = User::with('profile')
                         ->whereHas('group', function($query) {
                             $query->where('level', config('school.teacher_level'));
-                        })->whereHas('school_member', function($query) use($section) {
-                            $query->where('school_id', $section->school_id);
+                        })->whereHas('school_member', function($query) use($class_section) {
+                            $query->where('school_id', $class_section->school_id);
                         })->get();
 
         return view('class.section.edit', compact('class_section', 'teachers'));
@@ -165,9 +174,31 @@ class ClassSectionController extends Controller
                 $data[$i]['time_start'] = $request->time_start[$i];
                 $data[$i]['time_end'] = $request->time_end[$i];
                 $data[$i]['created_at'] = new \DateTime;
+
+                $class_subject = ClassSubject::with('class_section.school')->findOrFail($class_subject->id);
+
+                $info = $data[$i];
+
+                // To check if the schedule is conflict to other existing schedule
+                $school = School::whereHas('class_section.subject.subject_schedule', function($query) use($info) {
+                    $query->where('day', $info['day'])
+                        ->where('time_start', '>=', $info['time_start'])
+                        ->where('time_end', '<=', $info['time_end']);
+                })->whereHas('class_section.subject', function($query) use($class_subject) {
+                    $query->where('room', $class_subject->room);
+                })->whereHas('class_section.school', function($query) use($class_subject) {
+                    $query->where('id', $class_subject->class_section->school->id);
+                });
+
+                if ($school->exists())
+                {
+                    throw new \Exception(trans('subject_schedule.conflict.error'));
+                }
             }
 
             SubjectSchedule::insert($data);
+
+            $msg = trans('class_section.subject.add.success');
         }
         catch (\Exception $e)
         {

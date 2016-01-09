@@ -110,7 +110,7 @@
 									   			</div>
 								   			@endcan
 
-									   		<table data-toggle="table" data-url="{{ action('ClassSubjectController@getAPI', $section->id) }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar2">
+									   		<table data-toggle="table" data-url="{{ action('ClassSubjectController@getApi') }}?class_section_id={{ $section->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar2">
 												<thead>
 													<tr>
 														<th data-formatter="subjectNameFormatter">Subject</th>
@@ -199,16 +199,12 @@
 							</div>
 						</div>
 
-						<table data-toggle="table" data-url="{{ action('ClassStudentController@getAPIBySection', $section->id) }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
+						<table data-toggle="table" data-url="{{ action('ClassStudentController@getApi') }}?class_section_id={{ $section->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
 							<thead>
 								<tr>
-									<th data-formatter="userProfile">Name</th>
-									<th data-field="gender">Gender</th>
-									@can ('update-class-section')
-									<th data-formatter="actionUpdateClassSectionFormatter" data-align="center">Actions</th>
-									@else
+									<th data-formatter="studentProfileNameFormatter">Name</th>
+									<th data-formatter="studentProfileGenderFormatter">Gender</th>
 									<th data-formatter="actionClassSectionFormatter" data-align="center">Actions</th>
-									@endcan
 								</tr>
 							</thead>
 						</table>

@@ -32,11 +32,6 @@
 						@endif
 
 						<div id="toolbar">
-							<div class="dropdown">
-								<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
-								<ul class="dropdown-menu">
-								</ul>
-							</div>
 						</div>
 
 						<div id="toolbar2">
@@ -91,7 +86,7 @@
 						<div class="tab-content">
 							
 							<div id="lists-tab" class="tab-pane fade in active">
-								<table data-toggle="table" data-url="{{ action('SchoolMemberController@getAPI', $school->id) }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
+								<table data-toggle="table" data-url="{{ action('SchoolMemberController@getApi') }}?school_id={{ $school->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
 									<thead>
 										<tr>
 			                    			<th data-formatter="userProfileNameFormatter" data-sortable="true">Name</th>

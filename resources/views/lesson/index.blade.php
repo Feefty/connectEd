@@ -29,14 +29,22 @@
 					@endif
 
 					<div id="toolbar">
-						<div class="dropdown">
-							<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
-							<ul class="dropdown-menu">
-								<li><a href="#viewCreateLessonModal" data-toggle="modal"><i class="fa fa-plus"></i> Create</a></li>
-							</ul>
-						</div>
+						@can ('manage-lesson')
+							<div class="dropdown">
+								<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
+								<ul class="dropdown-menu">
+									@can ('create-lesson')
+										<li><a href="#viewCreateLessonModal" data-toggle="modal"><i class="fa fa-plus"></i> Create</a></li>
+									@endcan
+								</ul>
+							</div>
+						@endcan
 					</div>
 
+					<input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+					<input type="hidden" name="group_name" value="{{ strtolower(auth()->user()->group->name) }}">
+
+					@can ('create-lesson')
 					<div class="modal fade" id="viewCreateLessonModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
 						<div class="modal-dialog" role="document">
 							<div class="modal-content">
@@ -92,6 +100,7 @@
 						   	</div>
 						</div>
 					</div><!-- end of #viewCreateLessonModal -->
+					@endcan
 
 					<table data-toggle="table" data-url="{{ action('LessonController@getApi', $school_id) }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
 						<thead>
@@ -100,7 +109,9 @@
 								<th data-formatter="subjectNameFormatter">Subject</th>
 								<th data-formatter="userProfileNameFormatter">Posted By</th>
 								<th data-field="created_at">Date Created</th>
-								<th data-formatter="actionLessonFormatter" data-align="center">Actions</th>
+								@can ('manage-lesson')
+									<th data-formatter="actionLessonFormatter" data-align="center">Actions</th>
+								@endcan
 							</tr>
 						</thead>
 					</table>

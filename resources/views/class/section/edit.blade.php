@@ -70,9 +70,9 @@
 			      				<select id="year" name="year" class="form-control">
 			      					@for ($y = date('Y'); $y >= 1990; $y--)
 			      						@if ($class_section->year == $y)
-			      							<option value="{{ $y }}" selected>{{ $y }}</option>
+			      							<option value="{{ $y }}" selected>{{ $y }} - {{ $y+1 }}</option>
 			      						@else
-			      							<option value="{{ $y }}">{{ $y }}</option>
+			      							<option value="{{ $y }}">{{ $y }} - {{ $y+1 }}</option>
 			      						@endif
 			      					@endfor
 			      				</select>
