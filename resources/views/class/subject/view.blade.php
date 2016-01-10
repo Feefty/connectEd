@@ -347,8 +347,8 @@
 											<th colspan="6" data-align="center">Exams</th>
 										</tr>
 										<tr>
-											<th data-formatter="takeExamTitleFormatter" data-sortable="true">Title</th>
-											<th data-formatter="examExamTypeNameFormatter">Type</th>
+											<th data-field="exam.title" data-formatter="takeExamTitleFormatter" data-sortable="true">Title</th>
+											<th data-field="exam.exam_type.name" data-sortable="true">Type</th>
 											<th data-field="start" data-sortable="true">Start</th>
 											<th data-field="end" data-sortable="true">End</th>
 											<th data-field="created_at" data-sortable="true">Date Added</th>
@@ -368,9 +368,9 @@
 											<th colspan="6" data-align="center">Attendance</th>
 										</tr>
 										<tr>
-											<th data-formatter="studentProfileNameFormatter" data-sortable="true">Student</th>
-											<th data-formatter="attendanceStatusFormatter" data-sortable="true">Status</th>
-											<th data-field="date" data-sortable="true">Date</th>
+											<th data-searchable="true" data-formatter="studentProfileNameFormatter" data-sortable="true">Student</th>
+											<th data-searchable="true" data-formatter="attendanceStatusFormatter" data-align="center" data-sortable="true">Status</th>
+											<th data-searchable="true" data-field="date" data-sortable="true">Date</th>
 											@can ('manage-exam')
 												<th data-formatter="actionClassSubjectExamFormatter" data-align="center"></th>
 											@endcan

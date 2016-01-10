@@ -72,7 +72,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::controller('myroom', 'RoomController');
 
 	// Notification
-	Route::get('notifications', 'NotificationController@getIndex');
+	Route::controller('notification', 'NotificationController');
 
 	// Lesson
 	Route::controller('lesson', 'LessonController');

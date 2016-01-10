@@ -177,6 +177,34 @@ $(function() {
 	$('[data-toggle="table"]').on('load-success.bs.table', function() {
 		$('[data-toggle="tooltip"]').tooltip();
 	});
+
+	setInterval(function() {
+		$.get('/notification/api', function(data) {
+			var items = data;
+
+			if (items.length > 0) {
+				$('.notification-icon').html("<span class='badge badge-danger'>"+ items.length +"</span>");
+			}
+			
+			var notification_msg;
+			
+			$.each(items, function(key, value) {
+				notification_msg = "<li>";
+
+				if (value.url != '') {
+					notification_msg += "<a href='"+ value.url +"'>"+ data.subject +"</a>";
+				}
+				else
+				{
+					notification_msg += data.subject;
+				}
+
+				notification_msg += "</li>";
+			});
+
+			$('.notification-holder').html(notification_msg);
+		});
+	}, 5000);
 });
 
 function submitAttendance(status, user_id) {
@@ -475,13 +503,13 @@ function attendanceStatusFormatter(value, row) {
 
 	switch (row.status) {
 		case 0:
-			status = "<i class='fa fa-times text-danger' data-toggle='tooltip' title='Absent'></i>";
+			status = "<i class='fa fa-times text-danger' data-toggle='tooltip' title='Absent'></i> Absent";
 			break;
 		case 1:
-			status = "<i class='fa fa-check text-success' data-toggle='tooltip' title='Present'></i>";
+			status = "<i class='fa fa-check text-success' data-toggle='tooltip' title='Present'></i> Present";
 			break;
 		case 2:
-			status = "<i class='fa fa-exclamation text-warning' data-toggle='tooltip' title='Late'></i>";
+			status = "<i class='fa fa-exclamation text-warning' data-toggle='tooltip' title='Late'></i> Late";
 			break;
 	}
 

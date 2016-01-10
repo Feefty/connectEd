@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PostAddAttendanceFormRequest;
 use App\Http\Controllers\Controller;
 use App\Attendance;
+use App\Notification;
+use App\ClassSubject;
 use Gate;
 
 class AttendanceController extends Controller
@@ -58,6 +60,17 @@ class AttendanceController extends Controller
                 $data['student_id'] = (int) $request->user_id;
                 Attendance::create($data);
             }
+
+            $class_subject = ClassSubject::with('subject')->findOrFail($data['class_subject_id']);
+
+            Notification::create([
+                'target_id'     => $data['student_id'],
+                'subject'       => 'Attendance',
+                'content'       => 'Your attendance in '. $class_subject->subject->name .' is '. config('attendance.status')[$data['status']] .' on '. $data['date'] .'.',
+                'created_at'    => new \DateTime,
+                'url'           => action('ClassSubjectController@getView', $data['class_subject_id']),
+                'read'          => 0
+            ]);
 
             $msg = trans('attendance.add.success');
         }

@@ -10,6 +10,17 @@ use App\Notification;
 
 class NotificationController extends Controller
 {
+	public function getApi(Request $request)
+	{
+		$notification = Notification::with('target')
+									->where('target_id', auth()->user()->id)
+									->where('read', 0)
+									->orderBy('created_at', 'desc')
+									->get();
+
+		return $notification;
+	}
+
     public function getIndex()
     {
     	return view('notification.index');

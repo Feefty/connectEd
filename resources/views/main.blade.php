@@ -51,7 +51,12 @@
 			        	<li><a href="{{ action('Auth\AuthController@getLogin') }}">Sign In</a></li>
 			        	<li><a href="{{ action('Auth\AuthController@getRegister') }}">Register</a></li>
 			        @else
-			        	<li><a href="{{ action('NotificationController@getIndex') }}"><i class="fa fa-bell"></i></a></li>
+			        	<li class="dropdown">
+			        		<a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell notification-icon"></i></a>
+			        		<ul class="dropdown-menu notification-holder">
+			        			<li><a href="#">Hello World</a></li>
+			        		</ul>
+			        	</li>
 			        	<li><a href="#"><i class="fa fa-envelope"></i></a></li>
 				        <li class="dropdown">
 			          		<a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->username }} <span class="caret"></span></a>
