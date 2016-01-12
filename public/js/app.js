@@ -31,6 +31,8 @@ var attendanceStatuses = [
 var question_duration;
 
 $(function() {
+
+	$("time.timeago").timeago();
 	$.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -178,31 +180,51 @@ $(function() {
 		$('[data-toggle="tooltip"]').tooltip();
 	});
 
-	setInterval(function() {
-		$.get('/notification/api', function(data) {
-			var items = data;
+	var notif_data, notif_num;
+	$.get('/notification/api', function(data) {
+		notif_data = data;
+		notif_num = notif_data.length;
 
-			if (items.length > 0) {
-				$('.notification-icon').html("<span class='badge badge-danger'>"+ items.length +"</span>");
-			}
-			
-			var notification_msg;
-			
-			$.each(items, function(key, value) {
-				notification_msg = "<li>";
+		if (notif_num > 0) {
+			$('.notification-icon').html("<span class='badge'>"+ data.length +"</span>");
 
-				if (value.url != '') {
-					notification_msg += "<a href='"+ value.url +"'>"+ data.subject +"</a>";
+			var notif_html = "<li><a href='javascript:void(0)'><strong>Notifications</strong><span class='pull-right text-warning'>Mark all as read</span></a></li>";
+
+			$.each(notif_data, function(key, val) {
+				if (val.url != "") {
+					notif_html += "<li><a href="+ val.url +"><strong>"+ val.subject +"</strong><br>"+ val.content +"<br><span class='small'><i class='fa fa-clock'></i><time class='timeago' datetime='"+ val.created_at +"'>"+ val.created_at +"</time></span></a></li>";
 				}
-				else
-				{
-					notification_msg += data.subject;
+				else {
+					notif_html += "<li><a href='javsacript:void(0)'><strong>"+ val.subject +"</strong><br>"+ val.content +"<br><span class='small'><i class='fa fa-clock'></i><time class='timeago' datetime='"+ val.created_at +"'>"+ val.created_at +"</time></span></a></li>";
 				}
-
-				notification_msg += "</li>";
 			});
 
-			$('.notification-holder').html(notification_msg);
+			$('.notification-holder').html(notif_html);
+		}
+	});
+
+	setInterval(function() {
+		$.get('/notification/api', function(data) {
+			notif_data = data;
+
+			if (notif_num != notif_data.length) {
+				notif_num = notif_data.length;
+
+				if (notif_num > 0) {
+					var notif_html = "<li><a href='javascript:void(0)'><strong>Notifications</strong><span class='text-underline pull-right text-warning'>Mark all as read</span></a></li>";
+
+					$('.notification-icon').html("<span class='badge'>"+ notif_data.length +"</span>");
+
+					$.each(notif_data, function(key, val) {
+						if (val.url != "") {
+							notif_html += "<li><a href="+ val.url +"><strong>"+ val.subject +"</strong><br>"+ val.content +"<br><span class='small'><i class='fa fa-clock'></i><time class='timeago' datetime='"+ val.created_at +"'>"+ val.created_at +"</time></span></a></li>";
+						}
+						else {
+							notif_html += "<li><a href='javsacript:void(0)'><strong>"+ val.subject +"</strong><br>"+ val.content +"<br><span class='small'><i class='fa fa-clock'></i><time class='timeago' datetime='"+ val.created_at +"'>"+ val.created_at +"</time></span></a></li>";
+						}
+					});
+				}
+			}
 		});
 	}, 5000);
 });

@@ -30,7 +30,8 @@ elixir(function(mix) {
     		'jquery/dist/jquery.js',
             'bootstrap/dist/js/bootstrap.js',
             'bootstrap-table/dist/bootstrap-table.js',
-            'bootstrap-select/dist/js/bootstrap-select.min.js'
+            'bootstrap-select/dist/js/bootstrap-select.min.js',
+            'jquery-timeago/jquery.timeago.js'
     	], 'public/js/app.vendor.js', vendorDir)
         .scripts([
             'app.js',

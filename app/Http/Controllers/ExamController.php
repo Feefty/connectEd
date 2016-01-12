@@ -122,7 +122,7 @@ class ExamController extends Controller
 
             $data = $request->only('title');
             $data['exam_type_id'] = (int) $request->exam_type;
-            $data['subject_id'] = $request->subject;
+            $data['subject_id'] = (int) $request->subject;
             $data['school_id'] = $school_id;
             $data['created_by'] = auth()->user()->id;
 

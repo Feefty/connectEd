@@ -157,9 +157,11 @@
 								      		<div class="form-group">
 								      			<label for="lesson">Lesson</label>
 								      			<select id="lesson" name="lesson" class="form-control">
-								      				@foreach ($lessons as $lesson)
+								      				@forelse ($lessons as $lesson)
 								      					<option value="{{ $lesson->id }}">{{ $lesson->title .' by '. ucwords($lesson->user->profile->first_name .' '. $lesson->user->profile->last_name) .' - '. $lesson->created_at }}</option>
-								      				@endforeach
+								      				@empty
+								      					<option>No availble lesson</option>
+								      				@endforelse
 								      			</select>
 								      		</div>
 								      	</div>
@@ -266,7 +268,7 @@
 
 								      		<div class="form-group">
 								      			<label for="date">Date</label>
-								      			<input type="date" name="date" id="date" class="form-control">
+								      			<input type="date" name="date" id="date" class="form-control" value="{{ date('Y-m-d') }}">
 								      		</div>
 
 							      			<div class="row">
