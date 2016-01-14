@@ -86,10 +86,13 @@ return [
 	],
 
 	'class-section' => [
-		'create'	=> SCHOOL_LEVEL,
+		'create'	=> [
+			SCHOOL_LEVEL
+		],
 		'delete'	=> SCHOOL_LEVEL,
 		'update'	=> TEACHER_LEVEL,
 		'read' => [
+			TEACHER_LEVEL,
 			SCHOOL_LEVEL
 		],
 	],
@@ -136,10 +139,16 @@ return [
 	],
 
 	'school-code' => [
-		'create'	=> SCHOOL_LEVEL,
+		'create'	=> [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
 		'delete'	=> SCHOOL_LEVEL,
 		'read'		=> TEACHER_LEVEL,
-		'manage'	=> SCHOOL_LEVEL,
+		'manage'	=> [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		]
 	],
 
 	'subject-schedule' => [
@@ -151,11 +160,17 @@ return [
 	],
 
 	'class-section-code' => [
-		'create'	=> SCHOOL_LEVEL,
+		'create'	=> [
+			TEACHER_LEVEL, 
+			SCHOOL_LEVEL,
+		],
 		'delete'	=> SCHOOL_LEVEL,
 		'update'	=> SCHOOL_LEVEL,
 		'read'		=> TEACHER_LEVEL,
-		'manage'	=> SCHOOL_LEVEL,
+		'manage'	=> [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL,
+		],
 	],
 
 	'exam' => [

@@ -12,6 +12,14 @@ use App\Profile;
 
 class AssessmentController extends Controller
 {
+    public function getData()
+    {
+        $data = Assessment::whereHas('student.student', function($query) {
+            $query->where('id', auth()->user()->id);
+        })->where('recorded', 1)->get()->toArray();
+        return $data;
+    }
+
     public function getApi(Request $request)
     {
         $assessment = Assessment::with('student.profile', 'assessed.profile', 'class_subject_exam', 'school', 'subject');
@@ -40,10 +48,11 @@ class AssessmentController extends Controller
 
     public function getIndex()
     {
-        $students = Profile::whereHas('user.school_member', function($query) {
+        $students = Profile::with('user.class_student.class_section')
+        ->whereHas('user.school_member', function($query) {
             $query->where('school_id', auth()->user()->school_member->school_id);
         })->whereHas('user.group', function($query) {
-            $query->where('name', 'LIKE', '%Student%');
+            $query->where('name', 'Student');
         })->orderBy('last_name')->orderBy('first_name')->get();
 
         $subjects = Subject::orderBy('name')->orderBy('code')->get();
@@ -56,7 +65,7 @@ class AssessmentController extends Controller
 
         try
         {
-            $data = $request->only('score', 'total', 'source', 'term');
+            $data = $request->only('score', 'total', 'source', 'term', 'recorded');
             $data['subject_id'] = (int) $request->subject;
             $data['student_id'] = (int) $request->student;
             $data['school_id'] = auth()->user()->school_member->school_id;

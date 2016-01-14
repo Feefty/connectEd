@@ -14,6 +14,7 @@ use App\ExamQuestionAnswer;
 use App\StudentExamQuestionAnswer;
 use App\Assessment;
 use App\Profile;
+use App\ClassStudent;
 
 class ClassSubjectExamController extends Controller
 {
@@ -169,13 +170,13 @@ class ClassSubjectExamController extends Controller
             {
                 $grade = $this->getGrade($exam_question->exam_id);
 
-                $class_student = ClassStudent::where('student_id', auth()->user()->id)->where('status', 1)->orderBy('created_at', 'desc')->first();
+                $class_student = ClassStudent::where('student_id', auth()->user()->id)->orderBy('created_at', 'desc')->first();
 
                 $data = [
                     'score'                 => $grade['score'],
                     'total'                 => $grade['total'],
                     'source'                => 'Examination',
-                    'status'                => 1,
+                    'recorded'                => 1,
                     'class_student_id'      => $class_student->id,
                     'class_subject_exam_id' => (int) $request->class_subject_exam_id,
                     'class_subject_id'      => (int) $request->class_subject_id,

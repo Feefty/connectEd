@@ -5,6 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @if (auth()->check())
+    	<meta name="is-logged" content="1">
+    @endif
 	<title>{{ config('app.title') }}</title>
 	<link rel="stylesheet" href="{{ asset('/css/all.app.css') }}">
 </head>
@@ -54,6 +57,7 @@
 			        	<li class="dropdown">
 			        		<a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell notification-icon"></i></a>
 			        		<ul class="dropdown-menu notification-holder">
+			        			<li><a href="javascript:void(0)"><strong>Notifications</strong><br><span class="text-muted">No new notification</span></a></li>
 			        		</ul>
 			        	</li>
 			        	<li><a href="#"><i class="fa fa-envelope"></i></a></li>

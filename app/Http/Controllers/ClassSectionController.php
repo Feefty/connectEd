@@ -89,13 +89,13 @@ class ClassSectionController extends Controller
             abort(401);
         }
 
-        if (auth()->user()->group->name == 'Teacher')
+        /*if (auth()->user()->group->name == 'Teacher')
         {
             if ( ! ClassSection::where('adviser_id', auth()->user()->id)->where('id', (int) $section_id)->exists())
             {
                 return abort(401);
             }
-        }
+        }*/
 
         $section = ClassSection::with('school', 'teacher.profile')->findOrFail($section_id);
         $subjects = Subject::orderBy('name')->get();

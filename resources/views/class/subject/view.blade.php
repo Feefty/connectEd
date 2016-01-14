@@ -97,6 +97,17 @@
 							@endcan
 						</div>
 
+						<div id="toolbar5">
+							@can ('manage-assessment')
+							<div class="dropdown">
+								<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
+								<ul class="dropdown-menu">
+									<li><a href="#addAssessmentModal" data-toggle="modal"><i class="fa fa-plus"></i> Add Assessment</a></li>
+								</ul>
+							</div>
+							@endcan
+						</div>
+
 						<div class="modal fade" id="addScheduleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 							<div class="modal-dialog" role="document">
 						 		<div class="modal-content">
@@ -256,7 +267,7 @@
 						<div class="modal fade" id="addAttendanceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 							<div class="modal-dialog modal-lg" role="document">
 						 		<div class="modal-content">
-							      	<form action="{{ action('ClassSubjectExamController@postAdd') }}" method="post">
+							      	<form action="" method="post">
 							    		<div class="modal-header">
 							        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 							        		<h4 class="modal-title" id="myModalLabel">Attendance</h4>
@@ -299,11 +310,89 @@
 						  	</div>
 						</div><!-- end of modal -->
 
+						<div class="modal fade" id="addAssessmentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+							<div class="modal-dialog" role="document">
+						 		<div class="modal-content">
+							      	<form action="{{ action('AssessmentController@postAdd') }}" method="post">
+							    		<div class="modal-header">
+							        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							        		<h4 class="modal-title" id="myModalLabel">Assessments</h4>
+							      		</div>
+								      	<div class="modal-body" id="attendance">
+								      		{!! csrf_field() !!}
+
+								      		<input type="hidden" name="class_subject_id" value="{{ $class_subject->id }}">
+
+							   				<div class="form-group">
+							   					<label for="score">Grade</label>
+							   					<div class="input-group">
+							   						<input type="text" name="score" id="score" class="form-control" placeholder="Score">
+							   						<span class="input-group-addon">
+							   							/
+							   						</span>
+							   						<input type="text" name="total" id="total" class="form-control" placeholder="Total">
+							   					</div>
+							   					
+							   				</div>
+							   				
+							   				<div class="form-group">
+							   					<label for="date">Date</label>
+							   					<input type="date" name="date" id="date" class="form-control" value="{{ date('Y-m-d') }}">
+							   				</div>
+							   				
+							   				<div class="form-group">
+							   					<label for="source">Source</label>
+							   					<input type="text" name="source" id="source" class="form-control">
+							   				</div>
+							   				
+							   				<div class="form-group">
+							   					<div class="row">
+								   					<div class="col-sm-6">
+								   						<label for="term">Term</label>
+									   					<select id="term" name="term" class="form-control">
+									   						@for ($i = 1; $i <= 4; $i++)
+									   							<option value="{{ $i }}">{{ $i }}</option>
+									   						@endfor
+									   					</select>
+								   					</div>
+								   					
+								   					<div class="col-sm-6">
+									   					<label for="recorded">Recorded</label>
+									   					<div class="radio">
+									   						<label>
+									   							<input type="radio" name="recorded" value="1" checked> Yes
+									   						</label>
+									   						<label>
+									   							<input type="radio" name="recorded" value="0"> No
+									   						</label>
+									   					</div>
+								   					</div>
+							   					</div>
+							   				</div>
+							   				
+							   				<div class="form-group">
+							   					<label for="students">Student</label>
+							   					<select name="students" id="students" class="form-control" data-toggle="select" data-live-search="true" multiple>
+							   						@foreach ($users as $row)
+							   							<option value="{{ $row->user_id }}">{{ ucwords(strtolower($row->last_name .', '. $row->first_name)) }}</option>
+							   						@endforeach
+							   					</select>
+							   				</div>
+								      	</div>
+								      	<div class="modal-footer">
+								        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								      	</div>
+							      	</form>
+						    	</div>
+						  	</div>
+						</div><!-- end of modal -->
+
 						<ul class="nav nav-tabs">
 							<li class="active"><a data-toggle="tab" href="#schedules-tab"><i class="fa fa-calendar"></i> Schedules</a></li>
 							<li><a data-toggle="tab" href="#lessons-tab"><i class="fa fa-book"></i> Lessons</a></li>
 							<li><a data-toggle="tab" href="#exams-tab"><i class="fa fa-file-text"></i> Exams</a></li>
 							<li><a data-toggle="tab" href="#attendance-tab"><i class="fa fa-star"></i> Attendance</a></li>
+							<li><a data-toggle="tab" href="#assessments-tab"><i class="fa fa-star"></i> Assessments</a></li>
 						</ul>
 
 						<div class="tab-content">
@@ -380,6 +469,25 @@
 									</thead>
 								</table>
 							</div><!-- end of attendance tab -->
+
+
+							<div id="assessments-tab" class="tab-pane fade">
+								<table data-toggle="table" data-url="{{ action('AttendanceController@getApi') }}?class_subject_id={{ $class_subject->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar5">
+									<thead>
+										<tr>
+											<th colspan="6" data-align="center">Assessments</th>
+										</tr>
+										<tr>
+											<th data-searchable="true" data-formatter="studentProfileNameFormatter" data-sortable="true">Student</th>
+											<th data-searchable="true" data-formatter="attendanceStatusFormatter" data-align="center" data-sortable="true">Status</th>
+											<th data-searchable="true" data-field="date" data-sortable="true">Date</th>
+											@can ('manage-exam')
+												<th data-formatter="actionClassSubjectExamFormatter" data-align="center"></th>
+											@endcan
+										</tr>
+									</thead>
+								</table>
+							</div><!-- end of assessments tab -->
 
 						</div>
 					</div>	

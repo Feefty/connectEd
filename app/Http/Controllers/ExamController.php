@@ -30,8 +30,6 @@ class ExamController extends Controller
             case 'student':
                 $exam = $exam->whereHas('class_subject_exam.class_subject_exam_user', function($query) {
                     $query->where('user_id', auth()->user()->id);
-                })->whereHas('class_subject_exam.assessment', function($query) {
-                    $query->where('student_id', auth()->user()->id);
                 });
                 break;
             case 'school':

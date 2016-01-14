@@ -44,13 +44,20 @@
 							   				{!! csrf_field() !!}
 							   				
 							   				<div class="form-group">
-							   					<label for="score">Score</label>
-							   					<input type="text" name="score" id="score" class="form-control">
+							   					<label for="score">Grade</label>
+							   					<div class="input-group">
+							   						<input type="text" name="score" id="score" class="form-control" placeholder="Score">
+							   						<span class="input-group-addon">
+							   							/
+							   						</span>
+							   						<input type="text" name="total" id="total" class="form-control" placeholder="Total">
+							   					</div>
+							   					
 							   				</div>
 							   				
 							   				<div class="form-group">
-							   					<label for="total">Total</label>
-							   					<input type="text" name="total" id="total" class="form-control">
+							   					<label for="date">Date</label>
+							   					<input type="date" name="date" id="date" class="form-control" value="{{ date('Y-m-d') }}">
 							   				</div>
 							   				
 							   				<div class="form-group">
@@ -59,23 +66,27 @@
 							   				</div>
 							   				
 							   				<div class="form-group">
-							   					<label for="term">Term</label>
-							   					<select id="term" name="term" class="form-control">
-							   						@for ($i = 1; $i <= 4; $i++)
-							   							<option value="{{ $i }}">{{ $i }}</option>
-							   						@endfor
-							   					</select>
-							   				</div>
-							   				
-							   				<div class="form-group">
-							   					<label for="status">Status</label>
-							   					<div class="radio">
-							   						<label>
-							   							<input type="radio" name="status" value="1"> Active
-							   						</label>
-							   						<label>
-							   							<input type="radio" name="status" value="0"> Inactive
-							   						</label>
+							   					<div class="row">
+								   					<div class="col-sm-6">
+								   						<label for="term">Term</label>
+									   					<select id="term" name="term" class="form-control">
+									   						@for ($i = 1; $i <= 4; $i++)
+									   							<option value="{{ $i }}">{{ $i }}</option>
+									   						@endfor
+									   					</select>
+								   					</div>
+								   					
+								   					<div class="col-sm-6">
+									   					<label for="recorded">Recorded</label>
+									   					<div class="radio">
+									   						<label>
+									   							<input type="radio" name="recorded" value="1" checked> Yes
+									   						</label>
+									   						<label>
+									   							<input type="radio" name="recorded" value="0"> No
+									   						</label>
+									   					</div>
+								   					</div>
 							   					</div>
 							   				</div>
 							   				
@@ -89,10 +100,10 @@
 							   				</div>
 							   				
 							   				<div class="form-group">
-							   					<label for="student">Student</label>
-							   					<select id="student" name="student" class="form-control">
+							   					<label for="students">Student</label>
+							   					<select id="students" name="students[]" class="form-control" data-toggle="select" data-live-search="true" multiple>
 							   						@foreach ($students as $row)
-							   							<option value="{{ $row->id }}">{{ ucwords($row->last_name .', '. $row->first_name) }}</option>
+							   							<option value="{{ $row->id }}">{{ ucwords($row->last_name .', '. $row->first_name) }} - [{{ config('grade_level')[$row->user->class_student->class_section->level] }}] {{ $row->user->class_student->class_section->name }}</option>
 							   						@endforeach
 							   					</select>
 							   				</div>
@@ -130,11 +141,13 @@
 										<th data-formatter="studentProfileNameFormatter">Student</th>
 									@endif
 									<th data-sortable="true" data-formatter="assessedProfileNameFormatter">Assessed By</th>
-									<th data-sortable="true" data-formatter="statusFormatter">Status</th>
+									<th data-sortable="true" data-formatter="recordedFormatter">Recorded</th>
 									<th data-sortable="true" data-field="created_at">Date</th>
 								</tr>
 							</thead>
 						</table>
+
+						<canvas id="assessment-radar" width="500" height="500"></canvas>
 					</div>
 				</div>
 			</div>

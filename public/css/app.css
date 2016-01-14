@@ -98,5 +98,13 @@ body {
 .notification-holder li {
   border-bottom: solid 1px #ccc;
 }
+.notification-title {
+  padding: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.mark-as-read {
+  cursor: pointer;
+}
 
 /*# sourceMappingURL=app.css.map */

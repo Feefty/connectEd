@@ -15,7 +15,8 @@
     "wysihtml": "~0.5.4",
     "bootstrap-select": "~1.9.3",
     "dropzone": "enyo/dropzone#~4.2.0",
-    "jquery-timeago": "~1.4.3"
+    "jquery-timeago": "~1.4.3",
+    "Chart.js": "~1.0.2"
   },
   "resolutions": {
     "font-awesome": "~4.4"

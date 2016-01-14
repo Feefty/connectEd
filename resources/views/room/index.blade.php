@@ -44,7 +44,9 @@
 						</form>
 					@else
 						<ul class="list-inline">
-							<li><strong>Adviser:</strong> <a href="#">{{ ucwords($section->teacher->profile->first_name .' '. $section->teacher->profile->last_name) }}</a></li>
+							<li><strong>Adviser:</strong> <a href="{{ action('ProfileController@getUser', $section->teacher->username) }}">{{ ucwords($section->teacher->profile->first_name .' '. $section->teacher->profile->last_name) }}</a></li>
+							<li><strong>Section:</strong> <a href="#">{{ $section->name }}</a></li>
+							<li><strong>Level:</strong> <a href="#">{{ config('grade_level')[$section->level] }}</a></li>
 						</ul>
 
 						<ul class="nav nav-tabs">

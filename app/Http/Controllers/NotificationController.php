@@ -25,4 +25,11 @@ class NotificationController extends Controller
     {
     	return view('notification.index');
     }
+
+    public function getReadall(Request $request)
+    {	
+    	Notification::where('target_id', auth()->user()->id)->update(['read' => 1]);
+
+    	return ['status' => 'success'];
+    }
 }
