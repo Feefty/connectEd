@@ -29,7 +29,7 @@
 
 					<div id="toolbar">
 						@can('create-user')
-                    	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addUserModal">Add User</button>
+                    	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#addUserModal"><i class="fa fa-plus"></i> Add User</button>
                     	@endcan
 					</div>
 
@@ -118,7 +118,7 @@
                     					<th data-field="group" data-sortable="true">Group</th>
                     					<th data-field="status" data-sortable="true">Status</th>
                     					<th data-field="created_at" data-sortable="true">Date Joined</th>
-                    					<th data-formatter="actionUserFormatter" data-align="center">Actions</th>
+                    					<th data-formatter="actionUserFormatter" data-align="center"></th>
                     				</tr>
                     			</thead>
                     		</table>

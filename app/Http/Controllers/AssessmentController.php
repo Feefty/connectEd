@@ -9,20 +9,74 @@ use App\Http\Controllers\Controller;
 use App\Assessment;
 use App\Subject;
 use App\Profile;
+use App\User;
 
 class AssessmentController extends Controller
 {
     public function getData()
     {
-        $data = Assessment::whereHas('student.student', function($query) {
-            $query->where('id', auth()->user()->id);
-        })->where('recorded', 1)->get()->toArray();
+        $data = [];
+        
+        $labels = Subject::whereHas('class_subject.class_section.student', function($query) {
+            $query->where('student_id', auth()->user()->id);
+        })->orderBy('name')->get();
+
+        $data_label = [];
+        $data_subject = [];
+
+        foreach ($labels as $label)
+        {
+            $data_label[] = $label->name;
+
+
+            $assessment = Assessment::whereHas('class_student.student', function($query) {
+                $query->where('id', auth()->user()->id);
+            })
+            ->whereHas('class_subject.subject', function($query) use($label) {
+                $query->where('id', $label->id);
+            })
+            ->where('recorded', 1)
+            ->get();
+            $score = (double) $assessment->sum('score');
+            $total = (double) $assessment->sum('total');
+
+            if ($total == 0)
+            {
+                $data_subject[] = 0;
+            }
+            else
+            {
+                $data_subject[] = floor(($score/$total)*100);
+            }
+        }
+
+        $data = [
+            'labels' => $data_label,
+            'datasets' => [
+                [
+                'label' => "My Performance",
+                'fillColor' => "rgba(220,220,220,0.2)",
+                'strokeColor' => "rgba(220,220,220,1)",
+                'pointColor' => "rgba(220,220,220,1)",
+                'pointStrokeColor' => "#fff",
+                'pointHighlightFill' => "#fff",
+                'pointHighlightStroke' => "rgba(220,220,220,1)",
+                'data' => $data_subject
+                ]
+            ]
+        ];
+
         return $data;
     }
 
     public function getApi(Request $request)
     {
-        $assessment = Assessment::with('student.profile', 'assessed.profile', 'class_subject_exam', 'school', 'subject');
+        $assessment = Assessment::with('class_student.student.profile', 'class_student.student.school_member.school', 'class_subject_exam.subject', 'class_subject.subject');
+
+        if ($request->has('class_subject_id'))
+        {
+            $assessment = $assessment->where('class_subject_id', (int) $request->class_subject_id);
+        }
 
         switch (strtolower(auth()->user()->group->name))
         {
@@ -65,18 +119,20 @@ class AssessmentController extends Controller
 
         try
         {
-            $data = $request->only('score', 'total', 'source', 'term', 'recorded');
-            $data['subject_id'] = (int) $request->subject;
-            $data['student_id'] = (int) $request->student;
-            $data['school_id'] = auth()->user()->school_member->school_id;
-            $data['assessed_by'] = auth()->user()->id;
-
-            if ($data['score'] > $data['total'])
+            foreach ($request->students as $student)
             {
-                throw new \Exception(trans('assessment.invalid_grade'));
+                $data = $request->only('score', 'total', 'source', 'term', 'recorded', 'class_subject_id', 'date');
+                $user = User::with('class_student')->find((int) $student);
+                $data['class_student_id'] = (int) $user->class_student->id;
+                $data['created_at'] = new \DateTime;
+
+                if ((int) $data['score'] > (int) $data['total'])
+                {
+                    throw new \Exception(trans('assessment.invalid_grade'));
+                }
             }
 
-            Assessment::create($data);
+            Assessment::insert($data);
             
             $msg = trans('assessment.add.success');
         }

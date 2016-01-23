@@ -470,6 +470,11 @@ function studentProfileNameFormatter(value, row) {
 	return '<a href="/user/'+ row.student.username +'">'+ name +'</a>';
 }
 
+function classStudentProfileNameFormatter(value, row) {
+	var name = ucwords(row.class_student.student.profile.last_name) +', '+ ucwords(row.class_student.student.profile.first_name);
+	return '<a href="/user/'+ row.class_student.student.username +'">'+ name +'</a>';
+}
+
 function studentProfileGenderFormatter(value, row) {
 	if (row.student.profile.gender == 1) {
 		return 'Male';
@@ -515,7 +520,7 @@ function ucwords(str) {
 }
 
 function assessmentGradeFormatter(value, row) {
-	return  row.score +"/"+ row.total +" ("+ Math.round((row.score / row.total) * 100) +" %)";
+	return  row.score +"/"+ row.total +" ("+ Math.round((row.score / row.total) * 100) +"%)";
 }
 
 function assessedProfileNameFormatter(value, row) {
@@ -555,6 +560,23 @@ function attendanceStatusFormatter(value, row) {
 	}
 
 	return status;
+}
+
+function recordedFormatter(value, row) {
+	return row.recorded ? 'Yes' : 'No';
+}
+
+function assessmentClassSubjectNameFormatter(value, row) {
+	return '['+ row.class_subject.subject.code +'] '+ row.class_subject.subject.name +' - '+ row.class_subject.subject.description;
+}
+
+function classStudentSchoolNameFormatter(value, row) {
+	return row.class_student.student.school_member.school.name;
+}
+
+function classStudentProfileNameFormatter(value, row) {
+	var name = ucwords(row.class_student.student.profile.last_name) +', '+ ucwords(row.class_student.student.profile.first_name);
+	return '<a href="/user/'+ row.class_student.student.username +'">'+ name +'</a>';
 }
 /*!
  * Jasny Bootstrap v3.1.3 (http://jasny.github.io/bootstrap)

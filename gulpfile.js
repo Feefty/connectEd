@@ -43,7 +43,8 @@ elixir(function(mix) {
             'bootstrap/dist/js/bootstrap.js',
             'metisMenu/src/metisMenu.js',
             'startbootstrap-sb-admin-2/dist/js/sb-admin-2.js',
-            'bootstrap-table/dist/bootstrap-table.js'
+            'bootstrap-table/dist/bootstrap-table.js',
+            'Chart.js/Chart.min.js'
         ], 'public/js/admin.vendor.js', vendorDir)
         .scripts([
             'admin.js'

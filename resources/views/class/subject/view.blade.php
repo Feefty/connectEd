@@ -372,7 +372,7 @@
 							   				
 							   				<div class="form-group">
 							   					<label for="students">Student</label>
-							   					<select name="students" id="students" class="form-control" data-toggle="select" data-live-search="true" multiple>
+							   					<select name="students[]" id="students" class="form-control" data-toggle="select" data-live-search="true" multiple>
 							   						@foreach ($users as $row)
 							   							<option value="{{ $row->user_id }}">{{ ucwords(strtolower($row->last_name .', '. $row->first_name)) }}</option>
 							   						@endforeach
@@ -381,6 +381,7 @@
 								      	</div>
 								      	<div class="modal-footer">
 								        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								      		<button type="submit" class="btn btn-primary">Add</button>
 								      	</div>
 							      	</form>
 						    	</div>
@@ -392,7 +393,7 @@
 							<li><a data-toggle="tab" href="#lessons-tab"><i class="fa fa-book"></i> Lessons</a></li>
 							<li><a data-toggle="tab" href="#exams-tab"><i class="fa fa-file-text"></i> Exams</a></li>
 							<li><a data-toggle="tab" href="#attendance-tab"><i class="fa fa-star"></i> Attendance</a></li>
-							<li><a data-toggle="tab" href="#assessments-tab"><i class="fa fa-star"></i> Assessments</a></li>
+							<li><a data-toggle="tab" href="#assessments-tab"><i class="fa fa-line-chart"></i> Assessments</a></li>
 						</ul>
 
 						<div class="tab-content">
@@ -472,18 +473,20 @@
 
 
 							<div id="assessments-tab" class="tab-pane fade">
-								<table data-toggle="table" data-url="{{ action('AttendanceController@getApi') }}?class_subject_id={{ $class_subject->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar5">
+								<table data-toggle="table" data-url="{{ action('AssessmentController@getApi') }}?class_subject_id={{ $class_subject->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar5">
 									<thead>
 										<tr>
-											<th colspan="6" data-align="center">Assessments</th>
+											<th colspan="9" data-align="center">Assessments</th>
 										</tr>
 										<tr>
-											<th data-searchable="true" data-formatter="studentProfileNameFormatter" data-sortable="true">Student</th>
-											<th data-searchable="true" data-formatter="attendanceStatusFormatter" data-align="center" data-sortable="true">Status</th>
-											<th data-searchable="true" data-field="date" data-sortable="true">Date</th>
-											@can ('manage-exam')
-												<th data-formatter="actionClassSubjectExamFormatter" data-align="center"></th>
-											@endcan
+											<th data-sortable="true" data-formatter="assessmentGradeFormatter">Grade</th>
+											<th data-sortable="true" data-field="source">Source</th>
+											<th data-sortable="true" data-field="term">Term</th>
+											@if (strtolower(auth()->user()->group->name) != 'student')
+												<th data-formatter="classStudentProfileNameFormatter">Student</th>
+											@endif
+											<th data-sortable="true" data-formatter="recordedFormatter">Recorded</th>
+											<th data-sortable="true" data-field="created_at">Date</th>
 										</tr>
 									</thead>
 								</table>

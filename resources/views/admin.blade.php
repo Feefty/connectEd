@@ -43,36 +43,32 @@
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-                        <li><a href="{{ action('Admin\DashboardController@getIndex') }}">Dashboard</a></li>
+                        <li><a href="{{ action('Admin\DashboardController@getIndex') }}"><i class="fa fa-tachometer"></i> Dashboard</a></li>
                         <li>
-                            <a href="#">Management<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-sitemap"></i> Management<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="{{ action('Admin\UserController@getIndex') }}">Users</a>
+                                    <a href="{{ action('Admin\UserController@getIndex') }}"><i class="fa fa-user"></i> Users</a>
                                 </li>
                                 <li>
-                                    <a href="{{ action('Admin\GroupController@getIndex') }}">Groups</a>
+                                    <a href="{{ action('Admin\GroupController@getIndex') }}"><i class="fa fa-users"></i> Groups</a>
                                 </li>
                                 <li>
-                                    <a href="{{ action('Admin\SchoolController@getIndex') }}">Schools</a>
+                                    <a href="{{ action('Admin\SchoolController@getIndex') }}"><i class="fa fa-graduation-cap"></i> Schools</a>
                                 </li>
                                 <li>
-                                    <a href="{{ action('Admin\SubjectController@getIndex') }}">Subjects</a>
+                                    <a href="{{ action('Admin\SubjectController@getIndex') }}"><i class="fa fa-book"></i> Subjects</a>
                                 </li>
                                 <li>
-                                    <a href="{{ action('Admin\AchievementController@getIndex') }}">Achievements</a>
+                                    <a href="{{ action('Admin\AchievementController@getIndex') }}"><i class="fa fa-trophy"></i> Achievements</a>
                                 </li>
                                 <li>
-                                    <a href="{{ action('Admin\GradeController@getIndex') }}">Grades</a>
-                                </li>
-                                <li>
-                                    <a href="{{ action('Admin\ExamController@getIndex') }}">
-                                    Exams</a>
-                                </li>
-                                <li>
-                                    <a href="{{ action('Admin\PageController@getIndex') }}">Pages</a>
+                                    <a href="{{ action('Admin\PageController@getIndex') }}"><i class="fa fa-file"></i> Pages</a>
                                 </li>
                             </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-gear"></i> Configurations</a>
                         </li>
                     </ul>
                 </div>
@@ -82,7 +78,7 @@
         @yield('content')
 
     </div>
-	
+
 	<script src="{{ asset('/js/admin.vendor.js') }}"></script>
 	<script src="{{ asset('/js/admin.js') }}"></script>
 

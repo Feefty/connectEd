@@ -28,7 +28,7 @@
 					@endif
 
 					<div id="toolbar">
-                    	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addAchievementModal">Add Achievement</button>
+                    	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#addAchievementModal"><i class="fa fa-plus"></i> Add Achievement</button>
 					</div>
 
 					<div class="modal fade" id="addAchievementModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -68,7 +68,7 @@
                     					<th data-field="description">Description</th>
                     					<th data-field="updated_at" data-sortable="true">Last Updated</th>
                     					<th data-field="created_at" data-sortable="true">Date Added</th>
-                    					<th data-formatter="actionAchievementFormatter" data-align="center">Actions</th>
+                    					<th data-formatter="actionAchievementFormatter" data-align="center"></th>
                     				</tr>
                     			</thead>
                     		</table>

@@ -28,7 +28,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::get('profile', 'ProfileController@getIndex');
 	Route::get('achievement', 'AchievementController@getIndex');
 	Route::get('achievement/api/{studentid?}', 'AchievementController@getAPI')->where(['studentid' => '[0-9]+']);
-	
+
 	// My Class
 	Route::controller('myclass', 'MyClassController');
 
@@ -104,7 +104,7 @@ Route::group(['middleware' => 'auth'], function()
 		Route::get('group/{id}/edit', 'GroupController@getEdit')->where(['id' => '[0-9]+']);
 		Route::get('group/{id}/delete', 'GroupController@getDelete')->where(['id' => '[0-9]+']);
 		Route::post('group/edit', 'GroupController@postEdit');
-		Route::get('school', 'SchoolController@getIndex');	
+		Route::get('school', 'SchoolController@getIndex');
 		Route::get('school/api', 'SchoolController@getAPI');
 		Route::post('school/add', 'SchoolController@postAdd');
 		Route::get('school/{id}/view', 'SchoolController@getView')->where(['id' => '[0-9]+']);
@@ -114,21 +114,21 @@ Route::group(['middleware' => 'auth'], function()
 		Route::post('school/member/add', 'SchoolController@postAddMember');
 		Route::get('school/member/api/{school_id}', 'SchoolController@getMemberAPI')->where(['id' => '[0-9]+']);
 		Route::get('school/member/{id}/delete', 'SchoolController@getDeleteMember')->where(['id' => '[0-9]+']);
-		Route::get('subject', 'SubjectController@getIndex');	
+		Route::get('subject', 'SubjectController@getIndex');
 		Route::get('subject/api', 'SubjectController@getAPI');
 		Route::post('subject/add', 'SubjectController@postAdd');
 		Route::get('subject/{id}/view', 'SubjectController@getView')->where(['id' => '[0-9]+']);
 		Route::get('subject/{id}/edit', 'SubjectController@getEdit')->where(['id' => '[0-9]+']);
 		Route::get('subject/{id}/delete', 'SubjectController@getDelete')->where(['id' => '[0-9]+']);
+		Route::get('subject/{id}/grade_components', 'SubjectController@getGradeComponents')->where(['id' => '[0-9]+']);
 		Route::post('subject/edit', 'SubjectController@postEdit');
-		Route::get('achievement', 'AchievementController@getIndex');	
+		Route::get('achievement', 'AchievementController@getIndex');
 		Route::get('achievement/api', 'AchievementController@getAPI');
 		Route::post('achievement/add', 'AchievementController@postAdd');
 		Route::get('achievement/{id}/view', 'AchievementController@getView')->where(['id' => '[0-9]+']);
 		Route::get('achievement/{id}/edit', 'AchievementController@getEdit')->where(['id' => '[0-9]+']);
 		Route::get('achievement/{id}/delete', 'AchievementController@getDelete')->where(['id' => '[0-9]+']);
 		Route::post('achievement/edit', 'AchievementController@postEdit');
-		Route::get('grade', 'GradeController@getIndex');
 
 		// Assessment Type
 		Route::controller('assessment/type', 'AssessmentTypeController');

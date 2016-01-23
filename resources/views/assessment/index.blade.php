@@ -4,7 +4,7 @@
 
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-8 col-md-offset-2">
+			<div class="col-md-10 col-md-offset-1">
 				<div class="panel panel-default margin-lg-top">
 					<div class="panel-heading">
 						Assessment
@@ -135,19 +135,16 @@
 									<th data-sortable="true" data-formatter="assessmentGradeFormatter">Grade</th>
 									<th data-sortable="true" data-field="source">Source</th>
 									<th data-sortable="true" data-field="term">Term</th>
-									<th data-sortable="true" data-formatter="subjectNameFormatter">Subject</th>
+									<th data-sortable="true" data-formatter="assessmentClassSubjectNameFormatter">Subject</th>
 									@if (strtolower(auth()->user()->group->name) != 'student')
-										<th data-sortable="true" data-formatter="schoolNameFormatter">School</th>
-										<th data-formatter="studentProfileNameFormatter">Student</th>
+										<th data-sortable="true" data-formatter="classStudentSchoolNameFormatter">School</th>
+										<th data-sortable="true" data-formatter="classStudentProfileNameFormatter">Student</th>
 									@endif
-									<th data-sortable="true" data-formatter="assessedProfileNameFormatter">Assessed By</th>
 									<th data-sortable="true" data-formatter="recordedFormatter">Recorded</th>
 									<th data-sortable="true" data-field="created_at">Date</th>
 								</tr>
 							</thead>
 						</table>
-
-						<canvas id="assessment-radar" width="500" height="500"></canvas>
 					</div>
 				</div>
 			</div>

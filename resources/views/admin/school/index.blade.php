@@ -28,7 +28,7 @@
 					@endif
 
 					<div id="toolbar">
-                    	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addSchoolModal">Add School</button>
+                    	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#addSchoolModal"><i class="fa fa-plus"></i> Add School</button>
 					</div>
 
 					<div class="modal fade" id="addSchoolModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -69,10 +69,11 @@
                     			<thead>
                     				<tr>
                     					<th data-field="name" data-sortable="true">Name</th>
-                    					<th data-field="description">Description</th>
+                    					<th data-field="description" data-sortable="true">Description</th>
+                                        <th data-field="members" data-sortable="true">Members</th>
                     					<th data-field="updated_at" data-sortable="true">Last Updated</th>
                     					<th data-field="created_at" data-sortable="true">Date Added</th>
-                    					<th data-formatter="actionSchoolFormatter" data-align="center">Actions</th>
+                    					<th data-formatter="actionSchoolFormatter" data-align="center"></th>
                     				</tr>
                     			</thead>
                     		</table>

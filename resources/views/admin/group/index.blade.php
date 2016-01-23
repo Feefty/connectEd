@@ -28,7 +28,7 @@
 					@endif
 
 					<div id="toolbar">
-                    	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addGroupModal">Add Group</button>
+                    	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#addGroupModal"><i class="fa fa-plus"></i> Add Group</button>
 					</div>
 
 					<div class="modal fade" id="addGroupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -73,7 +73,7 @@
                     					<th data-field="description">Description</th>
                     					<th data-field="updated_at" data-sortable="true">Last Updated</th>
                     					<th data-field="created_at" data-sortable="true">Date Added</th>
-                    					<th data-formatter="actionGroupFormatter" data-align="center">Actions</th>
+                    					<th data-formatter="actionGroupFormatter" data-align="center"></th>
                     				</tr>
                     			</thead>
                     		</table>

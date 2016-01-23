@@ -39,7 +39,7 @@ class SubjectController extends Controller
         {
             $data = $request->only('name', 'code', 'description');
             Subject::create($data);
-            
+
             $msg = trans('subject.add.success');
         }
         catch (\Exception $e)
@@ -81,7 +81,7 @@ class SubjectController extends Controller
             $data = $request->only('name', 'code', 'description');
             $id = (int) $request->subject_id;
             Subject::where('id', $id)->update($data);
-            
+
             $msg = trans('subject.edit.success');
         }
         catch (\Exception $e)
@@ -111,7 +111,7 @@ class SubjectController extends Controller
         	{
         		throw new \Exception(trans('subject.not_found'));
         	}
-            
+
             $msg = trans('subject.delete.success');
         }
         catch (\Exception $e)
@@ -121,4 +121,10 @@ class SubjectController extends Controller
 
         return redirect()->back()->with(compact('msg'));
     }
+
+	public function getGradeComponents($id)
+	{
+		$subject = Subject::findOrFail((int) $id);
+		return view('admin.subject.grade.component', compact('subject'));
+	}
 }

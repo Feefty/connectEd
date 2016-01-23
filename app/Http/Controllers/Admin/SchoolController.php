@@ -21,7 +21,10 @@ class SchoolController extends Controller
             return abort(401);
         }
 
-		return School::get();
+		return School::select('schools.*', \DB::raw('COUNT("school_members.id") AS members'))
+					->leftjoin('school_members', 'school_members.school_id', '=', 'schools.id')
+					->groupBy('schools.id')
+					->get();
 	}
 
     public function getIndex()
@@ -43,7 +46,7 @@ class SchoolController extends Controller
             $data = $request->only('name', 'description', 'address');
             $data['created_at'] = new \DateTime;
             School::create($data);
-            
+
             $msg = trans('school.add.success');
         }
         catch (\Exception $e)
@@ -86,7 +89,7 @@ class SchoolController extends Controller
             $data['updated_at'] = new \DateTime;
             $id = (int) $request->school_id;
             School::where('id', $id)->update($data);
-            
+
             $msg = trans('school.edit.success');
         }
         catch (\Exception $e)
@@ -107,7 +110,7 @@ class SchoolController extends Controller
             {
                 return abort(401);
             }
-            
+
         	if (School::where('id', $id)->exists())
         	{
         		School::where('id', $id)->delete();
@@ -116,7 +119,7 @@ class SchoolController extends Controller
         	{
         		throw new \Exception(trans('school.not_found'));
         	}
-            
+
             $msg = trans('school.delete.success');
         }
         catch (\Exception $e)
@@ -132,7 +135,7 @@ class SchoolController extends Controller
         $msg = [];
 
         try
-        {   
+        {
             $user = User::where('username', $request->username)->first();
             $school_members = SchoolMember::where('school_id', (int) $request->school_id)
                                         ->where('user_id', (int) $user->id);
@@ -157,7 +160,7 @@ class SchoolController extends Controller
             return redirect()->back()->withErrors($e->getMessage());
         }
 
-        return redirect()->back()->with(compact('msg'));   
+        return redirect()->back()->with(compact('msg'));
     }
 
     public function getMemberAPI($school_id)
@@ -185,7 +188,7 @@ class SchoolController extends Controller
             {
                 return abort(401);
             }
-            
+
             if (SchoolMember::where('id', $id)->exists())
             {
                 SchoolMember::where('id', $id)->delete();
@@ -194,7 +197,7 @@ class SchoolController extends Controller
             {
                 throw new \Exception(trans('school.member_not_found'));
             }
-            
+
             $msg = trans('school.delete.success.member');
         }
         catch (\Exception $e)

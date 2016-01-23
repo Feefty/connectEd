@@ -10,7 +10,7 @@ class Assessment extends Model
     protected $fillable = ['score', 'total', 'source', 'class_subject_exam_id', 'term', 'recorded', 'class_student_id', 'class_subject_id', 'date'];
 
 
-    public function student()
+    public function class_student()
     {
     	return $this->belongsTo('\App\ClassStudent');
     }

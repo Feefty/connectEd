@@ -16,6 +16,7 @@ class ModifyAssessmentsTable5 extends Migration
         {
             $t->boolean('recorded');
             $t->date('date');
+            $t->dropColumn('student_id');
         });
     }
 
@@ -29,6 +30,7 @@ class ModifyAssessmentsTable5 extends Migration
         Schema::table('assessments', function (Blueprint $t)
         {
             $t->dropColumn('recorded', 'date');
+            $t->integer('student_id');
         });
     }
 }

@@ -41,13 +41,23 @@
 										<td>: {{ $user->profile->address }}</td>
 									</tr>
 									<tr>
-										<td><strong>Membership</strong></td>
+										<td><strong>Role</strong></td>
 										<td>: {{ @$user->group->name }}</td>
 									</tr>
 									<tr>
 										<td><strong>School</strong></td>
 										<td>: {{ @$user->school_member->school->name }}</td>
 									</tr>
+									@if (strtolower($user->group->name) == 'student')
+										<tr>
+											<td><strong>Section</strong></td>
+											<td>: [{{ config('grade_level')[$user->class_student->class_section->level] }}] {{ $user->class_student->class_section->name }}</td>
+										</tr>
+										<tr>
+											<td><strong>Adivser</strong></td>
+											<td>: <a href="{{ action('ProfileController@getUser', $user->class_student->class_section->teacher->username) }}">{{ ucwords(strtolower($user->class_student->class_section->teacher->profile->last_name .', '. $user->class_student->class_section->teacher->profile->first_name)) }}</a></td>
+										</tr>
+									@endif
 								</table>
 							</td>
 						</tr>
@@ -55,11 +65,11 @@
 				</div>
 			</div>
 
-			@if ($user->group->name == 'Student')
+			@if (strtolower($user->group->name) == 'student')
 				<div class="panel panel-default">
-					<div class="panel-heading">Subject Portfolio</div>
+					<div class="panel-heading">My Performance</div>
 					<div class="panel-body">
-
+						<canvas id="assessment-radar" class="center-block" width="500" height="500"></canvas>
 					</div>
 				</div>
 			@endif
