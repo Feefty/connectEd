@@ -48,7 +48,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::controller('school/member', 'SchoolMemberController');
 
 	// School Code
-	Route::controller('school/code', 'SchoolCodeController');
+	Route::controller('verification/code', 'VerificationCodeController');
 
 	// Class Student
 	Route::controller('class/student', 'ClassStudentController');
@@ -85,6 +85,11 @@ Route::group(['middleware' => 'auth'], function()
 
 	// Exam
 	Route::controller('exam', 'ExamController');
+
+	Route::get('school/{school_id}', 'SchoolController@getIndex')->where(['id' => '[0-9]+']);
+	Route::controller('school', 'SchoolController');
+
+	Route::controller('page', 'PageController');
 
 	Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function()
 	{
@@ -130,11 +135,8 @@ Route::group(['middleware' => 'auth'], function()
 		Route::get('achievement/{id}/delete', 'AchievementController@getDelete')->where(['id' => '[0-9]+']);
 		Route::post('achievement/edit', 'AchievementController@postEdit');
 
-		// Assessment Type
-		Route::controller('assessment/type', 'AssessmentTypeController');
 
-		// Assessment
-		Route::controller('assessment', 'AssessmentController');
+		Route::controller('assessment/category', 'AssessmentCategoryController');
 
 		// Page
 		Route::get('page', 'PageController@getIndex');

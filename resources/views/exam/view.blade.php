@@ -29,7 +29,7 @@
 						</div>
 					@endif
 
-					<h2 >{{ $exam->title }} <small>{{ $exam->exam_type->name }}</small></h2>
+					<h2 >{{ $exam->title }} <small>{{ $exam->assessment_category->name }}</small></h2>
 					<ul class="list-inline">
 						<li><i class="fa fa-book"></i> {{ '['. $exam->subject->code .'] '. $exam->subject->name .' - '. $exam->subject->description }}</li>
 						<li><i class="fa fa-clock-o"></i> {{ $exam->created_at }}</li>

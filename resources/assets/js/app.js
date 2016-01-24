@@ -578,3 +578,15 @@ function classStudentProfileNameFormatter(value, row) {
 	var name = ucwords(row.class_student.student.profile.last_name) +', '+ ucwords(row.class_student.student.profile.first_name);
 	return '<a href="/user/'+ row.class_student.student.username +'">'+ name +'</a>';
 }
+
+function assessmentCategoryName(value, row) {
+	return row.assessment_category.name;
+}
+
+function subjectExamGradeFormatter(value, row) {
+	if (row.score == null) {
+		return "<span class='text-muted'>None</span>";
+	} else {
+		return row.score +"/"+ row.total +" ("+ Math.round((row.score / row.total) * 100) +"%)";
+	}
+}

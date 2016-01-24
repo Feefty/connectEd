@@ -63,6 +63,7 @@
 											<div class="form-group">
 												<label for="group">Membership</label>
 												<select id="group" name="group" class="form-control">
+													<option value="5">Parent</option>
 													<option value="4">Student</option>
 													<option value="3">Teacher</option>
 													<option value="2">School</option>
@@ -102,7 +103,7 @@
 							</div><!-- end of lists tab -->
 							
 							<div id="codes-tab" class="tab-pane fade">
-								<table data-toggle="table" data-url="{{ action('SchoolCodeController@getApi') }}?school_id={{ $school->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar2">
+								<table data-toggle="table" data-url="{{ action('VerificationCodeController@getApi') }}?school_id={{ $school->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar2">
 									<thead>
 										<tr>
 			                    			<th data-field="code" data-sortable="true">Code</th>

@@ -32,6 +32,8 @@
 							</div>
 						@endif
 
+						<h2>{{ $class_subject_exam->exam->title }} <small>{{ $class_subject_exam->exam->assessment_category->name }}</small></h2>
+
 						<div class="text-helper">
 							The list of students who are able to take the exam.
 						</div>
@@ -83,6 +85,7 @@
 								</tr>
 								<tr>
 									<th data-formatter="userProfileNameFormatter">Name</th>
+									<th data-formatter="subjectExamGradeFormatter" data-sortable="true">Grade</th>
 									<th data-field="created_at">Date Added</th>
 									@can ('manage-class-subject-exam-user')
 										<th data-formatter="actionClassSubjectExamUserFormatter" data-align="center">Actions</th>

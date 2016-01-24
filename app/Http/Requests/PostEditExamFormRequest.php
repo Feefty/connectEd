@@ -27,7 +27,7 @@ class PostEditExamFormRequest extends Request
         return [
             'exam_id'       => 'required|exists:exams,id',
             'title'         => 'required|max:255',
-            'exam_type'     => 'required|exists:exam_types,id',
+            'assessment_category_id'     => 'required|exists:assessment_categories,id',
             'subject'       => 'required|exists:subjects,id',
         ];
     }

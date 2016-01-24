@@ -10,6 +10,7 @@ use App\Assessment;
 use App\Subject;
 use App\Profile;
 use App\User;
+use App\AssessmentCategory;
 
 class AssessmentController extends Controller
 {
@@ -110,7 +111,8 @@ class AssessmentController extends Controller
         })->orderBy('last_name')->orderBy('first_name')->get();
 
         $subjects = Subject::orderBy('name')->orderBy('code')->get();
-        return view('assessment.index', compact('subjects', 'students'));
+        $assessment_categories = AssessmentCategory::orderby('name')->get();
+        return view('assessment.index', compact('subjects', 'students', 'assessment_categories'));
     }
 
     public function postAdd(PostAddAssessmentFormRequest $request)
@@ -121,7 +123,7 @@ class AssessmentController extends Controller
         {
             foreach ($request->students as $student)
             {
-                $data = $request->only('score', 'total', 'source', 'term', 'recorded', 'class_subject_id', 'date');
+                $data = $request->only('assessment_category_id', 'score', 'total', 'source', 'term', 'recorded', 'class_subject_id', 'date');
                 $user = User::with('class_student')->find((int) $student);
                 $data['class_student_id'] = (int) $user->class_student->id;
                 $data['created_at'] = new \DateTime;

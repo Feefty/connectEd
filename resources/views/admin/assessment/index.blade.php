@@ -32,6 +32,7 @@
                         <div class="dropdown">
                             <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
                             <ul class="dropdown-menu">
+                                <li><a href="#">Add Category</a></li>
                             </ul>
                         </div>
                     </div>

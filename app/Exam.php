@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Exam extends Model
 {
     protected $table = 'exams';
-    protected $fillable = ['title', 'created_by', 'created_at', 'updated_at', 'exam_type_id', 'school_id', 'subject_id'];
+    protected $fillable = ['title', 'created_by', 'created_at', 'updated_at', 'assessment_category_id', 'school_id', 'subject_id'];
 
     public function author()
     {
@@ -19,9 +19,9 @@ class Exam extends Model
     	return $this->hasMany('\App\ExamQuestion', 'exam_id');
     }
 
-    public function exam_type()
+    public function assessment_category()
     {
-    	return $this->belongsTo('\App\ExamType');
+    	return $this->belongsTo('\App\AssessmentCategory');
     }
 
     public function subject()

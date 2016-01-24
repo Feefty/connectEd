@@ -37,14 +37,15 @@
 						<div class="form-group">
 							<label for="group">Membership</label>
 							<select id="group" name="group" class="form-control">
+								<option value="5">Parent</option>
 								<option value="4">Student</option>
 								<option value="3">Teacher</option>
 								<option value="2">School</option>
 							</select>
 						</div>
 						<div>
-							<label for="school_code">School Code</label>
-							<input type="text" name="school_code" id="school_code" class="form-control" value="{{ old('school_code') }}">
+							<label for="verification_code">Verification Code</label>
+							<input type="text" name="verification_code" id="verification_code" class="form-control" value="{{ old('verification_code') }}">
 						</div>
 
 						<hr>

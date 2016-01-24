@@ -91,6 +91,15 @@
 							   				</div>
 							   				
 							   				<div class="form-group">
+							   					<label for="assessment_category_id">Category</label>
+							   					<select id="assessment_category_id" name="assessment_category_id" class="form-control">
+							   						@foreach ($assessment_categories as $row)
+							   							<option value="{{ $row->id }}">{{ $row->name }}</option>
+							   						@endforeach
+							   					</select>
+							   				</div>
+							   				
+							   				<div class="form-group">
 							   					<label for="subject">Subject</label>
 							   					<select id="subject" name="subject" class="form-control">
 							   						@foreach ($subjects as $row)

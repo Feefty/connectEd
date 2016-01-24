@@ -12,6 +12,7 @@ use App\ExamType;
 use App\Exam;
 use App\Subject;
 use App\User;
+use App\AssessmentCategory;
 use Gate;
 
 class ExamController extends Controller
@@ -54,8 +55,9 @@ class ExamController extends Controller
     	$school_id = auth()->user()->school_member->school_id;
     	$exam_types = ExamType::orderBy('name', 'asc')->get();
     	$subjects = Subject::orderby('name', 'asc')->get();
+        $assessment_categories = AssessmentCategory::orderBy('name')->get();
 
-    	return view('exam.index', compact('school_id', 'exam_types', 'subjects'));
+    	return view('exam.index', compact('school_id', 'exam_types', 'subjects', 'assessment_categories'));
     }
 
     public function getEdit($id)
@@ -68,8 +70,9 @@ class ExamController extends Controller
         $exam = Exam::findOrFail($id);
         $exam_types = ExamType::orderBy('name', 'asc')->get();
         $subjects = Subject::orderby('name', 'asc')->get();
+        $assessment_categories = AssessmentCategory::orderBy('name')->get();
 
-        return view('exam.edit', compact('exam', 'exam_types', 'subjects'));
+        return view('exam.edit', compact('exam', 'exam_types', 'subjects', 'assessment_categories'));
     }
 
     public function getView($id)
@@ -79,7 +82,7 @@ class ExamController extends Controller
             return abort(401);
         }
 
-    	$exam = Exam::with('subject', 'exam_type')->findOrFail($id);
+    	$exam = Exam::with('subject', 'assessment_category')->findOrFail($id);
     	return view('exam.view', compact('exam'));
     }
 
@@ -89,9 +92,8 @@ class ExamController extends Controller
 
         try
         {
-            $data = $request->only('title');
+            $data = $request->only('title', 'assessment_category_id');
             $data['subject_id'] = $request->subject;
-            $data['exam_type_id'] = $request->exam_type;
 
             Exam::findOrFail($request->exam_id)->update($data);
 
@@ -118,8 +120,7 @@ class ExamController extends Controller
         		throw new \Exception(trans('user.no_school'));
         	}
 
-            $data = $request->only('title');
-            $data['exam_type_id'] = (int) $request->exam_type;
+            $data = $request->only('title', 'assessment_category_id');
             $data['subject_id'] = (int) $request->subject;
             $data['school_id'] = $school_id;
             $data['created_by'] = auth()->user()->id;

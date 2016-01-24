@@ -65,12 +65,12 @@
 			          		<a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->username }} <span class="caret"></span></a>
 			          		<ul class="dropdown-menu">
 			          			@can ('read-dashboard')
-				      			<li><a href="{{ action('Admin\DashboardController@getIndex') }}">Admin</a></li>
+				      			<li><a href="{{ action('Admin\DashboardController@getIndex') }}"><i class="fa fa-lock fa-fw"></i> Admin</a></li>
 				      			@endcan
-			          			<li><a href="{{ action('ProfileController@getIndex') }}">Profile</a></li>
-					        	<li><a href="{{ action('SettingsController@getProfile') }}">Settings</a></li>
+			          			<li><a href="{{ action('ProfileController@getIndex') }}"><i class="fa fa-user fa-fw"></i> Profile</a></li>
+					        	<li><a href="{{ action('SettingsController@getProfile') }}"><i class="fa fa-gear fa-fw"></i> Settings</a></li>
 					        	<li class="divider"></li>
-					        	<li><a href="{{ action('Auth\AuthController@getLogout') }}">Logout</a></li>
+					        	<li><a href="{{ action('Auth\AuthController@getLogout') }}"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
 			          		</ul>
 				        </li>
 		        	@endif

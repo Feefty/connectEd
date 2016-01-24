@@ -34,13 +34,13 @@ class GroupTableSeeder extends Seeder
         	[
         		'name'		=> 'Student',
         		'level'		=> 3,
-        		'description' => '',
+        		'description' => 'Student',
         		'created_at'=> new \DateTime
         	],
         	[
-        		'name'		=> 'Member',
+        		'name'		=> 'Parent',
         		'level'		=> 2,
-        		'description' => '',
+        		'description' => 'Student\'s Parent',
         		'created_at'=> new \DateTime
         	],
         	[

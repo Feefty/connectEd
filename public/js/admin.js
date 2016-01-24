@@ -41,6 +41,11 @@ function actionAssessmentFormatter(value, row) {
 	return ["<a href='/admin/assessment/view/"+ row.id +"' class='btn btn-default btn-xs' title='View' data-toggle='tooltip'><i class='fa fa-eye'></i></a>"].join(" ");
 }
 
+function assessmentCategoryFormatter(value, row) {
+	return ["<a href='/admin/assessment/category/edit/"+ row.id +"' class='btn btn-default btn-xs' title='Edit' data-toggle='tooltip'><i class='fa fa-pencil'></i></a>",
+			"<a href='/admin/assessment/category/delete/"+ row.id +"' class='btn btn-default btn-xs' title='Delete' data-toggle='tooltip' onclick='return confirm(\"Are you sure you want to delete this achievement?\")'><i class='fa fa-remove'></i></a>"].join(" ");
+}
+
 function usernameFormatter(value, row) {
 	return "<a href='/admin/user/"+ row.id +"/view'>"+ row.username +"</a>";
 }
@@ -67,8 +72,14 @@ function schoolNameFormatter(value, row) {
 	return row.school.name;
 }
 
-$('[data-toggle="table"]').on('load-success.bs.table', function() {
-	$('[data-toggle="tooltip"]').tooltip();
-});
+$(function() {
+	$('[data-toggle="table"]').on('load-success.bs.table', function() {
+		$('[data-toggle="tooltip"]').tooltip();
+	});
 
+	$.get('/assessment/data', function(data) {
+		var ctx = $('#assessment-radar').get(0).getContext("2d");
+		var assessmentRadar = new Chart(ctx).Radar(data);
+	});
+});
 //# sourceMappingURL=admin.js.map

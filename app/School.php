@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class School extends Model
 {
    	protected $table = 'schools';
-   	protected $fillable = ['name', 'description', 'address', 'created_at', 'updated_at'];
+   	protected $fillable = ['name', 'description', 'address', 'created_at', 'updated_at', 'logo', 'motto', 'mission', 'vision', 'website', 'contact_no', 'goal'];
 
    	public function member()
    	{

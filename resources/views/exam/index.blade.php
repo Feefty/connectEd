@@ -61,9 +61,9 @@
 						   				</div>
 
 						   				<div class="form-group">
-						   					<label for="exam_type">Type</label>
-						   					<select id="exam_type" name="exam_type" class="form-control">
-						   						@foreach ($exam_types as $row)
+						   					<label for="assessment_category_id">Category</label>
+						   					<select id="assessment_category_id" name="assessment_category_id" class="form-control">
+						   						@foreach ($assessment_categories as $row)
 						   							<option value="{{ $row->id }}">{{ $row->name }}</option>
 						   						@endforeach
 						   					</select>
@@ -95,7 +95,7 @@
 								@else
 									<th data-field="title" data-sortable="true">Title</th>
 								@endcan
-								<th data-formatter="examTypeFormatter" data-sortable="true">Type</th>
+								<th data-formatter="assessmentCategoryName" data-sortable="true">Category</th>
 								<th data-formatter="subjectNameFormatter" data-sortable="true">Subject</th>
 								<th data-field="created_at" data-sortable="true">Date Added</th>
 								@can ('manage-exam')

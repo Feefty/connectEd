@@ -10,8 +10,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Auth;
-use App\SchoolCode;
+use App\VerificationCode;
 use App\SchoolMember;
+use App\ClassSectionCode;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -79,12 +80,27 @@ class AuthController extends Controller
         $code = $request->school_code;
         $group_id = (int) $request->group;
         
-        $school_code = SchoolCode::where(['code' => $code, 'group_id' => $group_id, 'status' => 0]);
-
-        if ( ! $school_code->exists())
+        if ( ! VerificationCode::where(['code' => $code, 'group_id' => $group_id, 'status' => 0])->exists())
         {
-            return redirect()->back()->withErrors("Invalid membership code.");
+            $group = Group::findOrFail((int) $group_id);
+            $class_section_code = ClassSectionCode::where(['code' => $code, 'status' => 0]);
+            if (strtolower($group->name) == 'student' && 
+                $class_section_code->exists())
+            {
+                $class_section_code = $class_section_code->first();
+                ClassSectionCode::where('code', $code)->update(['status' => 1]);
+                ClassStudent::create([
+                    'class_section_id'  => (int) $class_section_code->class_section_id,
+                    'class_section_code_id' => $code,
+                    'student_id'        => (int) $request->user()->id
+                ]);
+            }
+            else
+            {
+                return redirect()->back()->withErrors("Invalid membership code.");
+            }
         }
+
 
         Auth::login($this->create($request->all(), $request));
 
@@ -117,7 +133,7 @@ class AuthController extends Controller
             'address'       => $data['address']
         ]);
 
-        $school_code = SchoolCode::where('code', $request->school_code)->first();
+        $school_code = VerificationCode::where('code', $request->school_code)->first();
 
         SchoolMember::create([
             'user_id'       => $user->id,
@@ -126,7 +142,7 @@ class AuthController extends Controller
             'status'        => 1
         ]);
 
-        SchoolCode::findOrFail($school_code->id)->update(['status' => 1]);
+        VerificationCode::findOrFail($school_code->id)->update(['status' => 1]);
 
         return $user;
     }

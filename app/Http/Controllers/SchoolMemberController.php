@@ -7,7 +7,7 @@ use App\Http\Requests\PostAddSchoolMemberFormRequest;
 use App\Http\Requests\PostGenerateSchoolMemberFormRequest;
 use App\Http\Controllers\Controller;
 use App\SchoolMember;
-use App\SchoolCode;
+use App\VerificationCode;
 use App\School;
 use App\User;
 use Auth;
@@ -56,14 +56,14 @@ class SchoolMemberController extends Controller
             $school_id = (int) $request->school_id;
             $group_id = (int) $request->group;
 
-            if (SchoolCode::where('school_id', $school_id)->count() >= config('school.max_code'))
+            if (VerificationCode::where('school_id', $school_id)->count() >= config('school.max_code'))
             {
                 throw new \Exception(trans('school.max_code_reahed'));
             }
 
             for ($i = 0; $i < $amount; $i++)
             {
-                $count = SchoolCode::count();
+                $count = VerificationCode::count();
 
                 $hash = Hashids::encode($count);
                 $data = [
@@ -74,7 +74,7 @@ class SchoolMemberController extends Controller
                     'group_id'      => $group_id,
                 ];
 
-                SchoolCode::create($data);
+                VerificationCode::create($data);
             }
 
             $msg = trans('school_code.add.success');

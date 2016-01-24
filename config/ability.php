@@ -2,7 +2,7 @@
 
 // BANNED_LEVEL = banned
 // 1 = guest
-// 2 = member
+// 2 = parent
 // 3 = student
 // 5 = teacher
 // SCHOOL_LEVEL = school
@@ -10,7 +10,7 @@
 // 
 define('BANNED_LEVEL', 0);
 define('GUEST_LEVEL', 1);
-define('MEMBER_LEVEL', 2);
+define('PARENT_LEVEL', 2);
 define('STUDENT_LEVEL', 3);
 define('TEACHER_LEVEL', 5);
 define('SCHOOL_LEVEL', 25);
@@ -47,7 +47,7 @@ return [
 
 	'school' => [
 		'create'	=> ADMIN_LEVEL,
-		'update'	=> ADMIN_LEVEL,
+		'update'	=> SCHOOL_LEVEL,
 		'delete'	=> ADMIN_LEVEL,
 		'read'		=> ADMIN_LEVEL,
 		'api'		=> ADMIN_LEVEL,

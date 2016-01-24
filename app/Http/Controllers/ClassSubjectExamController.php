@@ -20,7 +20,7 @@ class ClassSubjectExamController extends Controller
 {
     public function getApi(Request $request)
     {
-        $class_subject_exam = ClassSubjectExam::with('exam.exam_type');
+        $class_subject_exam = ClassSubjectExam::with('exam.assessment_category');
 
         if ($request->has('class_subject_id'))
         {
@@ -33,7 +33,7 @@ class ClassSubjectExamController extends Controller
     public function getView($id)
     {
         $id = (int) $id;
-        $class_subject_exam = ClassSubjectExam::findOrFail($id);
+        $class_subject_exam = ClassSubjectExam::with('exam.assessment_category')->findOrFail($id);
         $users = Profile::whereHas('user.class_student.class_section.subject.class_subject_exam', function($query) use($id) {
                         return $query->where('id', $id);
                     })

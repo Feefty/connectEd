@@ -30,7 +30,7 @@
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="{{ action('HomeController@getIndex') }}"><i class="fa fa-home"></i> Public</a></li>
+                        <li><a href="{{ action('HomeController@getIndex') }}"><i class="fa fa-home fa-fw"></i> Public</a></li>
                         <li><a href="{{ action('SettingsController@getProfile') }}"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li>
                         <li class="divider"></li>
@@ -58,6 +58,9 @@
                                 </li>
                                 <li>
                                     <a href="{{ action('Admin\SubjectController@getIndex') }}"><i class="fa fa-book"></i> Subjects</a>
+                                </li>
+                                <li>
+                                    <a href="{{ action('Admin\AssessmentCategoryController@getIndex') }}"><i class="fa fa-line-chart"></i> Assessment Categories</a>
                                 </li>
                                 <li>
                                     <a href="{{ action('Admin\AchievementController@getIndex') }}"><i class="fa fa-trophy"></i> Achievements</a>

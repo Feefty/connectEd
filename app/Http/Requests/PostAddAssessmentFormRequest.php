@@ -33,6 +33,7 @@ class PostAddAssessmentFormRequest extends Request
             'recorded'          => 'integer',
             'date'              => 'required|date',
             'class_subject_id'  => 'required|exists:class_subjects,id',
+            'assessment_category_id' => 'required|exists:assessment_categories,id',
             
         ];
     }

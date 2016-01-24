@@ -202,7 +202,7 @@
 								      			<label for="exam">Exam</label>
 								      			<select id="exam" name="exam" class="form-control">
 								      				@forelse ($class_subject->subject->exam as $row)
-								      					<option value="{{ $row->id }}">{{ $row->title .' - '. $row->exam_type->name }}</option>
+								      					<option value="{{ $row->id }}">{{ $row->title .' - '. $row->assessment_category->name }}</option>
 								      				@empty
 								      					<option>No available exam</option>
 								      				@endforelse
@@ -371,6 +371,15 @@
 							   				</div>
 							   				
 							   				<div class="form-group">
+							   					<label for="assessment_category_id">Category</label>
+							   					<select id="assessment_category_id" name="assessment_category_id" class="form-control">
+							   						@foreach ($assessment_categories as $row)
+							   							<option value="{{ $row->id }}">{{ $row->name }}</option>
+							   						@endforeach
+							   					</select>
+							   				</div>
+							   				
+							   				<div class="form-group">
 							   					<label for="students">Student</label>
 							   					<select name="students[]" id="students" class="form-control" data-toggle="select" data-live-search="true" multiple>
 							   						@foreach ($users as $row)
@@ -440,7 +449,7 @@
 										</tr>
 										<tr>
 											<th data-field="exam.title" data-formatter="takeExamTitleFormatter" data-sortable="true">Title</th>
-											<th data-field="exam.exam_type.name" data-sortable="true">Type</th>
+											<th data-field="exam.assessment_category.name" data-sortable="true">Category</th>
 											<th data-field="start" data-sortable="true">Start</th>
 											<th data-field="end" data-sortable="true">End</th>
 											<th data-field="created_at" data-sortable="true">Date Added</th>
