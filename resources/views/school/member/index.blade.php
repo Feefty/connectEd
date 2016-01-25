@@ -80,38 +80,38 @@
 						</div><!-- end of #viewAddMemberModal -->
 
 						<ul class="nav nav-tabs">
-							<li class="active"><a data-toggle="tab" href="#lists-tab">List</a></li>
+							<li class="active"><a data-toggle="tab" href="#lists-tab">Members</a></li>
 							<li><a data-toggle="tab" href="#codes-tab">Codes</a></li>
 						</ul>
 
 						<div class="tab-content">
-							
+
 							<div id="lists-tab" class="tab-pane fade in active">
 								<table data-toggle="table" data-url="{{ action('SchoolMemberController@getApi') }}?school_id={{ $school->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
 									<thead>
 										<tr>
-			                    			<th data-formatter="userProfileNameFormatter" data-sortable="true">Name</th>
-			                    			<th data-sortable="true" data-formatter="userGroupNameFormatter">Group</th>
-			                    			<th data-formatter="statusFormatter">Status</th>
+			                    			<th data-sortable="true" data-formatter="userProfileNameFormatter">Name</th>
+			                    			<th data-sortable="true" data-field="user.group.name">Group</th>
+			                    			<th data-sortable="true" data-formatter="statusFormatter">Status</th>
 			                    			<th data-field="created_at" data-sortable="true">Date Added</th>
 			                    			@can ('delete-school-member')
-												<th data-formatter="actionSchoolMemberFormatter" data-align="center">Actions</th>
+												<th data-formatter="actionSchoolMemberFormatter" data-align="center"></th>
 											@endcan
 										</tr>
 									</thead>
 								</table>
 							</div><!-- end of lists tab -->
-							
+
 							<div id="codes-tab" class="tab-pane fade">
 								<table data-toggle="table" data-url="{{ action('VerificationCodeController@getApi') }}?school_id={{ $school->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar2">
 									<thead>
 										<tr>
 			                    			<th data-field="code" data-sortable="true">Code</th>
-			                    			<th data-formatter="groupNameFormatter" data-sortable="true">Membership</th>
+			                    			<th data-field="group.name" data-sortable="true">Membership</th>
 			                    			<th data-formatter="statusFormatter" data-sortable="true">Status</th>
 			                    			<th data-field="created_at" data-sortable="true">Date Added</th>
 			                    			@can ('delete-school-code')
-												<th data-formatter="actionSchoolCodeFormatter" data-align="center">Actions</th>
+												<th data-formatter="actionSchoolCodeFormatter" data-align="center"></th>
 											@endcan
 										</tr>
 									</thead>

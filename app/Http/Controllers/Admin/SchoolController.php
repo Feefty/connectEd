@@ -43,7 +43,7 @@ class SchoolController extends Controller
 
         try
         {
-            $data = $request->only('name', 'description', 'address');
+            $data = $request->only('name', 'description', 'address', 'motto', 'vision', 'mission', 'goal', 'contact_no', 'website');
             $data['created_at'] = new \DateTime;
             School::create($data);
 
@@ -85,7 +85,7 @@ class SchoolController extends Controller
 
         try
         {
-            $data = $request->only('name', 'description', 'address');
+            $data = $request->only('name', 'description', 'address', 'motto', 'vision', 'mission', 'goal', 'contact_no', 'website');
             $data['updated_at'] = new \DateTime;
             $id = (int) $request->school_id;
             School::where('id', $id)->update($data);

@@ -146,5 +146,9 @@ Route::group(['middleware' => 'auth'], function()
 
 		// Exam
 		Route::controller('exam', 'ExamController');
+
+		Route::controller('grade/component', 'GradeComponentController');
+
+		Route::controller('configuration', 'ConfigurationController');
 	});
 });

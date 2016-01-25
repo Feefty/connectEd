@@ -7,6 +7,8 @@ use App\Http\Requests\PostAddSubjectFormRequest;
 use App\Http\Requests\PostEditSubjectFormRequest;
 use App\Http\Controllers\Controller;
 use App\Subject;
+use App\AssessmentCategory;
+use App\GradeComponent;
 use Gate;
 
 class SubjectController extends Controller
@@ -86,7 +88,7 @@ class SubjectController extends Controller
         }
         catch (\Exception $e)
         {
-            return redirect()->back()->withErrors($msg);
+            return redirect()->back()->withErrors($e->getMessage());
         }
 
         return redirect()->back()->with(compact('msg'));
@@ -103,11 +105,7 @@ class SubjectController extends Controller
                 throw new \Exception(trans('error.unauthorized.action'));
             }
 
-        	if (Subject::where('id', $id)->exists())
-        	{
-        		Subject::where('id', $id)->delete();
-        	}
-        	else
+        	if ( ! Subject::findOrFail($id)->delete())
         	{
         		throw new \Exception(trans('subject.not_found'));
         	}
@@ -116,7 +114,7 @@ class SubjectController extends Controller
         }
         catch (\Exception $e)
         {
-            return redirect()->back()->withErrors($msg);
+            return redirect()->back()->withErrors($e->getMessage());
         }
 
         return redirect()->back()->with(compact('msg'));
@@ -125,6 +123,12 @@ class SubjectController extends Controller
 	public function getGradeComponents($id)
 	{
 		$subject = Subject::findOrFail((int) $id);
-		return view('admin.subject.grade.component', compact('subject'));
+		$assessment_categories = AssessmentCategory::whereNotIn('id', function($query) use($id) {
+			$query->select('assessment_category_id')
+					->from('grade_components')
+					->whereRaw('grade_components.subject_id = '. (int) $id);
+		})->orderBy('name')->get();
+		$grade_components_percent = GradeComponent::where('subject_id', (int) $id)->sum('percentage');
+		return view('admin.subject.grade.component', compact('subject', 'assessment_categories', 'grade_components_percent'));
 	}
 }

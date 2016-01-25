@@ -20,10 +20,11 @@ class ClassSubjectExamUserController extends Controller
             $class_subject_exam_user = $class_subject_exam_user->where('class_subject_exam_users.class_subject_exam_id', (int) $request->get('class_subject_exam_id'));
         }
 
-        return $class_subject_exam_user 
+        return $class_subject_exam_user
                         ->leftJoin('profiles', 'profiles.user_id', '=', 'class_subject_exam_users.user_id')
+                        ->leftJoin('class_students', 'class_students.student_id', '=', 'class_subject_exam_users.user_id')
                         ->leftJoin('assessments', function($join) {
-                            $join->on('assessments.student_id', '=', 'class_subject_exam_users.user_id');
+                            $join->on('assessments.class_student_id', '=', 'class_students.id');
                             $join->on('assessments.class_subject_exam_id', '=', 'class_subject_exam_users.class_subject_exam_id');
                         })
                         ->orderBy('profiles.last_name')
@@ -42,7 +43,7 @@ class ClassSubjectExamUserController extends Controller
             {
                 $class_subject_exam_user = ClassSubjectExamUser::where('user_id', $user)
                                         ->where('class_subject_exam_id', (int) $request->class_subject_exam_id);
-                
+
                 if ($class_subject_exam_user->exists())
                 {
                     throw new \Exception(trans('class_subject_exam_user.already_exists'));
@@ -57,7 +58,7 @@ class ClassSubjectExamUserController extends Controller
             }
 
             ClassSubjectExamUser::insert($data);
-            
+
             $msg = trans('class_subject_exam_user.add.success');
         }
         catch (\Exception $e)
@@ -75,7 +76,7 @@ class ClassSubjectExamUserController extends Controller
         try
         {
             ClassSubjectExamUser::findOrFail($id)->delete();
-            
+
             $msg = trans('class_subject_exam_user.delete.success');
         }
         catch (\Exception $e)

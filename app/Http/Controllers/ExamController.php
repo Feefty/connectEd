@@ -24,7 +24,7 @@ class ExamController extends Controller
             return abort(401);
         }
 
-        $exam = Exam::with('subject', 'exam_type', 'class_subject_exam.assessment');
+        $exam = Exam::with('subject', 'assessment_category', 'exam_type');
 
         switch (strtolower(auth()->user()->group->name))
         {
@@ -53,11 +53,11 @@ class ExamController extends Controller
         }
 
     	$school_id = auth()->user()->school_member->school_id;
-    	$exam_types = ExamType::orderBy('name', 'asc')->get();
     	$subjects = Subject::orderby('name', 'asc')->get();
+        $exam_types = ExamType::orderBy('name')->get();
         $assessment_categories = AssessmentCategory::orderBy('name')->get();
 
-    	return view('exam.index', compact('school_id', 'exam_types', 'subjects', 'assessment_categories'));
+    	return view('exam.index', compact('school_id', 'subjects', 'assessment_categories', 'exam_types'));
     }
 
     public function getEdit($id)
@@ -67,12 +67,12 @@ class ExamController extends Controller
             return abort(401);
         }
 
-        $exam = Exam::findOrFail($id);
-        $exam_types = ExamType::orderBy('name', 'asc')->get();
+        $exam = Exam::with('exam_type')->findOrFail($id);
         $subjects = Subject::orderby('name', 'asc')->get();
+        $exam_types = ExamType::orderBy('name')->get();
         $assessment_categories = AssessmentCategory::orderBy('name')->get();
 
-        return view('exam.edit', compact('exam', 'exam_types', 'subjects', 'assessment_categories'));
+        return view('exam.edit', compact('exam', 'subjects', 'assessment_categories', 'exam_types'));
     }
 
     public function getView($id)
@@ -114,7 +114,7 @@ class ExamController extends Controller
         try
         {
             $school_id = auth()->user()->school_member->school_id;
-        	
+
         	if (is_null($school_id))
         	{
         		throw new \Exception(trans('user.no_school'));
@@ -126,7 +126,7 @@ class ExamController extends Controller
             $data['created_by'] = auth()->user()->id;
 
             $exam = Exam::create($data);
-            
+
             $msg = trans('exam.add.success');
         }
         catch (\Exception $e)
@@ -151,7 +151,7 @@ class ExamController extends Controller
             Exam::findOrFail($id)->delete();
             $exam_question = ExamQuestion::where('exam_id', $id)->delete();
             ExamQuestionAnswer::where('exam_question_id', $exam_question->id)->delete();
-            
+
             $msg = trans('exam.delete.success');
         }
         catch (\Exception $e)

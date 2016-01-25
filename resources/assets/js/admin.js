@@ -72,13 +72,44 @@ function schoolNameFormatter(value, row) {
 	return row.school.name;
 }
 
+function verificationStatusFormatter(value, row) {
+	return row.status == 1 ? '<span class="text-success">Active</span>' : '<span value="text-muted">Inactive</span>';
+}
+
+function colorFormatter(value, row) {
+	return '<div style="background: '+ row.color +'">'+ row.color +'</div>';
+}
+
 $(function() {
 	$('[data-toggle="table"]').on('load-success.bs.table', function() {
 		$('[data-toggle="tooltip"]').tooltip();
 	});
 
-	$.get('/assessment/data', function(data) {
-		var ctx = $('#assessment-radar').get(0).getContext("2d");
-		var assessmentRadar = new Chart(ctx).Radar(data);
+	$('[data-toggle="color-picker"]').minicolors({
+		animationSpeed: 50,
+        animationEasing: 'swing',
+        change: null,
+        changeDelay: 0,
+        control: 'hue',
+        dataUris: true,
+        defaultValue: '',
+        format: 'hex',
+        hide: null,
+        hideSpeed: 100,
+        inline: false,
+        keywords: '',
+        letterCase: 'lowercase',
+        opacity: false,
+        position: 'bottom left',
+        show: null,
+        showSpeed: 100,
+        theme: 'bootstrap'
+	});
+
+	var subject_id = $('#gradeComponentChart').data('subject-id');
+
+	$.get('/admin/grade/component/data/'+ subject_id, function(data) {
+		var ctx = $('#gradeComponentChart').get(0).getContext("2d");
+		var gradeComponentChart = new Chart(ctx).Pie(data);
 	});
 });

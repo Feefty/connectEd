@@ -44,7 +44,8 @@ elixir(function(mix) {
             'metisMenu/src/metisMenu.js',
             'startbootstrap-sb-admin-2/dist/js/sb-admin-2.js',
             'bootstrap-table/dist/bootstrap-table.js',
-            'Chart.js/Chart.min.js'
+            'Chart.js/Chart.min.js',
+			'jquery-minicolors/jquery.minicolors.min.js'
         ], 'public/js/admin.vendor.js', vendorDir)
         .scripts([
             'admin.js'
@@ -55,6 +56,7 @@ elixir(function(mix) {
             publicDir + 'css/admin.vendor.css',
             publicDir + 'css/metisMenu.css',
             vendorDir + 'bootstrap-table/dist/bootstrap-table.css',
+            vendorDir + 'jquery-minicolors/jquery.minicolors.css',
             publicDir + 'css/admin.css'
         ], 'public/css/all.admin.css')
         .styles([

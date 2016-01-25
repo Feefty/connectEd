@@ -236,7 +236,7 @@
 
 							   				<div class="form-group">
 							   					<label for="user">Users</label>
-							   					<select id="user" name="users[]" class="form-control" data-toggle="select" multiple>
+							   					<select id="user" name="users[]" class="form-control" data-toggle="select" data-live-search="true" multiple>
 							   						@foreach ($users as $row)
 							   							<option value="{{ $row->user_id }}">{{ ucwords($row->last_name .', '. $row->first_name) }}</option>
 							   						@endforeach
@@ -332,19 +332,19 @@
 							   						</span>
 							   						<input type="text" name="total" id="total" class="form-control" placeholder="Total">
 							   					</div>
-							   					
+
 							   				</div>
-							   				
+
 							   				<div class="form-group">
 							   					<label for="date">Date</label>
 							   					<input type="date" name="date" id="date" class="form-control" value="{{ date('Y-m-d') }}">
 							   				</div>
-							   				
+
 							   				<div class="form-group">
 							   					<label for="source">Source</label>
 							   					<input type="text" name="source" id="source" class="form-control">
 							   				</div>
-							   				
+
 							   				<div class="form-group">
 							   					<div class="row">
 								   					<div class="col-sm-6">
@@ -355,7 +355,7 @@
 									   						@endfor
 									   					</select>
 								   					</div>
-								   					
+
 								   					<div class="col-sm-6">
 									   					<label for="recorded">Recorded</label>
 									   					<div class="radio">
@@ -369,7 +369,7 @@
 								   					</div>
 							   					</div>
 							   				</div>
-							   				
+
 							   				<div class="form-group">
 							   					<label for="assessment_category_id">Category</label>
 							   					<select id="assessment_category_id" name="assessment_category_id" class="form-control">
@@ -378,7 +378,7 @@
 							   						@endforeach
 							   					</select>
 							   				</div>
-							   				
+
 							   				<div class="form-group">
 							   					<label for="students">Student</label>
 							   					<select name="students[]" id="students" class="form-control" data-toggle="select" data-live-search="true" multiple>
@@ -406,7 +406,7 @@
 						</ul>
 
 						<div class="tab-content">
-							
+
 							<div id="schedules-tab" class="tab-pane fade in active">
 								<table data-toggle="table" data-url="{{ action('SubjectScheduleController@getApi') }}?class_subject_id={{$class_subject->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
 									<thead>
@@ -502,7 +502,7 @@
 							</div><!-- end of assessments tab -->
 
 						</div>
-					</div>	
+					</div>
 				</div>
 			</div>
 		</div>

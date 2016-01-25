@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Exam extends Model
 {
     protected $table = 'exams';
-    protected $fillable = ['title', 'created_by', 'created_at', 'updated_at', 'assessment_category_id', 'school_id', 'subject_id'];
+    protected $fillable = ['title', 'created_by', 'created_at', 'updated_at', 'assessment_category_id', 'school_id', 'subject_id', 'exam_type_id'];
 
     public function author()
     {
@@ -37,5 +37,10 @@ class Exam extends Model
     public function class_subject_exam()
     {
         return $this->hasOne('\App\ClassSubjectExam');
+    }
+
+    public function exam_type()
+    {
+        return $this->belongsTo('\App\ExamType');
     }
 }

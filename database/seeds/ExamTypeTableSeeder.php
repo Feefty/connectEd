@@ -13,35 +13,17 @@ class ExamTypeTableSeeder extends Seeder
     public function run()
     {
         ExamType::insert([
-        	[
-        		'name'		=> '1st Prelim',
-        	],
-        	[
-        		'name'		=> '1st Preodical',
-        	],
-        	[
-        		'name'		=> '2nd Prelim',
-        	],
-        	[
-        		'name'		=> '2nd Preodical',
-        	],
-        	[
-        		'name'		=> '3rd Prelim',
-        	],
-        	[
-        		'name'		=> '3rd Preodical',
-        	],
-        	[
-        		'name'		=> '4th Prelim',
-        	],
-        	[
-        		'name'		=> '4th Preodical',
-        	],
+            [
+                'name'      => 'Periodical Exam'
+            ],
+            [
+                'name'      => 'Seatwork'
+            ],
         	[
         		'name'		=> 'Quiz',
         	],
         	[
-        		'name'		=> 'Assignment',
+        		'name'		=> 'Home Work',
         	],
         ]);
     }

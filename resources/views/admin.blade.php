@@ -65,13 +65,10 @@
                                 <li>
                                     <a href="{{ action('Admin\AchievementController@getIndex') }}"><i class="fa fa-trophy"></i> Achievements</a>
                                 </li>
-                                <li>
-                                    <a href="{{ action('Admin\PageController@getIndex') }}"><i class="fa fa-file"></i> Pages</a>
-                                </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-gear"></i> Configurations</a>
+                            <a href="{{ action('Admin\ConfigurationController@getIndex') }}"><i class="fa fa-gear"></i> Configurations</a>
                         </li>
                     </ul>
                 </div>

@@ -31,11 +31,7 @@ var attendanceStatuses = [
 var question_duration;
 
 $(function() {
-	$.get('/assessment/data', function(data) {
-		var ctx = $('#assessment-radar').get(0).getContext("2d");
-		var assessmentRadar = new Chart(ctx).Radar(data);
-	});
-	
+
 	$("time.timeago").timeago();
 	$.ajaxSetup({
         headers: {
@@ -130,8 +126,8 @@ $(function() {
 
 					// display the answers format
 					$answer_block.html($answer_formatted).hide().fadeIn();
-					$answer_block.append("<button type='button' onclick='submitAnswer("+ $timer +", "+ $question.id +", "+ class_subject_exam_id +", \""+ $question.category +"\", "+ class_subject_id +")' class='btn btn-success'>Submit Answer</button>");	
-				
+					$answer_block.append("<button type='button' onclick='submitAnswer("+ $timer +", "+ $question.id +", "+ class_subject_exam_id +", \""+ $question.category +"\", "+ class_subject_id +")' class='btn btn-success'>Submit Answer</button>");
+
 				});
 			}
 			else {
@@ -155,7 +151,7 @@ $(function() {
 
 				// display the answers format
 				$answer_block.html($answer_formatted).hide().fadeIn();
-				$answer_block.append("<button type='button' onclick='submitAnswer("+ $timer +", "+ $question.id +", "+ class_subject_exam_id +", \""+ $question.category +"\", "+ class_subject_id +")' class='btn btn-success'>Submit Answer</button>");	
+				$answer_block.append("<button type='button' onclick='submitAnswer("+ $timer +", "+ $question.id +", "+ class_subject_exam_id +", \""+ $question.category +"\", "+ class_subject_id +")' class='btn btn-success'>Submit Answer</button>");
 			}
 
 			if (time_limit != 0) {
@@ -171,7 +167,7 @@ $(function() {
 					$('#time-holder').html(time_limit--);
 				}, 1000); // every second
 			}
-			
+
 			if ($question.category == 'fillintheblank') {
 				$question.question = $question.question.replace(':answer', '_______');
 			}
@@ -356,7 +352,7 @@ function actionClassSubjectScheduleFormatter(value, row) {
 function actionLessonFormatter(value, row) {
 	var user_id = $('[name="user_id"]').val();
 	var group_name = $('[name="group_name"]').val();
-	
+
 	if (row.posted_by != user_id && group_name == 'teacher')
 	{
 		return "<a href='/lesson/view/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='View'><i class='fa fa-eye'></i></a>";
@@ -435,10 +431,6 @@ function statusFormatter(value, row) {
 	}
 }
 
-function examTitleFormatter(value, row) {
-	return row.exam.title;
-}
-
 function examTakeExamTitleFormatter(value, row) {
 	return "<a href='/class/subject/exam/take/"+ row.class_subject_exam.id +"'>"+ row.title +"</a>";
 }
@@ -456,7 +448,7 @@ function subjectNameFormatter(value, row) {
 }
 
 function userProfileNameFormatter(value, row) {
-	var name = ucwords(row.user.profile.last_name) +', '+ ucwords(row.user.profile.first_name);
+	var name = ucwords(row.user.profile.last_name +', '+ row.user.profile.first_name);
 	return '<a href="/user/'+ row.user.username +'">'+ name +'</a>';
 }
 
@@ -484,10 +476,6 @@ function studentProfileGenderFormatter(value, row) {
 	}
 }
 
-function examTypeFormatter(value, row) {
-	return row.exam_type.name;
-}
-
 function profileGenderFormatter(value, row) {
 	if (row.profile.gender == 1) {
 		return 'Male';
@@ -495,14 +483,6 @@ function profileGenderFormatter(value, row) {
 	else {
 		return 'Female';
 	}
-}
-
-function groupNameFormatter(value, row) {
-	return row.group.name;
-}
-
-function userGroupNameFormatter(value, row) {
-	return row.user.group.name;
 }
 
 function dayFormatter(value, row) {
@@ -526,18 +506,6 @@ function assessmentGradeFormatter(value, row) {
 function assessedProfileNameFormatter(value, row) {
 	var name = ucwords(row.assessed.profile.first_name) +' '+ ucwords(row.assessed.profile.last_name);
 	return '<a href="/user/'+ row.assessed.username +'">'+ name +'</a>';
-}
-
-function examTypeNameFormatter(value, row) {
-	return row.exam_type.name;
-}
-
-function examExamTypeNameFormatter(value, row) {
-	return row.exam.exam_type.name;
-}
-
-function schoolNameFormatter(value, row) {
-	return row.school.name;
 }
 
 function classSectionNameFormatter(value, row) {
@@ -574,11 +542,6 @@ function classStudentSchoolNameFormatter(value, row) {
 	return row.class_student.student.school_member.school.name;
 }
 
-function classStudentProfileNameFormatter(value, row) {
-	var name = ucwords(row.class_student.student.profile.last_name) +', '+ ucwords(row.class_student.student.profile.first_name);
-	return '<a href="/user/'+ row.class_student.student.username +'">'+ name +'</a>';
-}
-
 function assessmentCategoryName(value, row) {
 	return row.assessment_category.name;
 }
@@ -590,3 +553,10 @@ function subjectExamGradeFormatter(value, row) {
 		return row.score +"/"+ row.total +" ("+ Math.round((row.score / row.total) * 100) +"%)";
 	}
 }
+
+$(function() {
+	$.get('/assessment/data', function(data) {
+		var ctx = $('#assessment-radar').get(0).getContext("2d");
+		var assessmentRadar = new Chart(ctx).Radar(data);
+	});
+});

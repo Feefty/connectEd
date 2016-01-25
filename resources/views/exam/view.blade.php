@@ -29,9 +29,10 @@
 						</div>
 					@endif
 
-					<h2 >{{ $exam->title }} <small>{{ $exam->assessment_category->name }}</small></h2>
+					<h2 >{{ $exam->title }} <small>{{ $exam->exam_type->name }}</small></h2>
 					<ul class="list-inline">
 						<li><i class="fa fa-book"></i> {{ '['. $exam->subject->code .'] '. $exam->subject->name .' - '. $exam->subject->description }}</li>
+						<li><i class="fa fa-flag"></i> {{ $exam->assessment_category->name }}</li>
 						<li><i class="fa fa-clock-o"></i> {{ $exam->created_at }}</li>
 					</ul>
 
@@ -316,7 +317,7 @@
 
 												<div id="add-more-holder" data-holder="fillintheblank"></div>
 
-												<button type="button" class="btn btn-info" id="add-more" data-toggle="add-more" data-target="fillintheblank">Add more answer</button>			
+												<button type="button" class="btn btn-info" id="add-more" data-toggle="add-more" data-target="fillintheblank">Add more answer</button>
 												<button type="submit" class="btn btn-primary">Add</button>
 											</form>
 										</div>

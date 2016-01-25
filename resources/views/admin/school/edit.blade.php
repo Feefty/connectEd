@@ -26,7 +26,7 @@
 							<p>{{ session()->get('msg') }}</p>
 						</div>
 					@endif
-                    
+
                     <div class="row">
                     	<div class="col-xs-12">
                     		<div class="panel panel-default">
@@ -42,18 +42,51 @@
 		                    				<label for="school_id">ID</label>
 		                    				<input type="text" id="school_id" class="form-control" value="{{ $school->id }}" readonly>
 		                    			</div>
-		                    			<div class="form-group">
-		                    				<label for="name">Name</label>
-		                    				<input type="text" name="name" id="name" class="form-control" value="{{ $school->name }}">
-		                    			</div>
-		                    			<div class="form-group">
-		                    				<label for="description">Description</label>
-		                    				<textarea id="description" name="description" class="form-control">{{ $school->description }}</textarea>
-		                    			</div>
-		                    			<div class="form-group">
-		                    				<label for="address">Address</label>
-		                    				<textarea id="address" name="address" class="form-control">{{ $school->address }}</textarea>
-		                    			</div>
+
+                						<div class="form-group">
+                							<label for="name">Name</label>
+                							<input type="text" name="name" id="name" class="form-control" value="{{ $school->name }}">
+                						</div>
+
+                						<div class="form-group">
+                							<label for="description">Description</label>
+                							<textarea name="description" id="description" class="form-control">{{ $school->description }}</textarea>
+                						</div>
+
+                						<div class="form-group">
+                							<label for="address">Address</label>
+                							<textarea name="address" id="address" class="form-control">{{ $school->address }}</textarea>
+                						</div>
+
+                						<div class="form-group">
+                							<label for="contact_no">Contact No.</label>
+                							<input type="text" name="contact_no" id="contact_no" class="form-control" value="{{  $school->contact_no }}">
+                						</div>
+
+                						<div class="form-group">
+                							<label for="website">Website</label>
+                							<input type="text" name="website" id="website" class="form-control" value="{{ $school->website }}">
+                						</div>
+
+                						<div class="form-group">
+                							<label for="motto">Motto</label>
+                							<textarea name="motto" id="motto" class="form-control">{{ $school->motto }}</textarea>
+                						</div>
+
+                						<div class="form-group">
+                							<label for="mission">Mission</label>
+                							<textarea name="mission" id="mission" class="form-control">{{ $school->mission }}</textarea>
+                						</div>
+
+                						<div class="form-group">
+                							<label for="vision">Vision</label>
+                							<textarea name="vision" id="vision" class="form-control">{{ $school->vision }}</textarea>
+                						</div>
+
+                						<div class="form-group">
+                							<label for="goal">Goal</label>
+                							<textarea name="goal" id="goal" class="form-control">{{ $school->goal }}</textarea>
+                						</div>
 		                    			<button type="submit" class="btn btn-primary">Save Changes</button> <span class="small text-muted">Last updated: {{ $school->updated_at or 'not yet updated' }}</span>
 		                    		</form>
 		                    	</div>

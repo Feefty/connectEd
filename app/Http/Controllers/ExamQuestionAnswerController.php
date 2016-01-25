@@ -19,7 +19,14 @@ class ExamQuestionAnswerController extends Controller
             return abort(401);
         }
 
-    	$exam_question_answer = new ExamQuestionAnswer;
+        if (strtolower(auth()->user()->group->name) != 'student')
+        {
+            $exam_question_answer = new ExamQuestionAnswer;
+        }
+        else
+        {
+            $exam_question_answer = ExamQuestionAnswer::select('id', 'answer', 'created_at', 'updated_at', 'exam_question_id');
+        }
 
     	if ($request->has('exam_question_id'))
     	{

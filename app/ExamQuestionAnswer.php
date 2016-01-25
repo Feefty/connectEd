@@ -8,7 +8,6 @@ class ExamQuestionAnswer extends Model
 {
     protected $table = 'exam_question_answers';
     protected $fillable = ['answer', 'points', 'created_at', 'updated_at', 'exam_question_id'];
-    public $hidden = ['points'];
 
     public function exam_question()
     {

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // BANNED_LEVEL = banned
 // 1 = guest
@@ -7,7 +7,7 @@
 // 5 = teacher
 // SCHOOL_LEVEL = school
 // ADMIN_LEVEL = admin/deped
-// 
+//
 define('BANNED_LEVEL', 0);
 define('GUEST_LEVEL', 1);
 define('PARENT_LEVEL', 2);
@@ -132,10 +132,10 @@ return [
 	],
 
 	'school-member' => [
-		'create'	=> SCHOOL_LEVEL,
-		'delete'	=> SCHOOL_LEVEL,
-		'update'	=> SCHOOL_LEVEL,
-		'read'		=> SCHOOL_LEVEL,
+		'create'	=> TEACHER_LEVEL,
+		'delete'	=> TEACHER_LEVEL,
+		'update'	=> TEACHER_LEVEL,
+		'read'		=> TEACHER_LEVEL,
 	],
 
 	'school-code' => [
@@ -161,7 +161,7 @@ return [
 
 	'class-section-code' => [
 		'create'	=> [
-			TEACHER_LEVEL, 
+			TEACHER_LEVEL,
 			SCHOOL_LEVEL,
 		],
 		'delete'	=> SCHOOL_LEVEL,
@@ -291,6 +291,13 @@ return [
 	'my-class' => [
 		'read' => TEACHER_LEVEL
 	],
+
+	'page' => [
+		'create' => SCHOOL_LEVEL,
+		'update' => SCHOOL_LEVEL,
+		'delete' => SCHOOL_LEVEL,
+		'read' => GUEST_LEVEL
+	]
 
 
 ];

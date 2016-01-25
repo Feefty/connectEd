@@ -39,10 +39,10 @@
 		   				</div>
 
 		   				<div class="form-group">
-		   					<label for="exam_type">Type</label>
-		   					<select id="exam_type" name="exam_type" class="form-control">
-		   						@foreach ($exam_types as $row)
-		   							@if ($exam->exam_type_id == $row->id)
+		   					<label for="assessment_category_id">Category</label>
+		   					<select id="assessment_category_id" name="assessment_category_id" class="form-control">
+		   						@foreach ($assessment_categories as $row)
+		   							@if ($exam->assessment_category_id == $row->id)
 		   								<option value="{{ $row->id }}" selected>{{ $row->name }}</option>
 		   							@else
 		   								<option value="{{ $row->id }}">{{ $row->name }}</option>

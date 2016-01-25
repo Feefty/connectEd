@@ -23,7 +23,7 @@ class SchoolMemberController extends Controller
             return abort(401);
         }
 
-        $school_member = SchoolMember::with('user.group', 'user.profile');
+        $school_member = SchoolMember::with('user.group', 'user.profile', 'school');
 
         if ($request->has('school_id'))
         {
@@ -136,9 +136,9 @@ class SchoolMemberController extends Controller
             {
                 return abort(401);
             }
-            
+
             SchoolMember::findOrFail($id)->delete();
-            
+
             $msg = trans('school.delete.success.member');
         }
         catch (\Exception $e)

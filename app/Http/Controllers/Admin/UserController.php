@@ -49,11 +49,11 @@ class UserController extends Controller
             $data['status'] = config('auth.status');
             $data['created_at'] = new \DateTime;
             $user = User::create($data);
-            $data = $request->only('first_name', 'middle_name', 'last_name', 'gender', 
+            $data = $request->only('first_name', 'middle_name', 'last_name', 'gender',
                                     'address', 'birthday');
             $data['user_id'] = $user->id;
             Profile::create($data);
-            
+
             $msg = trans('user.add.success');
         }
         catch (\Exception $e)
@@ -71,7 +71,7 @@ class UserController extends Controller
             return abort(401);
         }
 
-        $user = User::select('users.*', 'groups.name as group', 'profiles.*', 
+        $user = User::select('users.*', 'groups.name as group', 'profiles.*',
                         \DB::raw('CONCAT(
                             profiles.first_name,
                             IF(profiles.middle_name <> "",CONCAT(" ",profiles.middle_name," ")," "),
@@ -90,11 +90,7 @@ class UserController extends Controller
             return abort(401);
         }
 
-        $user = User::select('users.*', 'profiles.*')
-                    ->leftJoin('profiles', 'profiles.user_id', '=', 'users.id')
-                    ->leftJoin('groups', 'groups.id', '=', 'users.group_id')
-                    ->findOrFail($id);
-
+        $user = User::with('profile', 'group')->findOrFail($id);
         $groups = Group::orderBy('name')->orderBy('level')->get();
         return view('admin.user.edit', compact('user', 'groups'));
     }
@@ -102,7 +98,7 @@ class UserController extends Controller
     public function postEditAccount(PostEditAccountUserFormRequest $request)
     {
         $msg = [];
-        
+
         try
         {
             $data = $request->only('username', 'email', 'status');
@@ -129,10 +125,10 @@ class UserController extends Controller
     public function postEditProfile(PostEditProfileUserFormRequest $request)
     {
         $msg = [];
-        
+
         try
         {
-            $data = $request->only('first_name', 'middle_name', 'last_name', 'gender', 
+            $data = $request->only('first_name', 'middle_name', 'last_name', 'gender',
                                     'address', 'birthday');
             $data['updated_at'] = new \DateTime;
             $id = (int) $request->user_id;
@@ -160,7 +156,7 @@ class UserController extends Controller
     public function getDelete($id)
     {
         $msg = [];
-        
+
         try
         {
             if (Gate::denies('delete-user'))

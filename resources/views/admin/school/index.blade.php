@@ -41,18 +41,51 @@
 						      		</div>
 							      	<div class="modal-body">
 							      		{!! csrf_field() !!}
-						      			<div class="form-group">
-						      				<label for="name">Name</label>
-						      				<input type="text" name="name" id="name" class="form-control">
-						      			</div>
-						      			<div class="form-group">
-						      				<label for="description">Description</label>
-						      				<textarea id="description" name="description" class="form-control"></textarea>
-						      			</div>
-						      			<div class="form-group">
-						      				<label for="address">Address</label>
-						      				<textarea id="address" name="address" class="form-control"></textarea>
-						      			</div>
+
+                						<div class="form-group">
+                							<label for="name">Name</label>
+                							<input type="text" name="name" id="name" class="form-control">
+                						</div>
+
+                						<div class="form-group">
+                							<label for="description">Description</label>
+                							<textarea name="description" id="description" class="form-control"></textarea>
+                						</div>
+
+                						<div class="form-group">
+                							<label for="address">Address</label>
+                							<textarea name="address" id="address" class="form-control"></textarea>
+                						</div>
+
+                						<div class="form-group">
+                							<label for="contact_no">Contact No.</label>
+                							<input type="text" name="contact_no" id="contact_no" class="form-control">
+                						</div>
+
+                						<div class="form-group">
+                							<label for="website">Website</label>
+                							<input type="text" name="website" id="website" class="form-control">
+                						</div>
+
+                						<div class="form-group">
+                							<label for="motto">Motto</label>
+                							<textarea name="motto" id="motto" class="form-control"></textarea>
+                						</div>
+
+                						<div class="form-group">
+                							<label for="mission">Mission</label>
+                							<textarea name="mission" id="mission" class="form-control"></textarea>
+                						</div>
+
+                						<div class="form-group">
+                							<label for="vision">Vision</label>
+                							<textarea name="vision" id="vision" class="form-control"></textarea>
+                						</div>
+
+                						<div class="form-group">
+                							<label for="goal">Goal</label>
+                							<textarea name="goal" id="goal" class="form-control"></textarea>
+                						</div>
 							      	</div>
 							      	<div class="modal-footer">
 							        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

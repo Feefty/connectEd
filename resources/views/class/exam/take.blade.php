@@ -7,7 +7,7 @@
 			<div class="col-md-8 col-md-offset-2">
 				<div class="panel panel-default margin-lg-top">
 					<div class="panel-heading">
-						<a href="{{ \URL::previous() }}"><i class="fa fa-arrow-left"></i></a> 
+						<a href="{{ \URL::previous() }}"><i class="fa fa-arrow-left"></i></a>
 						Class Subject Exam Take
 					</div>
 					<div class="panel-body">
@@ -18,6 +18,7 @@
 							<ul class="list-inline">
 								<li>{!! $class_subject_exam->status == 1 ? '<i class="fa fa-star"></i> <span class="text-success">Active</span>' : '<i class="fa fa-star-o"></i> <span class="text-muted">Inactive</span>' !!}</li>
 								<li><i class="fa fa-book"></i> {{ $class_subject_exam->exam->subject->name }}</li>
+								<li><i class="fa fa-flag"></i> {{ $class_subject_exam->exam->assessment_category->name }}</li>
 								<li><i class="fa fa-calendar"></i> {{ $class_subject_exam->start .' to '. $class_subject_exam->end }}</li>
 							</ul>
 
@@ -38,7 +39,7 @@
 								The exam has already ended {{ $class_subject_exam->end->diffForHumans() }}.
 							</div>
 						@endif
-					</div>	
+					</div>
 				</div>
 			</div>
 		</div>

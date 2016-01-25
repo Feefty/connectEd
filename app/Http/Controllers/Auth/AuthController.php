@@ -13,6 +13,7 @@ use Auth;
 use App\VerificationCode;
 use App\SchoolMember;
 use App\ClassSectionCode;
+use App\ClassStudent;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -60,7 +61,7 @@ class AuthController extends Controller
             'gender' => 'required',
             'birthday' => 'required|date',
             'address' => 'max:255',
-            'school_code' => 'required|exists:school_codes,code'
+            'verification_code' => 'required'
         ]);
 
         return $validator;
@@ -77,25 +78,16 @@ class AuthController extends Controller
             );
         }
 
-        $code = $request->school_code;
+        $code = $request->verification_code;
         $group_id = (int) $request->group;
-        
+        $data = $request->all();
+
         if ( ! VerificationCode::where(['code' => $code, 'group_id' => $group_id, 'status' => 0])->exists())
         {
             $group = Group::findOrFail((int) $group_id);
             $class_section_code = ClassSectionCode::where(['code' => $code, 'status' => 0]);
-            if (strtolower($group->name) == 'student' && 
-                $class_section_code->exists())
-            {
-                $class_section_code = $class_section_code->first();
-                ClassSectionCode::where('code', $code)->update(['status' => 1]);
-                ClassStudent::create([
-                    'class_section_id'  => (int) $class_section_code->class_section_id,
-                    'class_section_code_id' => $code,
-                    'student_id'        => (int) $request->user()->id
-                ]);
-            }
-            else
+
+            if (strtolower($group->name) != 'student' && ! $class_section_code->exists())
             {
                 return redirect()->back()->withErrors("Invalid membership code.");
             }
@@ -133,16 +125,37 @@ class AuthController extends Controller
             'address'       => $data['address']
         ]);
 
-        $school_code = VerificationCode::where('code', $request->school_code)->first();
+        $verification_code = VerificationCode::where('code', $request->verification_code)->first();
 
-        SchoolMember::create([
-            'user_id'       => $user->id,
-            'school_id'     => $school_code->school_id,
-            'school_code_id'=> $school_code->id,
-            'status'        => 1
-        ]);
+        if ($verification_code)
+        {
+            SchoolMember::create([
+                'user_id'       => $user->id,
+                'school_id'     => $verification_code->school_id,
+                'verification_code_id'=> $verification_code->id,
+                'status'        => 1
+            ]);
 
-        VerificationCode::findOrFail($school_code->id)->update(['status' => 1]);
+            VerificationCode::findOrFail($verification_code->id)->update(['status' => 1]);
+        }
+        else
+        {
+
+            ClassSectionCode::where('code', $data['verification_code'])->update(['status' => 1]);
+            $class_section_code = ClassSectionCode::with('class_section')->where('code', $data['verification_code'])->first();
+
+            SchoolMember::create([
+                'user_id'       => $user->id,
+                'school_id'     => $class_section_code->class_section->school_id,
+                'status'        => 1
+            ]);
+
+            ClassStudent::create([
+                'class_section_id'  => (int) $class_section_code->class_section_id,
+                'class_section_code_id' => (int) $class_section_code->id,
+                'student_id'        => $user->id
+            ]);
+        }
 
         return $user;
     }

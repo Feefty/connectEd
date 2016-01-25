@@ -26,6 +26,8 @@ class PostAddSchoolFormRequest extends Request
     {
         return [
             'name'          => 'required|min:3|max:255|unique:schools',
+            'website'       => 'max:255',
+            'contact_no'    => 'max:255'
         ];
     }
 }

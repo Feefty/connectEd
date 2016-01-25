@@ -7,7 +7,7 @@
 			<div class="col-md-8 col-md-offset-2">
 				<div class="panel panel-default margin-lg-top">
 					<div class="panel-heading">
-						<a href="{{ \URL::previous() }}"><i class="fa fa-arrow-left"></i></a> 
+						<a href="{{ \URL::previous() }}"><i class="fa fa-arrow-left"></i></a>
 						Class Subject Exam View
 					</div>
 					<div class="panel-body">
@@ -62,7 +62,7 @@
 
 							   				<div class="form-group">
 							   					<label for="user">Users</label>
-							   					<select id="user" name="users[]" class="form-control" data-toggle="select" multiple>
+							   					<select id="user" name="users[]" class="form-control" data-toggle="select" data-live-search="true" multiple>
 							   						@foreach ($users as $row)
 							   							<option value="{{ $row->id }}">{{ ucwords($row->last_name .', '. $row->first_name) }}</option>
 							   						@endforeach
@@ -93,7 +93,7 @@
 								</tr>
 							</thead>
 						</table>
-					</div>	
+					</div>
 				</div>
 			</div>
 		</div>

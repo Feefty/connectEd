@@ -42,7 +42,9 @@
 							<div class="col-sm-6">
 								<h3>
 									NEWS & EVENTS
-									<a href="#contentManagerModal" data-toggle="modal" class="btn btn-default btn-xs pull-right"><i class="fa fa-plus"></i> Create Content</a>
+									@can ('create-page')
+										<a href="#contentManagerModal" data-toggle="modal" class="btn btn-default btn-xs pull-right"><i class="fa fa-plus"></i> Create Content</a>
+									@endcan
 								</h3>
 								<table class="table">
 									@foreach ($news as $row)

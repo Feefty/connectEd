@@ -27,7 +27,7 @@
 							</button>
 							<p>{{ session()->get('msg') }}</p>
 						</div>
-					@endif	
+					@endif
 
 					<div id="toolbar">
 						@can ('manage-exam')
@@ -60,6 +60,15 @@
 						   					<input type="text" name="title" id="title" class="form-control">
 						   				</div>
 
+										<div class="form-group">
+											<label for="exam_type_id">Type</label>
+											<select class="form-control" name="exam_type_id" id="exam_type_id">
+												@foreach ($exam_types as $row)
+													<option value="{{ $row->id }}">{{ $row->name }}</option>
+												@endforeach
+											</select>
+										</div>
+
 						   				<div class="form-group">
 						   					<label for="assessment_category_id">Category</label>
 						   					<select id="assessment_category_id" name="assessment_category_id" class="form-control">
@@ -86,24 +95,37 @@
 					</div><!-- end of #viewCreateExamModal -->
 					@endcan
 
-					<table data-toggle="table" data-url="{{ action('ExamController@getApi') }}?school_id={{ $school_id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
-						<thead>
-							<tr>
-								@can ('take-exam', 'strict')
-
-									<th data-formatter="examTakeExamTitleFormatter" data-sortable="true">Title</th>
-								@else
+					@if (strtolower(auth()->user()->group->name) == 'student')
+						<table data-toggle="table" data-url="{{ action('ClassSubjectExamController@getApi') }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar3">
+							<thead>
+								<tr>
+									<th colspan="6" data-align="center">Exams</th>
+								</tr>
+								<tr>
+									<th data-field="exam.title" data-formatter="takeExamTitleFormatter" data-sortable="true">Title</th>
+									<th data-field="exam.assessment_category.name" data-sortable="true">Category</th>
+									<th data-field="start" data-sortable="true">Start</th>
+									<th data-field="end" data-sortable="true">End</th>
+									<th data-field="created_at" data-sortable="true">Date Added</th>
+								</tr>
+							</thead>
+						</table>
+					@else
+						<table data-toggle="table" data-url="{{ action('ExamController@getApi') }}?school_id={{ $school_id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
+							<thead>
+								<tr>
 									<th data-field="title" data-sortable="true">Title</th>
-								@endcan
-								<th data-formatter="assessmentCategoryName" data-sortable="true">Category</th>
-								<th data-formatter="subjectNameFormatter" data-sortable="true">Subject</th>
-								<th data-field="created_at" data-sortable="true">Date Added</th>
-								@can ('manage-exam')
-									<th data-formatter="actionExamFormatter" data-align="center"></th>
-								@endcan
-							</tr>
-						</thead>
-					</table>
+									<th data-field="assessment_category.name" data-sortable="true">Category</th>
+									<th data-field="exam_type.name" data-sortable="true">Type</th>
+									<th data-field="subject.name" data-sortable="true">Subject</th>
+									<th data-field="created_at" data-sortable="true">Date Added</th>
+									@can ('manage-exam')
+										<th data-formatter="actionExamFormatter" data-align="center"></th>
+									@endcan
+								</tr>
+							</thead>
+						</table>
+					@endif
 				</div>
 			</div>
 		</div>

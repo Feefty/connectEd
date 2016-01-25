@@ -27,6 +27,8 @@ class PostEditSchoolFormRequest extends Request
         return [
             'school_id'     => 'required|exists:schools,id',
             'name'          => 'required|min:3|max:255|unique:schools,name,'. $this->school_id,
+            'website'       => 'max:255',
+            'contact_no'    => 'max:255'
         ];
     }
 }
