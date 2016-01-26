@@ -33,14 +33,14 @@
 			        @can ('read-my-class', 'strict')
 			        	<li><a href="{{ action('MyClassController@getIndex') }}"><i class="fa fa-hourglass-1"></i> My Class</a></li>
 			        @endcan
-			        @can ('manage-lesson')
+			        @can ('manage-lesson', 'strict')
 			        	<li><a href="{{ action('LessonController@getIndex') }}"><i class="fa fa-book"></i> Lessons</a></li>
 			        @endcan
 			        @can ('read-assessment', 'strict')
 			        	<li><a href="{{ action('AssessmentController@getIndex') }}"><i class="fa fa-line-chart"></i> Assessment</a></li>
 			        @endcan
 			        @can ('read-class-section', 'strict')
-			        	<li><a href="{{ action('ClassSectionController@getIndex') }}">Sections</a></li>
+			        	<li><a href="{{ action('ClassSectionController@getIndex') }}"><i class="fa fa-thumb-tack"></i> Sections</a></li>
 			        @endcan
 			        @can ('read-school-member', 'strict')
 			        	<li><a href="{{ action('SchoolMemberController@getIndex') }}"><i class="fa fa-users"></i> Members</a></li>
@@ -62,10 +62,11 @@
 			        	</li>
 			        	<li><a href="#"><i class="fa fa-envelope"></i></a></li>
 				        <li class="dropdown">
-			          		<a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->username }} <span class="caret"></span></a>
+			          		<a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ ucwords(strtolower(auth()->user()->profile->first_name)) }} <span class="caret"></span></a>
 			          		<ul class="dropdown-menu">
 			          			@can ('read-dashboard')
-				      			<li><a href="{{ action('Admin\DashboardController@getIndex') }}"><i class="fa fa-lock fa-fw"></i> Admin</a></li>
+    				      			<li><a href="{{ action('Admin\DashboardController@getIndex') }}"><i class="fa fa-lock fa-fw"></i> Admin</a></li>
+                                    <li class="divider"></li>
 				      			@endcan
 			          			<li><a href="{{ action('ProfileController@getIndex') }}"><i class="fa fa-user fa-fw"></i> Profile</a></li>
 					        	<li><a href="{{ action('SettingsController@getProfile') }}"><i class="fa fa-gear fa-fw"></i> Settings</a></li>
@@ -90,7 +91,7 @@
 	<footer>
 		<p class="text-center small"><a href="{{ action('HomeController@getIndex') }}">{{ config('app.brand') }}</a> {{ date('Y') }} &copy; All rights reserved.</p>
 	</footer>
-	
+
 	<script src="{{ asset('/js/app.vendor.js') }}"></script>
 	<script src="{{ asset('/js/app.js') }}"></script>
 </body>

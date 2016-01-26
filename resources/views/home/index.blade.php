@@ -30,14 +30,11 @@
 						<div class="row">
 							<div class="col-sm-6">
 								<h3>ANNOUNCEMENTS</h3>
-								<table class="table">
+								<ul class="list-unstyled">
 									@foreach ($announcements as $row)
-										<tr>
-											<h4>{{ $row->title }}</h4>
-											{{ $row->content }}
-										</tr>
+										<li><a href="{{ action('PageController@getView', $row->id) }}">{{ $row->title }}</a> by <a href="{{ action('ProfileController@getUser', $row->user->username) }}" class="text-muted">{{ $row->user->username }}</a> <span class="small text-muted"><i class="fa fa-clock-o"></i> {{ $row->created_at->diffForHumans() }}</span></li>
 									@endforeach
-								</table>
+								</ul>
 							</div>
 							<div class="col-sm-6">
 								<h3>
@@ -46,14 +43,11 @@
 										<a href="#contentManagerModal" data-toggle="modal" class="btn btn-default btn-xs pull-right"><i class="fa fa-plus"></i> Create Content</a>
 									@endcan
 								</h3>
-								<table class="table">
+								<ul class="list-unstyled">
 									@foreach ($news as $row)
-										<tr>
-											<h4>{{ $row->title }}</h4>
-											{{ $row->content }}
-										</tr>
+										<li><a href="{{ action('PageController@getView', $row->id) }}">{{ $row->title }}</a> by <a href="{{ action('ProfileController@getUser', $row->user->username) }}" class="text-muted">{{ $row->user->username }}</a> <span class="small text-muted"><i class="fa fa-clock-o"></i> {{ $row->created_at->diffForHumans() }}</span></li>
 									@endforeach
-								</table>
+								</ul>
 							</div>
 						</div>
 					</div>

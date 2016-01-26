@@ -34,7 +34,7 @@ return [
 	],
 
 	'dashboard' => [
-		'read'		=> SCHOOL_LEVEL,
+		'read'		=> ADMIN_LEVEL,
 	],
 
 	'group' => [
@@ -70,11 +70,23 @@ return [
 	],
 
 	'lesson' => [
-		'create'	=> TEACHER_LEVEL,
-		'delete'	=> TEACHER_LEVEL,
-		'update'	=> TEACHER_LEVEL,
+		'create'	=> [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+		'delete'	=> [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+		'update'	=> [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
 		'read'		=> STUDENT_LEVEL,
-		'manage'	=> TEACHER_LEVEL,
+		'manage'	=> [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
 	],
 
 	'student-achievement' => [
@@ -132,10 +144,22 @@ return [
 	],
 
 	'school-member' => [
-		'create'	=> TEACHER_LEVEL,
-		'delete'	=> TEACHER_LEVEL,
-		'update'	=> TEACHER_LEVEL,
-		'read'		=> TEACHER_LEVEL,
+		'create'	=> [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+		'delete'	=> [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+		'update'	=> [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+		'read'		=> [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
 	],
 
 	'school-code' => [

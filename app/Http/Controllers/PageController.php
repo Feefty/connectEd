@@ -10,6 +10,12 @@ use App\Page;
 
 class PageController extends Controller
 {
+    public function getView($id)
+    {
+        $page = Page::findOrFail($id);
+        return view('page.view', compact('page'));
+    }
+
     public function postAdd(PostAddPageFormRequest $request)
     {
         $msg = [];
@@ -18,10 +24,14 @@ class PageController extends Controller
         {
             $data = $request->only('title', 'content', 'privacy', 'category');
             $data['updated_by'] = auth()->user()->id;
-            $data['school_id'] = auth()->user()->school_member->school_id;
+
+            if (auth()->user()->group->level < 90)
+            {
+                $data['school_id'] = auth()->user()->school_member->school_id;
+            }
 
             Page::create($data);
-            
+
             $msg = trans('page.add.success');
         }
         catch (\Exception $e)
