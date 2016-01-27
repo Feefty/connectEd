@@ -29,6 +29,7 @@ class PostEditExamFormRequest extends Request
             'title'         => 'required|max:255',
             'assessment_category_id'     => 'required|exists:assessment_categories,id',
             'subject'       => 'required|exists:subjects,id',
+            'exam_type_id'  => 'required|exists:exam_types,id'
         ];
     }
 }

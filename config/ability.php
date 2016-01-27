@@ -18,6 +18,10 @@ define('ADMIN_LEVEL', 99);
 
 return [
 
+	'parent' => [
+		'read'		=> PARENT_LEVEL
+	],
+
 	'user' => [
 		'create'	=> ADMIN_LEVEL,
 		'update'	=> ADMIN_LEVEL,

@@ -12829,3 +12829,16 @@ body {
 .mark-as-read {
   cursor: pointer;
 }
+
+.profile-sidebar li {
+  background: #c7c7c7;
+  border-radius: 3px;
+}
+
+.user-icon-16 {
+  width: 16px;
+}
+
+.user-icon-24 {
+  width: 24px;
+}

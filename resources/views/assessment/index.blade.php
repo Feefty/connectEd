@@ -36,7 +36,7 @@
 								<tr>
 									<th data-sortable="true" data-formatter="assessmentGradeFormatter">Grade</th>
 									<th data-sortable="true" data-field="source">Source</th>
-									<th data-sortable="true" data-field="term">Term</th>
+									<th data-sortable="true" data-field="quarter">Quarter</th>
 									<th data-sortable="true" data-formatter="assessmentClassSubjectNameFormatter">Subject</th>
 									@if (strtolower(auth()->user()->group->name) != 'student' || strtolower(auth()->user()->group->name) != 'parent')
 										<th data-sortable="true" data-formatter="classStudentSchoolNameFormatter">School</th>

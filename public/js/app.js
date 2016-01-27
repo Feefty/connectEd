@@ -1,3 +1,8 @@
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+};
+
 var days = [
 	'',
 	'Monday',
@@ -115,13 +120,13 @@ $(function() {
 						$answer_formatted += "</ul>";
 					}
 					else {
-						$answer_formatted = "<ul class='list-unstyled'>";
+						$answer_formatted = "<ul class='list-unstyled>";
 
 						for (var i = 0; i < parseInt(data_answer); i++) {
 							$answer_formatted += "<li><input type='text' name='answer[]' class='form-control'></li>";
 						}
 
-						$answer_formatted += "</ul>";
+						$answer_formatted += "</ul class='list-unstyled>";
 					}
 
 					// display the answers format
@@ -169,7 +174,7 @@ $(function() {
 			}
 
 			if ($question.category == 'fillintheblank') {
-				$question.question = $question.question.replace(':answer', '_______');
+				$question.question = $question.question.replaceAll(':answer', '_______');
 			}
 
 			var question_formatted = "<div class='well'>"+ $question.question +"</div>";
@@ -447,6 +452,11 @@ function subjectNameFormatter(value, row) {
 	return '['+ row.subject.code +'] '+ row.subject.name +' - '+ row.subject.description;
 }
 
+function profileNameFormatter(value, row) {
+	var name = ucwords(row.profile.last_name +', '+ row.profile.first_name);
+	return '<a href="/user/'+ row.username +'">'+ name +'</a>';
+}
+
 function userProfileNameFormatter(value, row) {
 	var name = ucwords(row.user.profile.last_name +', '+ row.user.profile.first_name);
 	return '<a href="/user/'+ row.user.username +'">'+ name +'</a>';
@@ -483,6 +493,10 @@ function profileGenderFormatter(value, row) {
 	else {
 		return 'Female';
 	}
+}
+
+function yearLevelFormatter(value, row) {
+	return row.level +' - '+ row.level+1;
 }
 
 function dayFormatter(value, row) {
@@ -535,7 +549,11 @@ function recordedFormatter(value, row) {
 }
 
 function assessmentClassSubjectNameFormatter(value, row) {
-	return '['+ row.class_subject.subject.code +'] '+ row.class_subject.subject.name +' - '+ row.class_subject.subject.description;
+    if (row.class_subject == null) {
+        return '['+ row.class_subject_exam.class_subject.subject.code +'] '+ row.class_subject_exam.class_subject.subject.name +' - '+ row.class_subject_exam.class_subject.subject.description;
+    } else {
+        return '['+ row.class_subject.subject.code +'] '+ row.class_subject.subject.name +' - '+ row.class_subject.subject.description;
+    }
 }
 
 function classStudentSchoolNameFormatter(value, row) {
@@ -554,8 +572,14 @@ function subjectExamGradeFormatter(value, row) {
 	}
 }
 
+function classStudentClassSectionTeacherProfileNameFormatter(value, row) {
+	var name = ucwords(row.class_student.class_section.teacher.profile.last_name +', '+ row.class_student.class_section.teacher.profile.first_name);
+	return '<a href="/user/'+ row.class_student.class_section.teacher.username +'">'+ name +'</a>';
+}
+
 $(function() {
-	$.get('/assessment/data', function(data) {
+    var student_id = $('#assessment-radar').data('student-id');
+	$.get('/assessment/data?student_id='+ student_id, function(data) {
 		var ctx = $('#assessment-radar').get(0).getContext("2d");
 		var assessmentRadar = new Chart(ctx).Radar(data);
 	});

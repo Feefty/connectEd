@@ -92,7 +92,7 @@ class ExamController extends Controller
 
         try
         {
-            $data = $request->only('title', 'assessment_category_id');
+            $data = $request->only('title', 'assessment_category_id', 'exam_type_id');
             $data['subject_id'] = $request->subject;
 
             Exam::findOrFail($request->exam_id)->update($data);
@@ -120,7 +120,7 @@ class ExamController extends Controller
         		throw new \Exception(trans('user.no_school'));
         	}
 
-            $data = $request->only('title', 'assessment_category_id');
+            $data = $request->only('title', 'assessment_category_id', 'exam_type_id');
             $data['subject_id'] = (int) $request->subject;
             $data['school_id'] = $school_id;
             $data['created_by'] = auth()->user()->id;

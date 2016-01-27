@@ -27,8 +27,9 @@
 							<p>{{ session()->get('msg') }}</p>
 						</div>
 					@endif
-					
+
 					<div id="toolbar">
+						@can ('create-class-section')
 						<div class="dropdown">
 							<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
 							<ul class="dropdown-menu">
@@ -37,6 +38,7 @@
 								@endcan
 							</ul>
 						</div>
+						@endcan
 					</div>
 
 					@can ('create-class-section')
@@ -108,7 +110,7 @@
 								<th data-field="name">Name</th>
 								<th data-formatter="teacherProfileNameFormatter">Adviser</th>
 								<th data-formatter="gradeLevelFormatter">Level</th>
-								<th data-field="year">Year</th>
+								<th data-formatter="yearLevelFormatter">Year</th>
 								<th data-formatter="statusFormatter">Status</th>
 								@can ('update-class-section')
 								<th data-formatter="actionUpdateClassSectionFormatter" data-align="center">Actions</th>

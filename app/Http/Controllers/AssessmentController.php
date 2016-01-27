@@ -14,12 +14,21 @@ use App\AssessmentCategory;
 
 class AssessmentController extends Controller
 {
-    public function getData()
+    public function getData(Request $request)
     {
         $data = [];
-        
-        $labels = Subject::whereHas('class_subject.class_section.student', function($query) {
-            $query->where('student_id', auth()->user()->id);
+
+        if ($request->has('student_id'))
+        {
+            $student_id = (int) $request->student_id;
+        }
+        else
+        {
+            die(401);
+        }
+
+        $labels = Subject::whereHas('class_subject.class_section.student', function($query) use($student_id) {
+            $query->where('student_id', $student_id);
         })->orderBy('name')->get();
 
         $data_label = [];
@@ -30,14 +39,17 @@ class AssessmentController extends Controller
             $data_label[] = $label->name;
 
 
-            $assessment = Assessment::whereHas('class_student.student', function($query) {
-                $query->where('id', auth()->user()->id);
+            $assessment = Assessment::whereHas('class_student.student', function($query) use($student_id) {
+                $query->where('id', $student_id);
             })
             ->whereHas('class_subject.subject', function($query) use($label) {
                 $query->where('id', $label->id);
             })
-            ->where('recorded', 1)
+            ->orWhereHas('class_subject_exam.class_subject.subject', function($query) use($label) {
+                $query->where('id', $label->id);
+            })
             ->get();
+
             $score = (double) $assessment->sum('score');
             $total = (double) $assessment->sum('total');
 
@@ -72,7 +84,10 @@ class AssessmentController extends Controller
 
     public function getApi(Request $request)
     {
-        $assessment = Assessment::with('class_student.student.profile', 'class_student.student.school_member.school', 'class_subject_exam.subject', 'class_subject.subject');
+        $assessment = Assessment::with('class_student.student.profile',
+                                        'class_student.student.school_member.school',
+                                        'class_subject_exam.class_subject.subject',
+                                        'class_subject.subject');
 
         if ($request->has('class_subject_id'))
         {
@@ -135,7 +150,7 @@ class AssessmentController extends Controller
             }
 
             Assessment::insert($data);
-            
+
             $msg = trans('assessment.add.success');
         }
         catch (\Exception $e)

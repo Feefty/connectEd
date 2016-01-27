@@ -30,6 +30,9 @@
 			        @can ('read-my-room', 'strict')
 			        	<li><a href="{{ action('RoomController@getIndex') }}"><i class="fa fa-umbrella"></i> My Room</a></li>
 			        @endcan
+			        @can ('read-parent', 'strict')
+			        	<li><a href="{{ action('ParentController@getIndex') }}"><i class="fa fa-heart"></i> Parent</a></li>
+			        @endcan
 			        @can ('read-my-class', 'strict')
 			        	<li><a href="{{ action('MyClassController@getIndex') }}"><i class="fa fa-hourglass-1"></i> My Class</a></li>
 			        @endcan
@@ -46,7 +49,7 @@
 			        	<li><a href="{{ action('SchoolMemberController@getIndex') }}"><i class="fa fa-users"></i> Members</a></li>
 			        @endcan
 			        @can ('read-exam', 'strict')
-			        <li><a href="{{ action('ExamController@getIndex') }}"><i class="fa fa-file-text"></i> Exams</a></li>
+			            <li><a href="{{ action('ExamController@getIndex') }}"><i class="fa fa-file-text"></i> Exams</a></li>
 			        @endcan
 		      	</ul>
 		      	<ul class="nav navbar-nav navbar-right">
@@ -62,7 +65,7 @@
 			        	</li>
 			        	<li><a href="#"><i class="fa fa-envelope"></i></a></li>
 				        <li class="dropdown">
-			          		<a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ ucwords(strtolower(auth()->user()->profile->first_name)) }} <span class="caret"></span></a>
+			          		<a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('/img/user/'. strtolower(auth()->user()->group->name)) }}.png" class="user-icon-24" /> {{ ucwords(strtolower(auth()->user()->profile->first_name)) }} <span class="caret"></span></a>
 			          		<ul class="dropdown-menu">
 			          			@can ('read-dashboard')
     				      			<li><a href="{{ action('Admin\DashboardController@getIndex') }}"><i class="fa fa-lock fa-fw"></i> Admin</a></li>

@@ -61,7 +61,7 @@ class AuthController extends Controller
             'gender' => 'required',
             'birthday' => 'required|date',
             'address' => 'max:255',
-            'verification_code' => 'required'
+            'verification_code' => 'required',
         ]);
 
         return $validator;
@@ -114,6 +114,8 @@ class AuthController extends Controller
             'group_id' => (int) $data['group'],
             'status' => config('auth.status')
         ]);
+        
+        $parent_code = $user->id . str_random(10);
 
         Profile::insert([
             'user_id'       => $user->id,
@@ -122,7 +124,8 @@ class AuthController extends Controller
             'last_name'     => $data['last_name'],
             'gender'        => $data['gender'],
             'birthday'      => $data['birthday'],
-            'address'       => $data['address']
+            'address'       => $data['address'],
+            'parent_code'   => $parent_code
         ]);
 
         $verification_code = VerificationCode::where('code', $request->verification_code)->first();

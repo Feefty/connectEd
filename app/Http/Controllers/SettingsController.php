@@ -8,6 +8,7 @@ use App\Http\Requests\PostSaveSettingsProfileFormRequest;
 use App\Http\Requests\PostSaveSettingsPasswordFormRequest;
 use App\Http\Requests\PostSaveSettingsEmailFormRequest;
 use App\Http\Requests\PostAddPhotoFormRequest;
+use App\Http\Requests\PostSaveSettingsParentCodeFormRequest;
 use App\Http\Controllers\Controller;
 use App\Profile;
 use App\User;
@@ -32,7 +33,7 @@ class SettingsController extends Controller
     public function postProfile(PostSaveSettingsProfileFormRequest $request)
     {
     	$msg = [];
-        
+
     	try
     	{
     		$data = $request->only('first_name', 'last_name', 'middle_name', 'birthday', 'address', 'gender');
@@ -155,7 +156,7 @@ class SettingsController extends Controller
     	{
     		$user = $request->user();
     		$old_password = $user->password;
-            
+
     		if (Hash::check($request->cpassword, $old_password))
     		{
 	    		$user->email = $request->email;
@@ -175,18 +176,28 @@ class SettingsController extends Controller
 
     	return redirect()->back()->with(compact('msg'));
     }
-    public function getPrivacy()
+    public function getParentCode()
     {
-        if (Gate::denies('privacy-settings'))
-        {
-            abort(401);
-        }
-
-    	return view('settings.privacy');
+        $parent_code = auth()->user()->profile->parent_code;
+        return view('settings.parent_code', compact('parent_code'));
     }
 
-    public function postPrivacy(PostSaveSettingsProfileFormRequest $request)
+    public function postParentCode(PostSaveSettingsParentCodeFormRequest $request)
     {
+    	$msg = [];
 
+    	try
+    	{
+    		$parent_code = auth()->user()->id . str_random(10);
+            Profile::where('user_id', auth()->user()->id)->update(['parent_code' => $parent_code]);
+
+    		$msg = trans('settings.parent_code.success');
+    	}
+    	catch (\Exception $e)
+    	{
+    		return redirect()->back()->withErrors($e->getMessage());
+    	}
+
+    	return redirect()->back()->with(compact('msg'));
     }
 }

@@ -5,7 +5,11 @@
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
-				<div class="panel-heading"><a href="{{ \URL::previous() }}"><i class="fa fa-arrow-left"></i></a> Exam Question</div>
+				<div class="panel-heading"><a href="{{ \URL::previous() }}"><i class="fa fa-arrow-left"></i></a> Exam Question
+					@can ('update-exam-question')
+						<a href="{{ action('ExamQuestionController@getEdit', $exam_question->id) }}" class="pull-right"><i class="fa fa-pencil"></i></a>
+					@endcan
+				</div>
 				<div class="panel-body">
 					<h2>{{ $exam_question->exam->title }}</h2>
 					<div class="well">

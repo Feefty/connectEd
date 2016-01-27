@@ -5,7 +5,11 @@
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
-				<div class="panel-heading"><a href="{{ \URL::previous() }}"><i class="fa fa-arrow-left"></i></a> Exams</div>
+				<div class="panel-heading"><a href="{{ \URL::previous() }}"><i class="fa fa-arrow-left"></i></a> Exams
+					@can ('update-exam')
+						<a href="{{ action('ExamQuestionController@getEdit', $exam->id) }}" data-toggle="tooltip" title="Edit" class="pull-right"><i class="fa fa-pencil"></i></a>
+					@endcan
+				</div>
 				<div class="panel-body">
 
 					@if (count($errors) > 0)
@@ -29,7 +33,7 @@
 						</div>
 					@endif
 
-					<h2 >{{ $exam->title }} <small>{{ $exam->exam_type->name }}</small></h2>
+					<h2>{{ $exam->title }} <small>{{ $exam->exam_type->name }}</small></h2>
 					<ul class="list-inline">
 						<li><i class="fa fa-book"></i> {{ '['. $exam->subject->code .'] '. $exam->subject->name .' - '. $exam->subject->description }}</li>
 						<li><i class="fa fa-flag"></i> {{ $exam->assessment_category->name }}</li>

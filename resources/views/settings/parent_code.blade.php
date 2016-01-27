@@ -5,7 +5,7 @@
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="panel panel-default">
-				<div class="panel-heading">Settings Password</div>
+				<div class="panel-heading">Settings E-mail</div>
 				<div class="panel-body">
 					<ul class="breadcrumb">
 						<li><a href="{{ action('SettingsController@getProfile') }}">Profile</a></li>
@@ -34,22 +34,16 @@
 							<p>{{ session()->get('msg') }}</p>
 						</div>
 					@endif
-					<form action="{{ action('SettingsController@postPassword') }}" method="POST">
+					<form action="{{ action('SettingsController@postParentCode') }}" method="POST">
 						{!! csrf_field() !!}
 						<div class="form-group">
-							<label for="npassword">New Password</label>
-							<input type="password" name="npassword" id="npassword" class="form-control">
+							<label for="parent_code">Parent Codde</label>
+							<input type="text" name="parent_code" id="parent_code" class="form-control" value="{{ $parent_code }}" readonly>
+                            <div class="text-helper">
+                                Give this code to your parent.
+                            </div>
 						</div>
-						<div class="form-group">
-							<label for="npassword_confirmation">Confirm New Password</label>
-							<input type="password" name="npassword_confirmation" id="npassword_confirmation" class="form-control">
-						</div>
-						<hr>
-						<div class="form-group">
-							<label for="cpassword">Current Password</label>
-							<input type="password" name="cpassword" id="cpassword" class="form-control">
-						</div>
-						<button class="btn btn-primary">Save Changes</button>
+						<button class="btn btn-primary">Regenerate</button>
 					</form>
 				</div>
 			</div>

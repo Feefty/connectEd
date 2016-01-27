@@ -187,7 +187,8 @@ class ClassSubjectExamController extends Controller
                     'class_subject_exam_id' => (int) $request->class_subject_exam_id,
                     'class_subject_id'      => (int) $request->class_subject_id,
                     'date'                  => new \DateTime,
-                    'assessment_category_id'=> $assessment_category_id
+                    'assessment_category_id'=> $assessment_category_id,
+                    'quarter'               => (int) $exam_question->exam->quarter
                 ];
 
                 Assessment::create($data);

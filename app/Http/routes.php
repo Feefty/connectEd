@@ -91,6 +91,8 @@ Route::group(['middleware' => 'auth'], function()
 
 	Route::controller('page', 'PageController');
 
+	Route::controller('parent', 'ParentController');
+
 	Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function()
 	{
 		Route::get('dashboard', 'DashboardController@getIndex');

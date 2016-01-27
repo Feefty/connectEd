@@ -1,10 +1,18 @@
 @extends('main')
 
 @section('content')
-
 	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
-			<div class="panel panel-default">
+		<div class="col-md-2 profile-sidebar" id="profile-spy">
+			<ul class="nav nav-pills nav-stacked col-md-2" data-spy="affix">
+				<li><a href="#basic-info"><i class="fa fa-info fa-fw"></i> Basic Information</a></li>
+				@if (strtolower($user->group->name) == 'student')
+					<li><a href="#performance"><i class="fa fa-line-chart fa-fw"></i> Performances</a></li>
+					<li><a href="#grades"><i class="fa fa-file-text-o fa-fw"></i> Grades</a></li>
+				@endif
+			</ul>
+		</div>
+		<div class="col-md-8">
+			<div class="panel panel-default" id="basic-info">
 				<div class="panel-heading">Profile</div>
 				<div class="panel-body">
 					<h3>{{ ucwords($user->profile->first_name .' '. $user->profile->last_name) }}</h3>
@@ -24,7 +32,7 @@
 									</tr>
 									<tr>
 										<td><strong>Gender</strong></td>
-										<td>: 
+										<td>:
 											@if ($user->profile->gender == 1)
 												<i class="fa fa-mars"></i> Male
 											@else
@@ -68,12 +76,17 @@
 			</div>
 
 			@if (strtolower($user->group->name) == 'student')
-				<div class="panel panel-default">
-					<div class="panel-heading">My Performance</div>
+				<div class="panel panel-default" id="performance">
+					<div class="panel-heading">Performances</div>
 					<div class="panel-body">
-						<canvas id="assessment-radar" class="center-block" width="500" height="500"></canvas>
+						<canvas id="assessment-radar" data-student-id="{{ $user->id }}" class="center-block" width="500" height="500"></canvas>
 					</div>
 				</div>
+					<div class="panel panel-default" id="grades">
+						<div class="panel-heading">Grades</div>
+						<div class="panel-body">
+						</div>
+					</div>
 			@endif
 		</div>
 	</div>
