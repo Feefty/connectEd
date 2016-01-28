@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Assessment extends Model
 {
     protected $table = 'assessments';
-    protected $fillable = ['assessment_category_id', 'score', 'total', 'source', 'class_subject_exam_id', 'term', 'recorded', 'class_student_id', 'class_subject_id', 'date'];
+    protected $fillable = ['assessment_category_id', 'score', 'total', 'source', 'class_subject_exam_id', 'quarter', 'recorded', 'class_student_id', 'class_subject_id', 'date'];
 
 
     public function class_student()

@@ -16,7 +16,7 @@
 						@if (strtotime($class_subject_exam->start) < time() && strtotime($class_subject_exam->end) > time())
 							<h2>{{ $class_subject_exam->exam->title }} <small>{{ $class_subject_exam->exam->exam_type->name }}</small></h2>
 							<ul class="list-inline">
-								<li>{!! $class_subject_exam->status == 1 ? '<i class="fa fa-star"></i> <span class="text-success">Active</span>' : '<i class="fa fa-star-o"></i> <span class="text-muted">Inactive</span>' !!}</li>
+								<li>{{ config('quarter_calendar')[$class_subject_exam->quarter] }}</li>
 								<li><i class="fa fa-book"></i> {{ $class_subject_exam->exam->subject->name }}</li>
 								<li><i class="fa fa-flag"></i> {{ $class_subject_exam->exam->assessment_category->name }}</li>
 								<li><i class="fa fa-calendar"></i> {{ $class_subject_exam->start .' to '. $class_subject_exam->end }}</li>

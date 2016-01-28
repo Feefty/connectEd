@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class PostAddClassSubjectExamFormRequest extends Request
+class PostEditClassSubjectExamFormRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class PostAddClassSubjectExamFormRequest extends Request
     public function rules()
     {
         return [
-            'exam'          => 'required|exists:exams,id',
+            'class_subject_exam_id' => 'required|exists:class_subject_exams,id',
             'start_date'    => 'required|date_format:Y-m-d',
             'start_time'    => 'required|date_format:H:i',
             'end_date'      => 'required|date_format:Y-m-d',

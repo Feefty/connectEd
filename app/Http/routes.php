@@ -93,6 +93,8 @@ Route::group(['middleware' => 'auth'], function()
 
 	Route::controller('parent', 'ParentController');
 
+	Route::controller('grade_summary', 'GradeSummaryController');
+
 	Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function()
 	{
 		Route::get('dashboard', 'DashboardController@getIndex');
@@ -152,5 +154,7 @@ Route::group(['middleware' => 'auth'], function()
 		Route::controller('grade/component', 'GradeComponentController');
 
 		Route::controller('configuration', 'ConfigurationController');
+
+		Route::controller('quarter_calendar', 'QuarterCalendarController');
 	});
 });

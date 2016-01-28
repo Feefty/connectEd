@@ -325,6 +325,14 @@ return [
 		'update' => SCHOOL_LEVEL,
 		'delete' => SCHOOL_LEVEL,
 		'read' => GUEST_LEVEL
+	],
+
+	'grade-summary' => [
+		'create' => TEACHER_LEVEL,
+		'update' => TEACHER_LEVEL,
+		'delete' => TEACHER_LEVEL,
+		'manage' => TEACHER_LEVEL,
+		'read' => PARENT_LEVEL
 	]
 
 

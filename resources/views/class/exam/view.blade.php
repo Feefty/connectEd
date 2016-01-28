@@ -9,6 +9,7 @@
 					<div class="panel-heading">
 						<a href="{{ \URL::previous() }}"><i class="fa fa-arrow-left"></i></a>
 						Class Subject Exam View
+						<a href="{{ action('ClassSubjectExamController@getEdit', $class_subject_exam->id) }}" title="Edit" data-toggle="tooltip" class="pull-right"><i class="fa fa-pencil"></i></a>
 					</div>
 					<div class="panel-body">
 						@if (count($errors) > 0)
@@ -33,7 +34,12 @@
 						@endif
 
 						<h2>{{ $class_subject_exam->exam->title }} <small>{{ $class_subject_exam->exam->assessment_category->name }}</small></h2>
-
+						<ul class="list-inline">
+							<li>{{ config('quarter_calendar')[$class_subject_exam->quarter] }}</li>
+							<li><i class="fa fa-book"></i> {{ $class_subject_exam->exam->subject->name }}</li>
+							<li><i class="fa fa-flag"></i> {{ $class_subject_exam->exam->assessment_category->name }}</li>
+							<li><i class="fa fa-calendar"></i> {{ $class_subject_exam->start .' to '. $class_subject_exam->end }}</li>
+						</ul>
 						<div class="text-helper">
 							The list of students who are able to take the exam.
 						</div>

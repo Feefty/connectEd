@@ -65,6 +65,9 @@
                                 <li>
                                     <a href="{{ action('Admin\AchievementController@getIndex') }}"><i class="fa fa-trophy"></i> Achievements</a>
                                 </li>
+                                <li>
+                                    <a href="{{ action('Admin\QuarterCalendarController@getIndex') }}"><i class="fa fa-calendar"></i> Quater Calendar</a>
+                                </li>
                             </ul>
                         </li>
                         <li>

@@ -33,6 +33,12 @@ var attendanceStatuses = [
 	"Late"
 ];
 
+var remarks = [
+    "Failed",
+    "Passed",
+    "Dropped"
+];
+
 var question_duration;
 
 $(function() {
@@ -416,7 +422,8 @@ function actionExamFormatter(value, row) {
 }
 
 function actionClassSubjectExamFormatter(value, row) {
-	return ["<a href='/class/subject/exam/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-remove'></i></a>",
+	return ["<a href='/class/subject/exam/edit/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Edit'><i class='fa fa-pencil'></i></a>",
+            "<a href='/class/subject/exam/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-remove'></i></a>",
 			"<a href='/class/subject/exam/view/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='View'><i class='fa fa-eye'></i></a>"].join(" ");
 }
 
@@ -493,6 +500,10 @@ function profileGenderFormatter(value, row) {
 	else {
 		return 'Female';
 	}
+}
+
+function remarksFormatter(value, row) {
+    return remarks[row.remarks];
 }
 
 function yearLevelFormatter(value, row) {

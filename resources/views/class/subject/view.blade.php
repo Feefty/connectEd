@@ -108,6 +108,17 @@
 							@endcan
 						</div>
 
+						<div id="toolbar6">
+							@can ('manage-grade-summary')
+							<div class="dropdown">
+								<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
+								<ul class="dropdown-menu">
+									<li><a href="#addGradeSummaryModal" data-toggle="modal"><i class="fa fa-plus"></i> Add Grade Summary</a></li>
+								</ul>
+							</div>
+							@endcan
+						</div>
+
 						<div class="modal fade" id="addScheduleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 							<div class="modal-dialog" role="document">
 						 		<div class="modal-content">
@@ -243,17 +254,14 @@
 							   					</select>
 							   				</div>
 
-							   				<div class="form-group">
-							   					<label for="status">Status</label>
-							   					<div class="radio">
-							   						<label>
-							   							<input type="radio" name="status" id="status" value="1" checked> Active
-							   						</label>
-							   						<label>
-							   							<input type="radio" name="status" id="status" value="0"> Inactive
-							   						</label>
-							   					</div>
-							   				</div>
+											<div class="form-group">
+												<label for="quarter">Quarter</label>
+												<select class="form-control" name="quarter" id="quarter">
+													@for ($i = 1; $i <= 4; $i++)
+														<option value="{{ $i }}">{{ $i }}</option>
+													@endfor
+												</select>
+											</div>
 								      	</div>
 								      	<div class="modal-footer">
 								        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -348,8 +356,8 @@
 							   				<div class="form-group">
 							   					<div class="row">
 								   					<div class="col-sm-6">
-								   						<label for="term">Term</label>
-									   					<select id="term" name="term" class="form-control">
+								   						<label for="term">Quarter</label>
+									   					<select id="quarter" name="quarter" class="form-control">
 									   						@for ($i = 1; $i <= 4; $i++)
 									   							<option value="{{ $i }}">{{ $i }}</option>
 									   						@endfor
@@ -397,12 +405,67 @@
 						  	</div>
 						</div><!-- end of modal -->
 
+						<div class="modal fade" id="addGradeSummaryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+							<div class="modal-dialog" role="document">
+						 		<div class="modal-content">
+							      	<form action="{{ action('GradeSummaryController@postAdd') }}" method="post">
+							    		<div class="modal-header">
+							        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							        		<h4 class="modal-title" id="myModalLabel">Grade Summary</h4>
+							      		</div>
+								      	<div class="modal-body">
+								      		{!! csrf_field() !!}
+
+								      		<input type="hidden" name="class_subject_id" value="{{ $class_subject->id }}">
+
+											<div class="form-group">
+												<label for="student_id">Student</label>
+												<select class="form-control" data-toggle="select" name="student_id" id="student_id" data-live-search="true">
+													@foreach ($users as $row)
+														<option value="{{ $row->id }}">{{ ucwords(strtolower($row->last_name .', '. $row->first_name)) }}</option>
+													@endforeach
+												</select>
+											</div>
+
+											<div class="form-group">
+												<label for="grade">Grade</label>
+												<input type="text" name="grade" class="form-control">
+											</div>
+
+											<div class="form-group">
+												<label for="school_year">School Year</label>
+												<select class="form-control" name="school_year" id="school_year">
+													@for ($year = date('Y'); $year >= 1950; $year--)
+														<option value="{{ $year }}">{{ $year }}</option>
+													@endfor
+												</select>
+											</div>
+
+							      			<div class="form-group">
+												<label for="quarter">Quarter</label>
+												<select class="form-control" name="quarter" id="quarter">
+													@for ($i = 1; $i <= 4; $i++)
+														<option value="{{ $i }}">{{ $i }}</option>
+													@endfor
+												</select>
+							      			</div>
+								      	</div>
+								      	<div class="modal-footer">
+								        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								        	<button type="submit" class="btn btn-primary">Add</button>
+								      	</div>
+							      	</form>
+						    	</div>
+						  	</div>
+						</div><!-- end of modal -->
+
 						<ul class="nav nav-tabs">
 							<li class="active"><a data-toggle="tab" href="#schedules-tab"><i class="fa fa-calendar"></i> Schedules</a></li>
 							<li><a data-toggle="tab" href="#lessons-tab"><i class="fa fa-book"></i> Lessons</a></li>
 							<li><a data-toggle="tab" href="#exams-tab"><i class="fa fa-file-text"></i> Exams</a></li>
 							<li><a data-toggle="tab" href="#attendance-tab"><i class="fa fa-star"></i> Attendance</a></li>
 							<li><a data-toggle="tab" href="#assessments-tab"><i class="fa fa-line-chart"></i> Assessments</a></li>
+							<li><a data-toggle="tab" href="#grade-summary-tab"><i class="fa fa-pie-chart"></i> Grade Summary</a></li>
 						</ul>
 
 						<div class="tab-content">
@@ -445,15 +508,16 @@
 								<table data-toggle="table" data-url="{{ action('ClassSubjectExamController@getApi') }}?class_subject_id={{ $class_subject->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar3">
 									<thead>
 										<tr>
-											<th colspan="6" data-align="center">Exams</th>
+											<th colspan="7" data-align="center">Exams</th>
 										</tr>
 										<tr>
 											<th data-field="exam.title" data-formatter="takeExamTitleFormatter" data-sortable="true">Title</th>
 											<th data-field="exam.assessment_category.name" data-sortable="true">Category</th>
 											<th data-field="start" data-sortable="true">Start</th>
 											<th data-field="end" data-sortable="true">End</th>
+											<th data-field="quarter" data-sortable="true">Quarter</th>
 											<th data-field="created_at" data-sortable="true">Date Added</th>
-											@can ('manage-exam')
+											@can ('manage-class-subject-exam')
 												<th data-formatter="actionClassSubjectExamFormatter" data-align="center"></th>
 											@endcan
 										</tr>
@@ -472,9 +536,6 @@
 											<th data-searchable="true" data-formatter="studentProfileNameFormatter" data-sortable="true">Student</th>
 											<th data-searchable="true" data-formatter="attendanceStatusFormatter" data-align="center" data-sortable="true">Status</th>
 											<th data-searchable="true" data-field="date" data-sortable="true">Date</th>
-											@can ('manage-exam')
-												<th data-formatter="actionClassSubjectExamFormatter" data-align="center"></th>
-											@endcan
 										</tr>
 									</thead>
 								</table>
@@ -490,12 +551,30 @@
 										<tr>
 											<th data-sortable="true" data-formatter="assessmentGradeFormatter">Grade</th>
 											<th data-sortable="true" data-field="source">Source</th>
-											<th data-sortable="true" data-field="term">Term</th>
+											<th data-sortable="true" data-field="quarter">Quarter</th>
 											@if (strtolower(auth()->user()->group->name) != 'student')
 												<th data-formatter="classStudentProfileNameFormatter">Student</th>
 											@endif
 											<th data-sortable="true" data-formatter="recordedFormatter">Recorded</th>
 											<th data-sortable="true" data-field="created_at">Date</th>
+										</tr>
+									</thead>
+								</table>
+							</div><!-- end of assessments tab -->
+
+
+							<div id="grade-summary-tab" class="tab-pane fade">
+								<table data-toggle="table" data-url="{{ action('GradeSummaryController@getApi') }}?class_subject_id={{ $class_subject->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar6">
+									<thead>
+										<tr>
+											<th colspan="9" data-align="center">Grade Summary</th>
+										</tr>
+										<tr>
+											<th data-sortable="true" data-formatter="studentProfileNameFormatter">Student</th>
+											<th data-sortable="true" data-field="grade">Grade</th>
+											<th data-sortable="true" data-field="term">Quarter</th>
+											<th data-sortable="true" data-field="created_at">Date Added</th>
+											<th data-sortable="true" data-formatter="remarksFormatter">Remarks</th>
 										</tr>
 									</thead>
 								</table>

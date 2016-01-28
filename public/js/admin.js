@@ -46,6 +46,12 @@ function assessmentCategoryFormatter(value, row) {
 			"<a href='/admin/assessment/category/delete/"+ row.id +"' class='btn btn-default btn-xs' title='Delete' data-toggle='tooltip' onclick='return confirm(\"Are you sure you want to delete this achievement?\")'><i class='fa fa-remove'></i></a>"].join(" ");
 }
 
+function quarterCalendarActionFormatter(value, row) {
+	return ["<a href='/admin/quarter_calendar/view/"+ row.school_year +"' class='btn btn-default btn-xs' title='View' data-toggle='tooltip'><i class='fa fa-eye'></i></a>",
+			"<a href='/admin/quarter_calendar/edit/"+ row.school_year +"' class='btn btn-default btn-xs' title='Edit' data-toggle='tooltip'><i class='fa fa-pencil'></i></a>",
+			"<a href='/admin/quarter_calendar/delete/"+ row.school_year +"' class='btn btn-default btn-xs' title='Delete' data-toggle='tooltip' onclick='return confirm(\"Are you sure you want to delete this quarter calendar?\")'><i class='fa fa-remove'></i></a>"].join(" ");
+}
+
 function usernameFormatter(value, row) {
 	return "<a href='/admin/user/"+ row.id +"/view'>"+ row.username +"</a>";
 }
@@ -78,6 +84,10 @@ function verificationStatusFormatter(value, row) {
 
 function colorFormatter(value, row) {
 	return '<div style="background: '+ row.color +'">'+ row.color +'</div>';
+}
+
+function schoolYearFormatter(value, row) {
+	return row.school_year +' - '+ (row.school_year+1);
 }
 
 $(function() {

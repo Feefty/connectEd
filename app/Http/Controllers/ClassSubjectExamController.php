@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\PostAddClassSubjectExamFormRequest;
+use App\Http\Requests\PostEditClassSubjectExamFormRequest;
 use App\Http\Controllers\Controller;
 use App\ClassSubjectExamUser;
 use App\ClassSubjectExam;
@@ -36,6 +37,34 @@ class ClassSubjectExamController extends Controller
         }
 
         return $class_subject_exam->with('exam')->orderBy('created_at', 'desc')->get();
+    }
+
+    public function getEdit($id)
+    {
+        $class_subject_exam = ClassSubjectExam::findOrFail((int) $id);
+        return view('class.exam.edit', compact('class_subject_exam'));
+    }
+
+    public function postEdit(PostEditClassSubjectExamFormRequest $request)
+    {
+        $msg = [];
+
+        try
+        {
+        	$data = $request->only('quarter');
+        	$data['start'] = $request->start_date .' '. $request->start_time;
+        	$data['end'] = $request->end_date .' '. $request->end_time;
+            
+            ClassSubjectExam::findOrFail((int) $request->class_subject_exam_id)->update($data);
+
+            $msg = trans('class_subject_exam.edit.success');
+        }
+        catch (\Exception $e)
+        {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+
+        return redirect()->back()->with(compact('msg'));
     }
 
     public function getView($id)
@@ -233,12 +262,11 @@ class ClassSubjectExamController extends Controller
 
         try
         {
-        	$data = $request->only('class_subject_id');
+        	$data = $request->only('class_subject_id', 'quarter');
         	$data['start'] = $request->start_date .' '. $request->start_time;
         	$data['end'] = $request->end_date .' '. $request->end_time;
         	$data['exam_id'] = $request->exam;
             $data['created_at'] = new \DateTime;
-            $data['status'] = $request->status;
 
             $class_subject_exam = ClassSubjectExam::create($data);
 
