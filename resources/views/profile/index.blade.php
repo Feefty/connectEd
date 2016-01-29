@@ -15,7 +15,67 @@
 			<div class="panel panel-default" id="basic-info">
 				<div class="panel-heading">Profile</div>
 				<div class="panel-body">
+					@if (count($errors) > 0)
+					    <div class="alert alert-danger">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+					        <ul>
+					            @foreach ($errors->all() as $error)
+					                <li>{{ $error }}</li>
+					            @endforeach
+					        </ul>
+					    </div>
+					@endif
+					@if (session()->has('msg'))
+						<div class="alert alert-info">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<p>{{ session()->get('msg') }}</p>
+						</div>
+					@endif
+
 					<h3>{{ ucwords($user->profile->first_name .' '. $user->profile->last_name) }}</h3>
+					@if (auth()->user()->id != $user->id)
+						<ul class="list-inline">
+							<li><a href="#composeMessageModal" data-toggle="modal"><i class="fa fa-envelope"></i> Send Message</a></li>
+							<li><a href="#"><i class="fa fa-heart"></i> Follow</a></li>
+							<li><a href="#"><i class="fa fa-ban"></i> Block</a></li>
+						</ul>
+
+
+						<div class="modal fade" id="composeMessageModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+							    		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							    		<h4 class="modal-title" id="modalLabel">Message</h4>
+							   		</div>
+							   		<div class="modal-body">
+							   			<form method="POST" action="{{ action('MessageController@postAdd') }}">
+							   				{!! csrf_field() !!}
+							   				<input type="hidden" name="to_id" value="{{ $user->id }}">
+
+							   				<div class="form-group">
+							   					<label for="subject">Subject</label>
+							   					<input type="text" name="subject" id="subject" class="form-control">
+							   				</div>
+
+							   				<div class="form-group">
+							   					<label for="content">Content</label>
+							   					<textarea id="content" name="content" class="form-control"></textarea>
+							   				</div>
+
+						   					<div class="margin-lg-top">
+						   						<button type="submit" class="btn btn-primary">Compose</button>
+						   					</div>
+							   			</form>
+							   		</div>
+							   	</div>
+							</div>
+						</div><!-- end of #viewCreateLessonModal -->
+					@endif
 					<table>
 						<tr>
 							<td rowspan="5">
@@ -64,7 +124,7 @@
 											<td>: [{{ config('grade_level')[$user->class_student->class_section->level] }}] {{ $user->class_student->class_section->name }}</td>
 										</tr>
 										<tr>
-											<td><strong>Adivser</strong></td>
+											<td><strong>Adviser</strong></td>
 											<td>: <a href="{{ action('ProfileController@getUser', $user->class_student->class_section->teacher->username) }}">{{ ucwords(strtolower($user->class_student->class_section->teacher->profile->last_name .', '. $user->class_student->class_section->teacher->profile->first_name)) }}</a></td>
 										</tr>
 									@endif

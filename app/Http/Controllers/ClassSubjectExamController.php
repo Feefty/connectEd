@@ -17,6 +17,7 @@ use App\Assessment;
 use App\Profile;
 use App\ClassStudent;
 use App\Exam;
+use App\Notification;
 
 class ClassSubjectExamController extends Controller
 {
@@ -54,7 +55,7 @@ class ClassSubjectExamController extends Controller
         	$data = $request->only('quarter');
         	$data['start'] = $request->start_date .' '. $request->start_time;
         	$data['end'] = $request->end_date .' '. $request->end_time;
-            
+
             ClassSubjectExam::findOrFail((int) $request->class_subject_exam_id)->update($data);
 
             $msg = trans('class_subject_exam.edit.success');
@@ -124,8 +125,7 @@ class ClassSubjectExamController extends Controller
                                 $query->where('user_id', auth()->user()->id);
                             })
                             ->whereHas('exam.class_subject_exam', function($query) {
-                                $query->where('status', 1)
-                                    ->where('start', '<=', \DB::raw('NOW()'))
+                                $query->where('start', '<=', \DB::raw('NOW()'))
                                     ->where('end', '>=', \DB::raw('NOW()'));
                             })
                             ->has('student_exam_question_answer', '<', 1)
@@ -221,6 +221,16 @@ class ClassSubjectExamController extends Controller
                 ];
 
                 Assessment::create($data);
+
+                $target_id = $class_student->student->id;
+
+                $data = [
+                    'target_id'     => $target_id,
+                    'subject'       => 'Examination Completed',
+                    'content'       => 'Your grade for '. $exam_question->exam->title .' is '. $score .'/'. $total .' ('. ($score/$total)*100 .'%).',
+                    'url'           => action('ClassSubjectExamController@getTake', $request->class_subject_exam_id)
+                ];
+                Notification::create($data);
             }
 
             return ["status" => "success"];

@@ -63,7 +63,7 @@
 			        			<li><a href="javascript:void(0)"><strong>Notifications</strong><br><span class="text-muted">No new notification</span></a></li>
 			        		</ul>
 			        	</li>
-			        	<li><a href="#"><i class="fa fa-envelope"></i></a></li>
+			        	<li><a href="{{ action('MessageController@getIndex') }}"><i class="fa fa-envelope" id="message-icon"></i></a></li>
 				        <li class="dropdown">
 			          		<a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('/img/user/'. strtolower(auth()->user()->group->name)) }}.png" class="user-icon-24" /> {{ ucwords(strtolower(auth()->user()->profile->first_name)) }} <span class="caret"></span></a>
 			          		<ul class="dropdown-menu">

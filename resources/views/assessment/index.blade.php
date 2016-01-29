@@ -31,7 +31,7 @@
 							</div>
 						@endif
 
-						<table data-url="{{ action('AssessmentController@getApi') }}" data-toggle="table" data-search="true">
+						<table data-url="{{ action('AssessmentController@getApi') }}" data-toggle="table" data-search="true" data-pagination="true" data-refresh="true">
 							<thead>
 								<tr>
 									<th data-sortable="true" data-formatter="assessmentGradeFormatter">Grade</th>

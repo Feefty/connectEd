@@ -44,12 +44,6 @@ class GroupTableSeeder extends Seeder
         		'created_at'=> new \DateTime
         	],
         	[
-        		'name'		=> 'Guest',
-        		'level'		=> 1,
-        		'description' => '',
-        		'created_at'=> new \DateTime
-        	],
-        	[
         		'name'		=> 'Banned',
         		'level'		=> 0,
         		'description' => '',

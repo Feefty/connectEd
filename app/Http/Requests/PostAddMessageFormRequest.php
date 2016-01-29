@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
-use Gate;
 
-class PostAddAchievementFormRequest extends Request
+class PostAddMessageFormRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +13,7 @@ class PostAddAchievementFormRequest extends Request
      */
     public function authorize()
     {
-        return ! Gate::denies('create-achievement');
+        return true;
     }
 
     /**
@@ -25,8 +24,9 @@ class PostAddAchievementFormRequest extends Request
     public function rules()
     {
         return [
-            'title'         => 'required|max:255|unique:achievements',
-            'icon'          => 'required'
+            'subject'       => 'required|max:255',
+            'content'       => 'required',
+            'to_id'         => 'required|exists:users,id'
         ];
     }
 }

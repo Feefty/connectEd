@@ -90,6 +90,10 @@ function schoolYearFormatter(value, row) {
 	return row.school_year +' - '+ (row.school_year+1);
 }
 
+function achievementIconFormatter(value, row) {
+	return '<img src="/img/achievements/'+ row.icon +'" alt="" width="50">';
+}
+
 $(function() {
 	$('[data-toggle="table"]').on('load-success.bs.table', function() {
 		$('[data-toggle="tooltip"]').tooltip();

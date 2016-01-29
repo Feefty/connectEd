@@ -7,7 +7,7 @@
 			<div class="col-md-8 col-md-offset-2">
 				<div class="panel panel-default margin-lg-top">
 					<div class="panel-heading">
-						<a href="{{ \URL::previous() }}"><i class="fa fa-arrow-left"></i></a> 
+						<a href="{{ \URL::previous() }}"><i class="fa fa-arrow-left"></i></a>
 						<strong>Section {{ $section->name }}</strong> <span class="text-warning small">{{ config('grade_level')[$section->level] }}</span>
 					</div>
 					<div class="panel-body">
@@ -143,7 +143,7 @@
 								   				@endcan
 								   			</div>
 
-								   			@can ('create-class-subject')
+								   			@can ('create-class-section-code')
 									   			<div id="generateClassCodeForm" class="collapse margin-lg-top">
 									   				<form action="{{ action('ClassSectionCodeController@postGenerate') }}" method="POST">
 									   					{!! csrf_field() !!}
@@ -179,13 +179,13 @@
 
 						<table class="table">
 							<tr>
-								<td><strong>Adviser:</strong> {{ ucwords($section->teacher->profile->first_name .' '. $section->teacher->profile->last_name) }}</td>
+								<td><strong>Adviser:</strong> <a href="{{ action('ProfileController@getUser', $section->teacher->username) }}">{{ ucwords($section->teacher->profile->first_name .' '. $section->teacher->profile->last_name) }}</a></td>
 							</tr>
 							<tr>
-								<td><strong>Year:</strong> {{ $section->year }} - {{ $section->year+1 }}</td>
+								<td><strong>School Year:</strong> {{ $section->year }} - {{ $section->year+1 }}</td>
 							</tr>
 							<tr>
-								<td><strong>School:</strong> {{ $section->school->name }}</td>
+								<td><strong>School:</strong> <a href="{{ action('SchoolController@getIndex', $section->school->id) }}">{{ $section->school->name }}</a></td>
 							</tr>
 						</table>
 
@@ -208,7 +208,7 @@
 								</tr>
 							</thead>
 						</table>
-					</div>	
+					</div>
 				</div>
 			</div>
 		</div>

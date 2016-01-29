@@ -34,7 +34,7 @@
 					<div class="modal fade" id="addAchievementModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 						<div class="modal-dialog" role="document">
 					 		<div class="modal-content">
-						      	<form action="{{ action('Admin\AchievementController@postAdd') }}" method="post">
+						      	<form action="{{ action('Admin\AchievementController@postAdd') }}" method="post" enctype="multipart/form-data">
 						    		<div class="modal-header">
 						        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						        		<h4 class="modal-title" id="myModalLabel">Add Achievement</h4>
@@ -49,6 +49,13 @@
 						      				<label for="description">Description</label>
 						      				<textarea id="description" name="description" class="form-control"></textarea>
 						      			</div>
+                                        <div class="form-group">
+                                            <label for="icon">Icon</label>
+                                            <input type="file" name="icon" id="icon">
+                                            <div class="help-block">
+                                                200x200 pixels are the recommended size.
+                                            </div>
+                                        </div>
 							      	</div>
 							      	<div class="modal-footer">
 							        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -64,6 +71,7 @@
                     		<table data-toggle="table" data-url="{{ action('Admin\AchievementController@getAPI') }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
                     			<thead>
                     				<tr>
+                                        <th data-formatter="achievementIconFormatter">Icon</th>
                     					<th data-field="title" data-sortable="true">Title</th>
                     					<th data-field="description">Description</th>
                     					<th data-field="updated_at" data-sortable="true">Last Updated</th>

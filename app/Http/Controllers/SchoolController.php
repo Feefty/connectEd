@@ -14,6 +14,7 @@ class SchoolController extends Controller
     public function getIndex($id)
     {
     	$school = School::with('member', 'class_section')->findOrFail((int) $id);
+
     	return view('school.index', compact('school'));
     }
 
@@ -38,7 +39,7 @@ class SchoolController extends Controller
         {
             $data = $request->only('name', 'address', 'description', 'website', 'contact_no', 'mission', 'vision', 'motto', 'goal');
             School::findOrFail((int) $request->school_id)->update($data);
-            
+
             $msg = trans('school.edit.success');
         }
         catch (\Exception $e)

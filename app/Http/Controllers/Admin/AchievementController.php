@@ -8,6 +8,7 @@ use App\Http\Requests\PostEditAchievementFormRequest;
 use App\Http\Controllers\Controller;
 use App\Achievement;
 use Gate;
+use Image;
 
 class AchievementController extends Controller
 {
@@ -38,13 +39,27 @@ class AchievementController extends Controller
         try
         {
             $data = $request->only('title', 'description');
+			$icon = $request->file('icon');
+
+			if ($icon->isValid())
+			{
+				$name = time() .'_'. str_random(15) .'.'. $icon->getClientOriginalExtension();
+				$path = public_path() . config('achievement.icon.path') . $name;
+				Image::make($icon)->fit(200)->save($path);
+				$data['icon'] = $name;
+			}
+			else
+			{
+				throw new \Exception('Invalid file icon.');
+			}
+
             Achievement::create($data);
-            
+
             $msg = trans('achievement.add.success');
         }
         catch (\Exception $e)
         {
-            return redirect()->back()->withErrors($msg);
+            return redirect()->back()->withErrors($e->getMessage());
         }
 
         return redirect()->back()->with(compact('msg'));
@@ -80,8 +95,36 @@ class AchievementController extends Controller
         {
             $data = $request->only('title', 'description');
             $id = (int) $request->achievement_id;
-            Achievement::where('id', $id)->update($data);
-            
+
+			if ($request->hasFile('icon'))
+			{
+				$icon = $request->file('icon');
+
+				if ($icon->isValid())
+				{
+					$name = time() .'_'. str_random(15) .'.'. $icon->getClientOriginalExtension();
+					$path = public_path() . config('achievement.icon.path') . $name;
+					Image::make($icon)->fit(200)->save($path);
+					$data['icon'] = $name;
+
+					$old_icon = Achievement::findOrFail($id)->icon;
+
+					if ($old_icon)
+					{
+						if (file_exists($file_name = public_path() . config('achievement.icon.path'). $old_icon))
+	                    {
+	                        unlink($file_name);
+	                    }
+					}
+				}
+				else
+				{
+					throw new \Exception('Invalid file icon.');
+				}
+			}
+
+            Achievement::findOrFail($id)->update($data);
+
             $msg = trans('achievement.edit.success');
         }
         catch (\Exception $e)
@@ -111,7 +154,7 @@ class AchievementController extends Controller
         	{
         		throw new \Exception(trans('achievement.not_found'));
         	}
-            
+
             $msg = trans('achievement.delete.success');
         }
         catch (\Exception $e)

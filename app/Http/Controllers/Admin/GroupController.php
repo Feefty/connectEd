@@ -39,12 +39,12 @@ class GroupController extends Controller
         {
             $data = $request->only('name', 'level', 'description');
             Group::create($data);
-            
+
             $msg = trans('group.add.success');
         }
         catch (\Exception $e)
         {
-            return redirect()->back()->withErrors($msg);
+            return redirect()->back()->withErrors($e->getMessage());
         }
 
         return redirect()->back()->with(compact('msg'));
@@ -83,7 +83,7 @@ class GroupController extends Controller
             $data = $request->only('name', 'level', 'description');
             $id = (int) $request->group_id;
             Group::where('id', $id)->update($data);
-            
+
             $msg = trans('group.update.success');
         }
         catch (\Exception $e)
@@ -97,7 +97,7 @@ class GroupController extends Controller
     public function getDelete($id)
     {
         $msg = [];
-        
+
         try
         {
             if (Gate::denies('delete-group'))
@@ -106,12 +106,12 @@ class GroupController extends Controller
             }
 
             $group = Group::findOrFail($id)->delete();
-            
+
             $msg = trans('group.delete.success');
         }
         catch (\Exception $e)
         {
-            return redirect()->back()->withErrors($msg);
+            return redirect()->back()->withErrors($e->getMessage());
         }
 
         return redirect()->back()->with(compact('msg'));

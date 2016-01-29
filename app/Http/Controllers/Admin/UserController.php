@@ -23,6 +23,7 @@ class UserController extends Controller
 
         return User::select('users.*', 'groups.name as group', \DB::raw('(IF(users.status=1,"Active","Inactive")) as status'))
                     ->leftJoin('groups', 'groups.id', '=', 'group_id')
+                    ->orderBy('username')
                     ->get();
     }
 

@@ -126,7 +126,7 @@ $(function() {
 						$answer_formatted += "</ul>";
 					}
 					else {
-						$answer_formatted = "<ul class='list-unstyled>";
+						$answer_formatted = "<ul class='list-unstyled'>";
 
 						for (var i = 0; i < parseInt(data_answer); i++) {
 							$answer_formatted += "<li><input type='text' name='answer[]' class='form-control'></li>";
@@ -242,6 +242,27 @@ $(function() {
 				}
 			});
 		}, 5000);
+
+        $.get('/message/unread', function(data) {
+            var unread = data.unread;
+
+            if (unread > 0) {
+                $('#message-icon').text(unread).addClass('text-danger');
+            }
+        });
+
+        setInterval(function() {
+            $.get('/message/unread', function(data) {
+                var unread = data.unread;
+
+                if (unread > 0) {
+                    $('#message-icon').text(unread).addClass('text-danger');
+                }
+                else {
+                    $('#message-icon').text('').removeClass('text-danger');
+                }
+            });
+        }, 5000);
 	}
 
 });
@@ -295,12 +316,8 @@ function submitAnswer(timer, exam_question_id, class_subject_exam_id, category, 
 		$answer = $('[name="answer"]:checked').val();
 	}
 
-	if (category == 'identification' || category == 'essay') {
+	if (category == 'identification' || category == 'essay' || category == 'fillintheblank') {
 		$answer = $('[name="answer"]').val();
-	}
-
-	if (category == 'fillintheblank') {
-		$answer = $('[name="answer[]"]').val();
 	}
 
 	$.post('/class/subject/exam/answer', { answer: $answer, timer: timer, exam_question_id: exam_question_id, class_subject_exam_id: class_subject_exam_id, class_subject_id: class_subject_id }, function(res) {
@@ -435,6 +452,10 @@ function actionMyClassFormatter(value, row) {
 	return "<a href='/class/subject/view/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='View'><i class='fa fa-eye'></i></a>";
 }
 
+function actionClassSubjectStudentsFormatter(value, row) {
+    return "";
+}
+
 function statusFormatter(value, row) {
 	if (row.status == 1) {
 		return "<span class='text-success'>Active</span>";
@@ -462,6 +483,11 @@ function subjectNameFormatter(value, row) {
 function profileNameFormatter(value, row) {
 	var name = ucwords(row.profile.last_name +', '+ row.profile.first_name);
 	return '<a href="/user/'+ row.username +'">'+ name +'</a>';
+}
+
+function fromProfileNameFormatter(value, row) {
+	var name = ucwords(row.from.profile.last_name +', '+ row.from.profile.first_name);
+	return '<a href="/user/'+ row.from.username +'">'+ name +'</a>';
 }
 
 function userProfileNameFormatter(value, row) {

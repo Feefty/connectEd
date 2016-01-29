@@ -38,7 +38,7 @@
 						@endcan
 						<table class="table table-bordered">
 							<tr>
-								<td><strong>Section:</strong> {{ '['. config('grade_level')[$class_subject->class_section->level] .'] '. $class_subject->class_section->name }}</td>
+								<td><strong>Section:</strong> <a href="{{ action('ClassSectionController@getView', $class_subject->class_section_id) }}">{{ '['. config('grade_level')[$class_subject->class_section->level] .'] '. $class_subject->class_section->name }}</a></td>
 							</tr>
 							<tr>
 								<td><strong>Subject:</strong> {{ '['. $class_subject->subject->code .'] '. $class_subject->subject->name .' '. $class_subject->subject->level .' - '. $class_subject->subject->description }}</td>

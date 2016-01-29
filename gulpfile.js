@@ -45,7 +45,7 @@ elixir(function(mix) {
             'startbootstrap-sb-admin-2/dist/js/sb-admin-2.js',
             'bootstrap-table/dist/bootstrap-table.js',
             'Chart.js/Chart.min.js',
-			'jquery-minicolors/jquery.minicolors.min.js'
+			'jquery-minicolors/jquery.minicolors.min.js',
         ], 'public/js/admin.vendor.js', vendorDir)
         .scripts([
             'admin.js'
