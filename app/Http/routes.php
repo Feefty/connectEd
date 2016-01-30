@@ -96,6 +96,7 @@ Route::group(['middleware' => 'auth'], function()
 	Route::controller('grade_summary', 'GradeSummaryController');
 
 	Route::controller('message', 'MessageController');
+	Route::get('m/{username}', 'MessageController@getView');
 
 	Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function()
 	{

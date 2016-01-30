@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 return [
 
@@ -6,5 +6,6 @@ return [
 	'edit.success'			=> "You have edited the exam.",
 	'delete.success'		=> "You have deleted the exam.",
 	'not_found'				=> "Exam was not found.",
+	'verified.error'		=> "The exam needs to be verified.",
 
 ];

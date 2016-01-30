@@ -95,6 +95,12 @@ class ExamController extends Controller
             $data = $request->only('title', 'assessment_category_id', 'exam_type_id');
             $data['subject_id'] = $request->subject;
 
+            if ($request->has('status'))
+            {
+                $data['status'] = $request->status;
+                $data['status_by'] = auth()->user()->id;
+            }
+
             Exam::findOrFail($request->exam_id)->update($data);
 
             $msg = trans('exam.edit.success');

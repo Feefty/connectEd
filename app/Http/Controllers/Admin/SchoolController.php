@@ -23,7 +23,7 @@ class SchoolController extends Controller
 
 		return School::select('schools.*', \DB::raw('COUNT("school_members.id") AS members'))
 					->leftjoin('school_members', 'school_members.school_id', '=', 'schools.id')
-					->groupBy('schools.id')
+					->groupBy('schools.name')
 					->get();
 	}
 

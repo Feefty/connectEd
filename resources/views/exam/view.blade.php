@@ -7,7 +7,7 @@
 			<div class="panel panel-default">
 				<div class="panel-heading"><a href="{{ \URL::previous() }}"><i class="fa fa-arrow-left"></i></a> Exams
 					@can ('update-exam')
-						<a href="{{ action('ExamQuestionController@getEdit', $exam->id) }}" data-toggle="tooltip" title="Edit" class="pull-right"><i class="fa fa-pencil"></i></a>
+						<a href="{{ action('ExamController@getEdit', $exam->id) }}" data-toggle="tooltip" title="Edit" class="pull-right"><i class="fa fa-pencil"></i></a>
 					@endcan
 				</div>
 				<div class="panel-body">
@@ -38,6 +38,7 @@
 						<li><i class="fa fa-book"></i> {{ '['. $exam->subject->code .'] '. $exam->subject->name .' - '. $exam->subject->description }}</li>
 						<li><i class="fa fa-flag"></i> {{ $exam->assessment_category->name }}</li>
 						<li><i class="fa fa-clock-o"></i> {{ $exam->created_at }}</li>
+						<li><i class="fa fa-bolt"></i> {{ config('exam_status')[$exam->status] }}</li>
 					</ul>
 
 					<input type="hidden" id="user_id" value="{{ auth()->user()->id }}">

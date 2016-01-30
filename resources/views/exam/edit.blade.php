@@ -52,6 +52,22 @@
 		   				</div>
 
 		   				<div class="form-group">
+		   					<label for="exam_type_id">Type</label>
+		   					<select id="exam_type_id" name="exam_type_id" class="form-control">
+		   						@foreach ($exam_types as $row)
+		   							@if ($exam->exam_type_id == $row->id)
+		   								<option value="{{ $row->id }}" selected>{{ $row->name }}</option>
+		   							@else
+		   								<option value="{{ $row->id }}">{{ $row->name }}</option>
+		   							@endif
+		   						@endforeach
+		   					</select>
+							<div class="help-block">
+								The Quarterly Assessment needs to be verified first by the school to be answered by Students.
+							</div>
+		   				</div>
+
+		   				<div class="form-group">
 		   					<label for="subject">Subject</label>
 		   					<select id="subject" name="subject" class="form-control">
 		   						@foreach ($subjects as $row)
@@ -63,6 +79,17 @@
 		   						@endforeach
 		   					</select>
 		   				</div>
+
+						@if (strtolower(auth()->user()->group->name) == 'school')
+							<div class="form-group">
+								<label for="status">Status</label>
+								<select class="form-control" name="status" id="status">
+									@foreach (config('exam_status') as $row => $col)
+										<option value="{{ $row }}">{{ $col }}</option>
+									@endforeach
+								</select>
+							</div>
+						@endif
 
 						<button type="submit" class="btn btn-primary">Save Changes</button>
 					</form>

@@ -58,17 +58,13 @@
 							   				<input type="hidden" name="to_id" value="{{ $user->id }}">
 
 							   				<div class="form-group">
-							   					<label for="subject">Subject</label>
-							   					<input type="text" name="subject" id="subject" class="form-control">
-							   				</div>
-
-							   				<div class="form-group">
 							   					<label for="content">Content</label>
 							   					<textarea id="content" name="content" class="form-control"></textarea>
 							   				</div>
 
 						   					<div class="margin-lg-top">
-						   						<button type="submit" class="btn btn-primary">Compose</button>
+						   						<button type="submit" class="btn btn-primary">Send</button>
+												<a href="{{ action('MessageController@getIndex') }}" class="btn btn-link">View all messages</a>
 						   					</div>
 							   			</form>
 							   		</div>

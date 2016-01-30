@@ -24,8 +24,7 @@ class PostAddMessageFormRequest extends Request
     public function rules()
     {
         return [
-            'subject'       => 'required|max:255',
-            'content'       => 'required',
+            'content'       => 'required|max:1000',
             'to_id'         => 'required|exists:users,id'
         ];
     }

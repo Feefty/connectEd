@@ -60,6 +60,18 @@
 						   					<input type="text" name="title" id="title" class="form-control">
 						   				</div>
 
+						   				<div class="form-group">
+						   					<label for="assessment_category_id">Category</label>
+						   					<select id="assessment_category_id" name="assessment_category_id" class="form-control">
+						   						@foreach ($assessment_categories as $row)
+						   							<option value="{{ $row->id }}">{{ $row->name }}</option>
+						   						@endforeach
+						   					</select>
+											<div class="help-block">
+												The Quarterly Assessment needs to be verified first by the school to be answered by Students.
+											</div>
+						   				</div>
+
 										<div class="form-group">
 											<label for="exam_type_id">Type</label>
 											<select class="form-control" name="exam_type_id" id="exam_type_id">
@@ -68,15 +80,6 @@
 												@endforeach
 											</select>
 										</div>
-
-						   				<div class="form-group">
-						   					<label for="assessment_category_id">Category</label>
-						   					<select id="assessment_category_id" name="assessment_category_id" class="form-control">
-						   						@foreach ($assessment_categories as $row)
-						   							<option value="{{ $row->id }}">{{ $row->name }}</option>
-						   						@endforeach
-						   					</select>
-						   				</div>
 
 						   				<div class="form-group">
 						   					<label for="subject">Subject</label>
@@ -118,6 +121,7 @@
 									<th data-field="assessment_category.name" data-sortable="true">Category</th>
 									<th data-field="exam_type.name" data-sortable="true">Type</th>
 									<th data-field="subject.name" data-sortable="true">Subject</th>
+									<th data-formatter="examStatusFormatter">Status</th>
 									<th data-field="created_at" data-sortable="true">Date Added</th>
 									@can ('manage-exam')
 										<th data-formatter="actionExamFormatter" data-align="center"></th>

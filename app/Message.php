@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Message extends Model
 {
     protected $table = 'messages';
-    protected $fillable = ['subject', 'content', 'from_id', 'to_id', 'group_message_id', 'created_at', 'updated_at'];
+    protected $fillable = ['content', 'from_id', 'to_id', 'group_message_id', 'created_at', 'updated_at'];
 
     public function to()
     {

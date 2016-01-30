@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Exam extends Model
 {
     protected $table = 'exams';
-    protected $fillable = ['title', 'created_by', 'created_at', 'updated_at', 'assessment_category_id', 'school_id', 'subject_id', 'exam_type_id'];
+    protected $fillable = ['title', 'created_by', 'created_at', 'updated_at', 'assessment_category_id', 'school_id', 'subject_id', 'exam_type_id', 'status', 'status_by'];
 
     public function author()
     {

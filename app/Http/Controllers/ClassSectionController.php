@@ -18,7 +18,7 @@ use App\User;
 use Auth;
 
 class ClassSectionController extends Controller
-{   
+{
     public function getAPI($school_id, $section_id = null)
     {
         if (Gate::denies('read-class-section'))
@@ -97,7 +97,7 @@ class ClassSectionController extends Controller
             }
         }*/
 
-        $section = ClassSection::with('school', 'teacher.profile')->findOrFail($section_id);
+        $section = ClassSection::with('school', 'teacher.profile')->where('status', 1)->findOrFail($section_id);
         $subjects = Subject::orderBy('name')->get();
         $teachers = User::with('profile')
                         ->whereHas('group', function($query) {
@@ -141,7 +141,7 @@ class ClassSectionController extends Controller
             $data['updated_at'] = new \DateTime;
 
             ClassSection::findOrFail($id)->update($data);
-            
+
             $msg = trans('class_section.edit.success');
         }
         catch (\Exception $e)

@@ -39,6 +39,12 @@ var remarks = [
     "Dropped"
 ];
 
+var examStatuses = [
+    "Unverified",
+    "Verified",
+    "Undecided"
+];
+
 var question_duration;
 
 $(function() {
@@ -264,7 +270,39 @@ $(function() {
             });
         }, 5000);
 	}
+    $('.messages').animate({ scrollTop: $('.messages').prop('scrollHeight') }, "slow");
 
+    $('#sendMessageForm button').on('click', function(e) {
+        var sendMessageForm = $('#sendMessageForm');
+        var content = $('[name="content"]', sendMessageForm).val();
+        var to_id = $('[name="to_id"]', sendMessageForm).val();
+
+        $.post('/message/send', { content: content, to_id: to_id } , function(data) {
+            if (data.status == 'success') {
+                var message = '<div class="message-bit" id="message-'+ data.id +'">';
+                message += '    <div class="row">';
+                message += '        <div class="col-sm-12">';
+                message += '            <p class="pull-left">';
+                message += '                <a href="/user/'+ data.username +'">'+ data.name +'</a>';
+                message += '            </p>';
+                message += '            <p class="pull-right text-muted small margin-md-right">';
+                message += '                <i class="fa fa-clock-o" data-toggle="tooltip" title="'+ data.created_at +'"></i> '+  data.timeago;
+                message += '            </p>';
+                message += '        </div>';
+                message += '    </div>';
+                message += '    <div class="row">';
+                message += '        <div class="col-sm-12">';
+                message += data.content;
+                message += '        </div>';
+                message += '    </div>';
+                message += '</div>';
+                $('.messages').append(message);
+                $('.messages').animate({ scrollTop: $('.messages').prop('scrollHeight') }, "slow");
+            }
+
+            $('[name="content"]', sendMessageForm).val('');
+        });
+    });
 });
 
 function readAll() {
@@ -612,6 +650,15 @@ function subjectExamGradeFormatter(value, row) {
 function classStudentClassSectionTeacherProfileNameFormatter(value, row) {
 	var name = ucwords(row.class_student.class_section.teacher.profile.last_name +', '+ row.class_student.class_section.teacher.profile.first_name);
 	return '<a href="/user/'+ row.class_student.class_section.teacher.username +'">'+ name +'</a>';
+}
+
+function messageNameFormatter(value, row) {
+    	var name = ucwords(row.from.profile.last_name +', '+ row.from.profile.first_name);
+    	return '<a href="/m/'+ row.from.username +'">'+ name +'</a>';
+}
+
+function examStatusFormatter(value, row) {
+    return examStatus[row.status];
 }
 
 $(function() {

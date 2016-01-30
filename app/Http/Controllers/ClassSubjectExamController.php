@@ -72,6 +72,13 @@ class ClassSubjectExamController extends Controller
     {
         $id = (int) $id;
         $class_subject_exam = ClassSubjectExam::with('exam.assessment_category')->findOrFail($id);
+
+        if (strtolower($class_subject_exam->exam->assessment_category->name) == 'quarterly assessment' &&
+            $class_subject_exam->exam->status != 1)
+        {
+            abort(404);
+        }
+
         $users = Profile::whereHas('user.class_student.class_section.subject.class_subject_exam', function($query) use($id) {
                         return $query->where('id', $id);
                     })
@@ -83,6 +90,7 @@ class ClassSubjectExamController extends Controller
                     ->orderBy('last_name')
                     ->orderBy('first_name')
                     ->get();
+
         return view('class.exam.view', compact('class_subject_exam', 'users'));
     }
 
@@ -277,6 +285,13 @@ class ClassSubjectExamController extends Controller
         	$data['end'] = $request->end_date .' '. $request->end_time;
         	$data['exam_id'] = $request->exam;
             $data['created_at'] = new \DateTime;
+
+            $exam = Exam::findOrFail($data['exam_id']);
+
+            if (strtolower($exam->assessment_category->name) == 'quarterly assessment' && $exam->status != 1)
+            {
+                throw new \Exception(trans('class_subject_exam.verified.error'));
+            }
 
             $class_subject_exam = ClassSubjectExam::create($data);
 

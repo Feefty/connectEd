@@ -28,15 +28,15 @@
 						</div>
 					@endif
 
-					<table data-url="{{ action('MessageController@getApi') }}?teacher_id={{ auth()->user()->id }}" data-toggle="table" data-pagination="true" data-search="true">
+					<table data-url="{{ action('MessageController@getApi') }}" data-toggle="table" data-pagination="true" data-search="true">
 						<thead>
 							<tr>
-                                <th data-field="subject" data-sortable="true">
-                                    Subject
-                                </th>
-                                <th data-formatter="fromProfileNameFormatter">
+                                <th data-formatter="messageNameFormatter">
                                     From
                                 </th>
+								<th data-field="created_at">
+									Last Message
+								</th>
 							</tr>
 						</thead>
 					</table>
