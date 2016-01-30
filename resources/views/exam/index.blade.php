@@ -121,7 +121,7 @@
 									<th data-field="assessment_category.name" data-sortable="true">Category</th>
 									<th data-field="exam_type.name" data-sortable="true">Type</th>
 									<th data-field="subject.name" data-sortable="true">Subject</th>
-									<th data-formatter="examStatusFormatter">Status</th>
+									<th data-formatter="examStatusFormatter" data-soratable="true">Status</th>
 									<th data-field="created_at" data-sortable="true">Date Added</th>
 									@can ('manage-exam')
 										<th data-formatter="actionExamFormatter" data-align="center"></th>

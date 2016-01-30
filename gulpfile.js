@@ -29,9 +29,19 @@ elixir(function(mix) {
     	.scripts([
     		'jquery/dist/jquery.js',
             'bootstrap/dist/js/bootstrap.js',
+			'tableExport.jquery.plugin/tableExport.js',
+			'tableExport.jquery.plugin/jquery.base64.js',
+			'tableExport.jquery.plugin/html2canvas.js',
+			'tableExport.jquery.plugin/jspdf/libs/sprintf.js',
+			'tableExport.jquery.plugin/jspdf/jspdf.js',
+			'tableExport.jquery.plugin/jspdf/libs/base64.js',
             'bootstrap-table/dist/bootstrap-table.js',
             'bootstrap-select/dist/js/bootstrap-select.min.js',
             'jquery-timeago/jquery.timeago.js',
+            'bootstrap-table/dist/extensions/filter/bootstrap-table-filter.js',
+			'bootstrap-table-filter/src/bootstrap-table-filter.js',
+            'bootstrap-table/dist/extensions/export/bootstrap-table-export.js',
+            'bootstrap-table/dist/extensions/multiple-search/bootstrap-table-multiple-search.js',
             'Chart.js/Chart.min.js'
     	], 'public/js/app.vendor.js', vendorDir)
         .scripts([
@@ -43,7 +53,17 @@ elixir(function(mix) {
             'bootstrap/dist/js/bootstrap.js',
             'metisMenu/src/metisMenu.js',
             'startbootstrap-sb-admin-2/dist/js/sb-admin-2.js',
+			'tableExport.jquery.plugin/tableExport.js',
+			'tableExport.jquery.plugin/jquery.base64.js',
+			'tableExport.jquery.plugin/html2canvas.js',
+			'tableExport.jquery.plugin/jspdf/libs/sprintf.js',
+			'tableExport.jquery.plugin/jspdf/jspdf.js',
+			'tableExport.jquery.plugin/jspdf/libs/base64.js',
             'bootstrap-table/dist/bootstrap-table.js',
+            'bootstrap-table/dist/extensions/filter/bootstrap-table-filter.js',
+			'bootstrap-table-filter/src/bootstrap-table-filter.js',
+            'bootstrap-table/dist/extensions/export/bootstrap-table-export.js',
+            'bootstrap-table/dist/extensions/multiple-search/bootstrap-table-multiple-search.js',
             'Chart.js/Chart.min.js',
 			'jquery-minicolors/jquery.minicolors.min.js',
         ], 'public/js/admin.vendor.js', vendorDir)
@@ -57,13 +77,15 @@ elixir(function(mix) {
             publicDir + 'css/metisMenu.css',
             vendorDir + 'bootstrap-table/dist/bootstrap-table.css',
             vendorDir + 'jquery-minicolors/jquery.minicolors.css',
-            publicDir + 'css/admin.css'
+			vendorDir + 'bootstrap-table-filter/src/bootstrap-table-filter.css',
+            publicDir + 'css/admin.css',
         ], 'public/css/all.admin.css')
         .styles([
             publicDir + 'css/app.vendor.css',
             vendorDir + 'bootstrap-table/dist/bootstrap-table.css',
             vendorDir + 'bootstrap-select/dist/css/bootstrap-select.min.css',
             publicDir + 'css/jasny-bootstrap.min.css',
+			vendorDir + 'bootstrap-table-filter/src/bootstrap-table-filter.css',
             publicDir + 'css/app.css'
         ], 'public/css/all.app.css');
 });

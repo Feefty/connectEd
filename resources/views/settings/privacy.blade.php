@@ -12,6 +12,7 @@
 						<li><a href="{{ action('SettingsController@getPhoto') }}">Photo</a></li>
 						<li><a href="{{ action('SettingsController@getPassword') }}">Password</a></li>
 						<li><a href="{{ action('SettingsController@getEmail') }}">E-mail</a></li>
+
 						<li><a href="{{ action('SettingsController@getPrivacy') }}">Privacy</a></li>
 					</ul>
 					@if (count($errors) > 0)

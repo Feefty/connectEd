@@ -11838,6 +11838,11 @@ div.fixed-table-scroll-outer {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
+.dropdown-menu li>span {
+  display: block;
+  padding: 1px 10px;
+  clear: both;
+}
 .img-brand {
   width: 50px;
 }
@@ -11960,4 +11965,12 @@ div.fixed-table-scroll-outer {
 
 .padding-lg-right {
   padding-right: 10px;
+}
+
+.user-icon-16 {
+  width: 16px;
+}
+
+.user-icon-24 {
+  width: 24px;
 }

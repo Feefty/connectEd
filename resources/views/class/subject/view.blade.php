@@ -349,8 +349,29 @@
 							   				</div>
 
 							   				<div class="form-group">
-							   					<label for="source">Source</label>
-							   					<input type="text" name="source" id="source" class="form-control">
+							   					<label for="assessment_category_id">Category</label>
+							   					<select id="assessment_category_id" name="assessment_category_id" class="form-control">
+							   						@foreach ($assessment_categories as $row)
+							   							<option value="{{ $row->id }}">{{ $row->name }}</option>
+							   						@endforeach
+							   					</select>
+							   				</div>
+
+							   				<div class="form-group">
+												<label for="source">Source</label>
+												<div class="row">
+													<div class="col-sm-6">
+														<select class="form-control" name="source" id="source">
+															<option value="">- Select -</option>
+															@foreach (config('assessment.sources') as $row)
+																<option value="{{ $row }}">{{ $row }}</option>
+															@endforeach
+														</select>
+													</div>
+													<div class="col-sm-6">
+									   					<input type="text" name="other" id="other" class="form-control" placeholder="Other">
+													</div>
+												</div>
 							   				</div>
 
 							   				<div class="form-group">
@@ -376,15 +397,6 @@
 									   					</div>
 								   					</div>
 							   					</div>
-							   				</div>
-
-							   				<div class="form-group">
-							   					<label for="assessment_category_id">Category</label>
-							   					<select id="assessment_category_id" name="assessment_category_id" class="form-control">
-							   						@foreach ($assessment_categories as $row)
-							   							<option value="{{ $row->id }}">{{ $row->name }}</option>
-							   						@endforeach
-							   					</select>
 							   				</div>
 
 							   				<div class="form-group">
@@ -422,33 +434,32 @@
 												<label for="student_id">Student</label>
 												<select class="form-control" data-toggle="select" name="student_id" id="student_id" data-live-search="true">
 													@foreach ($users as $row)
-														<option value="{{ $row->id }}">{{ ucwords(strtolower($row->last_name .', '. $row->first_name)) }}</option>
+														<option value="{{ $row->user_id }}">{{ ucwords(strtolower($row->last_name .', '. $row->first_name)) }}</option>
 													@endforeach
 												</select>
 											</div>
 
 											<div class="form-group">
-												<label for="grade">Grade</label>
-												<input type="text" name="grade" class="form-control">
+												<div class="row">
+													<div class="col-sm-6">
+														<label for="quarter2">Quarter</label>
+														<select class="form-control" name="quarter" id="quarter2">
+															@for ($i = 1; $i <= 4; $i++)
+																<option value="{{ $i }}">{{ $i }}</option>
+															@endfor
+														</select>
+													</div>
+													<div class="col-sm-6">
+														<label for="school_year">School Year</label>
+														<select class="form-control" name="school_year" id="school_year">
+															@for ($year = date('Y'); $year >= 1950; $year--)
+																<option value="{{ $year }}">{{ $year }} - {{ $year+1 }}</option>
+															@endfor
+														</select>
+													</div>
+												</div>
 											</div>
 
-											<div class="form-group">
-												<label for="school_year">School Year</label>
-												<select class="form-control" name="school_year" id="school_year">
-													@for ($year = date('Y'); $year >= 1950; $year--)
-														<option value="{{ $year }}">{{ $year }}</option>
-													@endfor
-												</select>
-											</div>
-
-							      			<div class="form-group">
-												<label for="quarter">Quarter</label>
-												<select class="form-control" name="quarter" id="quarter">
-													@for ($i = 1; $i <= 4; $i++)
-														<option value="{{ $i }}">{{ $i }}</option>
-													@endfor
-												</select>
-							      			</div>
 								      	</div>
 								      	<div class="modal-footer">
 								        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -536,6 +547,7 @@
 											<th data-searchable="true" data-formatter="studentProfileNameFormatter" data-sortable="true">Student</th>
 											<th data-searchable="true" data-formatter="attendanceStatusFormatter" data-align="center" data-sortable="true">Status</th>
 											<th data-searchable="true" data-field="date" data-sortable="true">Date</th>
+											<th data-formatter="attendanceStudentProfileFormatter" data-align="center"></th>
 										</tr>
 									</thead>
 								</table>
@@ -572,7 +584,7 @@
 										<tr>
 											<th data-sortable="true" data-formatter="studentProfileNameFormatter">Student</th>
 											<th data-sortable="true" data-field="grade">Grade</th>
-											<th data-sortable="true" data-field="term">Quarter</th>
+											<th data-sortable="true" data-field="quarter">Quarter</th>
 											<th data-sortable="true" data-field="created_at">Date Added</th>
 											<th data-sortable="true" data-formatter="remarksFormatter">Remarks</th>
 										</tr>
@@ -582,6 +594,34 @@
 
 						</div>
 					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="attendanceProfileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="exampleModalLabel">Student's Attendance Profile</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-sm-3">
+							<strong id="profile-name"></strong>
+							<img src="http://placehold.it/200x250" id="profile-photo" alt="" class="img-responsive" />
+							<ul class="list-unstyled" id="attendance-profile">
+							</ul>
+						</div>
+						<div class="col-sm-9">
+							<table data-toggle="data" data-url="" data-search="true" data-pagination="true">
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				</div>
 			</div>
 		</div>

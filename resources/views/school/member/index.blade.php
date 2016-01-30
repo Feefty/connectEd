@@ -87,7 +87,7 @@
 						<div class="tab-content">
 
 							<div id="lists-tab" class="tab-pane fade in active">
-								<table data-toggle="table" data-url="{{ action('SchoolMemberController@getApi') }}?school_id={{ $school->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
+								<table data-toggle="table" data-show-columns="true" data-show-export="true" data-url="{{ action('SchoolMemberController@getApi') }}?school_id={{ $school->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
 									<thead>
 										<tr>
 			                    			<th data-sortable="true" data-formatter="userProfileNameFormatter">Name</th>
@@ -103,7 +103,7 @@
 							</div><!-- end of lists tab -->
 
 							<div id="codes-tab" class="tab-pane fade">
-								<table data-toggle="table" data-url="{{ action('VerificationCodeController@getApi') }}?school_id={{ $school->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar2">
+								<table data-toggle="table" data-show-columns="true" data-show-export="true" data-url="{{ action('VerificationCodeController@getApi') }}?school_id={{ $school->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar2">
 									<thead>
 										<tr>
 			                    			<th data-field="code" data-sortable="true">Code</th>

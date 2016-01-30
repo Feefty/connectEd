@@ -107,13 +107,17 @@ class AssessmentController extends Controller
                 });
                 break;
             case 'school':
-                $assessment = $assessment->whereHas('class_subject.class_section', function($query) {
-                    $query->where('school_id', auth()->user()->school_member->school_id);
+                $assessment = $assessment->where(function($query) {
+                    $query->whereHas('class_subject.class_section', function($query) {
+                        $query->where('school_id', auth()->user()->school_member->school_id);
+                    })->orWhereHas('class_subject_exam.class_subject.class_section', function($query) {
+                        $query->where('school_id', auth()->user()->school_member->school_id);
+                    });
                 });
                 break;
         }
 
-        return $assessment->orderBy('created_at')->get();
+        return $assessment->orderBy('created_at', 'desc')->get();
     }
 
     public function getIndex()
@@ -138,10 +142,15 @@ class AssessmentController extends Controller
         {
             foreach ($request->students as $student)
             {
-                $data = $request->only('assessment_category_id', 'score', 'total', 'source', 'term', 'recorded', 'class_subject_id', 'date');
+                $data = $request->only('assessment_category_id', 'score', 'total', 'source', 'quarter', 'recorded', 'class_subject_id', 'date');
                 $user = User::with('class_student')->find((int) $student);
                 $data['class_student_id'] = (int) $user->class_student->id;
                 $data['created_at'] = new \DateTime;
+
+                if ($request->has('other'))
+                {
+                    $data['source'] = $request->other;
+                }
 
                 if ((int) $data['score'] > (int) $data['total'])
                 {
@@ -155,7 +164,7 @@ class AssessmentController extends Controller
         }
         catch (\Exception $e)
         {
-            return redirect()->back()->withErrors($msg);
+            return redirect()->back()->withErrors($e->getMessage());
         }
 
         return redirect()->back()->with(compact('msg'));

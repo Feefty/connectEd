@@ -25,16 +25,17 @@ class PostAddAssessmentFormRequest extends Request
     public function rules()
     {
         return [
-            'term'              => 'required|integer',
+            'quarter'           => 'required|integer',
             'score'             => 'numeric',
             'total'             => 'required|integer',
             'source'            => 'max:255',
+            'other'             => 'max:255',
             'students'          => 'required',
             'recorded'          => 'integer',
             'date'              => 'required|date',
             'class_subject_id'  => 'required|exists:class_subjects,id',
             'assessment_category_id' => 'required|exists:assessment_categories,id',
-            
+
         ];
     }
 }

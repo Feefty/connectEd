@@ -78,6 +78,14 @@ function schoolNameFormatter(value, row) {
 	return row.school.name;
 }
 
+function schoolMemberSchoolNameFormatter(value, row) {
+	if (row.school_member != null) {
+		return row.school_member.school.name;
+	} else {
+		return '<span class="text-muted">No School</span>';
+	}
+}
+
 function verificationStatusFormatter(value, row) {
 	return row.status == 1 ? '<span class="text-success">Active</span>' : '<span value="text-muted">Inactive</span>';
 }
@@ -93,6 +101,8 @@ function schoolYearFormatter(value, row) {
 function achievementIconFormatter(value, row) {
 	return '<img src="/img/achievements/'+ row.icon +'" alt="" width="50">';
 }
+
+
 
 $(function() {
 	$('[data-toggle="table"]').on('load-success.bs.table', function() {

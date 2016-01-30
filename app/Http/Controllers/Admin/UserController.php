@@ -14,16 +14,25 @@ use Gate;
 
 class UserController extends Controller
 {
-    public function getAPI()
+    public function getAPI(Request $request)
     {
         if (Gate::denies('api-user'))
         {
             abort(401);
         }
 
-        return User::select('users.*', 'groups.name as group', \DB::raw('(IF(users.status=1,"Active","Inactive")) as status'))
-                    ->leftJoin('groups', 'groups.id', '=', 'group_id')
-                    ->orderBy('username')
+        $user = User::with('school_member.school')
+                    ->select('users.*', 'groups.name as group', \DB::raw('(IF(users.status=1,"Active","Inactive")) as status'))
+                    ->leftJoin('groups', 'groups.id', '=', 'group_id');
+
+        if ($request->has('show'))
+        {
+            $user = $user->whereHas('group', function($query) use ($request) {
+                $query->where(\DB::raw('LOWER(name)'), rawurldecode($request->show));
+            });
+        }
+
+        return $user->orderBy('username')
                     ->get();
     }
 

@@ -77,7 +77,7 @@
 									   					<div class="form-group">
 									   						<label>Schedules</label>
 
-									   						<div class="add-more-items">
+									   						<div class="add-more-items" data-id="schedule">
 									   							<div class="row">
 										   							<div class="col-md-4">
 										   								<label>Day</label>
@@ -98,10 +98,10 @@
 										   						</div>
 									   						</div>
 
-									   						<div id="add-more-holder"></div>
+									   						<div id="add-more-holder" data-holder="schedule"></div>
 
 									   						<div class="margin-lg-top">
-									   							<button type="button" id="add-more" class="btn btn-info">Add More Schedule</button>
+									   							<button type="button" id="add-more" data-toggle="add-more" data-target="schedule" class="btn btn-info">Add More Schedule</button>
 									   							<button type="submit" class="btn btn-primary">Create</button>
 									   						</div>
 									   					</div>

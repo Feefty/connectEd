@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Attendance;
 use App\Notification;
 use App\ClassSubject;
+use App\User;
 use Gate;
 
 class AttendanceController extends Controller
@@ -27,12 +28,30 @@ class AttendanceController extends Controller
     		$attendance = $attendance->where('class_subject_id', (int) $request->class_subject_id);
     	}
 
+        if ($request->has('student_id'))
+        {
+            $attendance = $attendance->where('student_id', (int) $request->student_id);
+        }
+
         if (strtolower(auth()->user()->group->name) == 'student')
         {
             $attendance = $attendance->where('student_id', auth()->user()->id);
         }
 
     	return $attendance->orderBy('created_at', 'desc')->get();
+    }
+
+    public function getProfile($user_id)
+    {
+        $absents = Attendance::where('student_id', $user_id)->where('status', 0)->get()->count();
+        $presents = Attendance::where('student_id', $user_id)->where('status', 1)->get()->count();
+        $lates = Attendance::where('student_id', $user_id)->where('status', 2)->get()->count();
+
+        return [
+            'absents' => number_format($absents),
+            'presents' => number_format($presents),
+            'lates' => number_format($lates)
+        ];
     }
 
     public function postAdd(PostAddAttendanceFormRequest $request)
@@ -45,11 +64,11 @@ class AttendanceController extends Controller
             {
                 throw new \Exception(trans('error.unauthorized.action'));
             }
-            
+
             $attendance = Attendance::where('student_id', (int) $request->user_id)
                                     ->where('class_subject_id', (int) $request->class_subject_id)
                                     ->where('date', $request->date);
-            
+
             if ($attendance->exists())
             {
                 $attendance->update(['status' => (int) $request->status]);

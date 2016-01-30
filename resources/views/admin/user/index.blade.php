@@ -27,7 +27,31 @@
 						</div>
 					@endif
 
-					<div id="toolbar">
+					<div class="toolbar1">
+						@can('create-user')
+                    	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#addUserModal"><i class="fa fa-plus"></i> Add User</button>
+                    	@endcan
+					</div>
+
+					<div class="toolbar2">
+						@can('create-user')
+                    	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#addUserModal"><i class="fa fa-plus"></i> Add User</button>
+                    	@endcan
+					</div>
+
+					<div class="toolbar3">
+						@can('create-user')
+                    	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#addUserModal"><i class="fa fa-plus"></i> Add User</button>
+                    	@endcan
+					</div>
+
+					<div class="toolbar4">
+						@can('create-user')
+                    	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#addUserModal"><i class="fa fa-plus"></i> Add User</button>
+                    	@endcan
+					</div>
+
+					<div class="toolbar5">
 						@can('create-user')
                     	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#addUserModal"><i class="fa fa-plus"></i> Add User</button>
                     	@endcan
@@ -110,18 +134,92 @@
 
                     <div class="panel panel-default">
                     	<div class="panel-body">
-                    		<table data-toggle="table" data-url="{{ action('Admin\UserController@getAPI') }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
-                    			<thead>
-                    				<tr>
-                    					<th data-field="username" data-sortable="true">Username</th>
-                    					<th data-field="email" data-sortable="true">E-mail</th>
-                    					<th data-field="group" data-sortable="true">Group</th>
-                    					<th data-field="status" data-sortable="true">Status</th>
-                    					<th data-field="created_at" data-sortable="true">Date Joined</th>
-                    					<th data-formatter="actionUserFormatter" data-align="center"></th>
-                    				</tr>
-                    			</thead>
-                    		</table>
+
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#system-admins-tab"><img src="{{ asset('/img/user/system_admin.png') }}" class="user-icon-16" alt="" /> System Admins</a></li>
+                                <li><a data-toggle="tab" href="#school-admins-tab"><img src="{{ asset('/img/user/system_admin.png') }}" class="user-icon-16" alt="" /> School Admins</a></li>
+                                <li><a data-toggle="tab" href="#teachers-tab"><img src="{{ asset('/img/user/teacher.png') }}" class="user-icon-16" alt="" /> Teachers</a></li>
+                                <li><a data-toggle="tab" href="#students-tab"><img src="{{ asset('/img/user/student.png') }}" class="user-icon-16" alt="" /> Students</a></li>
+                                <li><a data-toggle="tab" href="#parents-tab"><img src="{{ asset('/img/user/parent.png') }}" class="user-icon-16" alt="" /> Parents</a></li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="system-admins-tab">
+                            		<table data-toggle="table" data-show-columns="true" data-show-export="true" data-url="{{ action('Admin\UserController@getAPI') }}?show=system%20admin" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar=".toolbar4">
+                            			<thead>
+                            				<tr>
+                            					<th data-field="username" data-sortable="true">Username</th>
+                            					<th data-field="email" data-sortable="true">E-mail</th>
+                            					<th data-field="group" data-sortable="true">Group</th>
+                            					<th data-formatter="schoolMemberSchoolNameFormatter" data-sortable="true">School</th>
+                            					<th data-field="status" data-sortable="true">Status</th>
+                            					<th data-field="created_at" data-sortable="true">Date Joined</th>
+                            					<th data-formatter="actionUserFormatter" data-align="center"></th>
+                            				</tr>
+                            			</thead>
+                            		</table>
+                                </div>
+                                <div class="tab-pane" id="school-admins-tab">
+                            		<table data-toggle="table" data-show-columns="true" data-show-export="true" data-url="{{ action('Admin\UserController@getAPI') }}?show=school%20admin" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar=".toolbar3">
+                            			<thead>
+                            				<tr>
+                            					<th data-field="username" data-sortable="true">Username</th>
+                            					<th data-field="email" data-sortable="true">E-mail</th>
+                            					<th data-field="group" data-sortable="true">Group</th>
+                            					<th data-formatter="schoolMemberSchoolNameFormatter" data-sortable="true">School</th>
+                            					<th data-field="status" data-sortable="true">Status</th>
+                            					<th data-field="created_at" data-sortable="true">Date Joined</th>
+                            					<th data-formatter="actionUserFormatter" data-align="center"></th>
+                            				</tr>
+                            			</thead>
+                            		</table>
+                                </div>
+                                <div class="tab-pane" id="teachers-tab">
+                                    <table data-toggle="table" data-show-columns="true" data-show-export="true" data-url="{{ action('Admin\UserController@getAPI') }}?show=teacher" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar=".toolbar2">
+                            			<thead>
+                            				<tr>
+                            					<th data-field="username" data-sortable="true">Username</th>
+                            					<th data-field="email" data-sortable="true">E-mail</th>
+                            					<th data-field="group" data-sortable="true">Group</th>
+                            					<th data-formatter="schoolMemberSchoolNameFormatter" data-sortable="true">School</th>
+                            					<th data-field="status" data-sortable="true">Status</th>
+                            					<th data-field="created_at" data-sortable="true">Date Joined</th>
+                            					<th data-formatter="actionUserFormatter" data-align="center"></th>
+                            				</tr>
+                            			</thead>
+                            		</table>
+                                </div>
+                                <div class="tab-pane" id="students-tab">
+                                    <table data-toggle="table" data-show-columns="true" data-show-export="true" data-url="{{ action('Admin\UserController@getAPI') }}?show=student" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar=".toolbar1">
+                            			<thead>
+                            				<tr>
+                            					<th data-field="username" data-sortable="true">Username</th>
+                            					<th data-field="email" data-sortable="true">E-mail</th>
+                            					<th data-field="group" data-sortable="true">Group</th>
+                            					<th data-formatter="schoolMemberSchoolNameFormatter" data-sortable="true">School</th>
+                            					<th data-field="status" data-sortable="true">Status</th>
+                            					<th data-field="created_at" data-sortable="true">Date Joined</th>
+                            					<th data-formatter="actionUserFormatter" data-align="center"></th>
+                            				</tr>
+                            			</thead>
+                            		</table>
+                                </div>
+                                <div class="tab-pane" id="parents-tab">
+                                    <table data-toggle="table" data-show-columns="true" data-show-export="true" data-url="{{ action('Admin\UserController@getAPI') }}?show=parent" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar=".toolbar5">
+                            			<thead>
+                            				<tr>
+                            					<th data-field="username" data-sortable="true">Username</th>
+                            					<th data-field="email" data-sortable="true">E-mail</th>
+                            					<th data-field="group" data-sortable="true">Group</th>
+                            					<th data-formatter="schoolMemberSchoolNameFormatter" data-sortable="true">School</th>
+                            					<th data-field="status" data-sortable="true">Status</th>
+                            					<th data-field="created_at" data-sortable="true">Date Joined</th>
+                            					<th data-formatter="actionUserFormatter" data-align="center"></th>
+                            				</tr>
+                            			</thead>
+                            		</table>
+                                </div>
+                            </div>
                     	</div>
                     </div>
                 </div>

@@ -26,7 +26,7 @@
 							<p>{{ session()->get('msg') }}</p>
 						</div>
 					@endif
-                    
+
                     <div class="row">
                     	<div class="col-xs-12">
                     		<div class="panel panel-default">
@@ -50,18 +50,6 @@
 		                    				<label for="code">Code</label>
 		                    				<input type="text" name="code" id="code" class="form-control" value="{{ $subject->code }}">
 		                    			</div>
-						      			<div class="form-group">
-						      				<label for="level">Level</label>
-						      				<select name="level" id="level" class="form-control">
-						      					@for ($i = 1; $i <= 12; $i++)
-						      						@if ($subject->level == $i)
-						      							<option value="{{ $i }}" selected>{{ $i }}</option>
-						      						@else
-						      							<option value="{{ $i }}">{{ $i }}</option>
-						      						@endif
-						      					@endfor
-						      				</select>
-						      			</div>
 		                    			<div class="form-group">
 		                    				<label for="description">Description</label>
 		                    				<textarea id="description" name="description" class="form-control">{{ $subject->description }}</textarea>

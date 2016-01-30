@@ -65,7 +65,7 @@
 			        	</li>
 			        	<li><a href="{{ action('MessageController@getIndex') }}"><i class="fa fa-envelope" id="message-icon"></i></a></li>
 				        <li class="dropdown">
-			          		<a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('/img/user/'. strtolower(auth()->user()->group->name)) }}.png" class="user-icon-24" /> {{ ucwords(strtolower(auth()->user()->profile->first_name)) }} <span class="caret"></span></a>
+			          		<a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('/img/user/'. strtolower(str_replace(' ', '_', auth()->user()->group->name))) }}.png" class="user-icon-24" /> {{ ucwords(strtolower(auth()->user()->profile->first_name)) }} <span class="caret"></span></a>
 			          		<ul class="dropdown-menu">
 			          			@can ('read-dashboard')
     				      			<li><a href="{{ action('Admin\DashboardController@getIndex') }}"><i class="fa fa-lock fa-fw"></i> Admin</a></li>

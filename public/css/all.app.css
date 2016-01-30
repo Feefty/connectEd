@@ -12687,6 +12687,11 @@ div.fixed-table-scroll-outer {
 .input-group-addon:not(:first-child) {
   border-left: 0;
 }
+.dropdown-menu li>span {
+  display: block;
+  padding: 1px 10px;
+  clear: both;
+}
 body {
   background: url("/img/bg.jpg") bottom center no-repeat fixed;
   padding-top: 70px;

@@ -17,7 +17,7 @@
 					</div>
 
 					<div id="toolbar">
-						@can ('manage-exam-question')
+						@can ('manage-exam-question', 'strict')
 							@if (strtolower(auth()->user()->group->name) == 'teacher' && $exam_question->exam->created_by == auth()->user()->id)
 								<div class="dropdown">
 									<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>

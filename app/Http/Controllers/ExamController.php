@@ -107,7 +107,7 @@ class ExamController extends Controller
         }
         catch (\Exception $e)
         {
-            return redirect()->back()->withErrors($msg);
+            return redirect()->back()->withErrors($e->getMessage());
         }
 
         return redirect()->back()->with(compact('msg'));
@@ -137,7 +137,7 @@ class ExamController extends Controller
         }
         catch (\Exception $e)
         {
-            return redirect()->back()->withErrors($msg);
+            return redirect()->back()->withErrors($e->getMessage());
         }
 
         return redirect()->action('ExamController@getView', $exam->id)->with(compact('msg'));
@@ -162,7 +162,7 @@ class ExamController extends Controller
         }
         catch (\Exception $e)
         {
-            return redirect()->back()->withErrors($msg);
+            return redirect()->back()->withErrors($e->getMessage());
         }
 
         return redirect()->back()->with(compact('msg'));

@@ -49,7 +49,6 @@ var question_duration;
 
 $(function() {
 
-	$("time.timeago").timeago();
 	$.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -303,6 +302,42 @@ $(function() {
             $('[name="content"]', sendMessageForm).val('');
         });
     });
+
+    $('#attendanceProfileModal').on('show.bs.modal', function(e) {
+        var user_id = $(e.relatedTarget).data('user-id');
+        var name =  $(e.relatedTarget).data('name');
+        var photo =  $(e.relatedTarget).data('photo');
+
+        $('#profile-name').html(ucwords(name));
+
+        var photo_src = photo;
+        if (photo == '') {
+            photo_src = 'http://placehold.it/200x250';
+        }
+
+        $.get('/attendance/profile/'+ user_id, function(data) {
+            var profile_html = '<li><strong>Absents:</strong> '+ data.absents +'</li>';
+            profile_html += '<li><strong>Presents:</strong> '+ data.presents +'</li>';
+            profile_html += '<li><strong>Lates:</strong> '+ data.lates +'</li>';
+            $('#attendance-profile').html(profile_html);
+        });
+
+        $('#profile-photo').prop('src', photo_src);
+
+        $('[data-toggle="data"]', this).bootstrapTable({
+            url: '/attendance/api?student_id='+ user_id,
+            columns: [{
+                title: 'Status',
+                formatter: 'attendanceStatusFormatter',
+                align: 'center',
+                sortable: true
+            }, {
+                title: 'Date',
+                field: 'created_at',
+                sortable: true
+            }]
+        });
+    });
 });
 
 function readAll() {
@@ -494,6 +529,15 @@ function actionClassSubjectStudentsFormatter(value, row) {
     return "";
 }
 
+function attendanceStudentProfileFormatter(value, row) {
+    var photo = '';
+    if (row.student.profile.photo) {
+        photo = row.student.profile.photo;
+    }
+
+    return '<a href="#attendanceProfileModal" data-photo="'+ photo +'" data-user-id="'+ row.student_id +'" data-name="'+ row.student.profile.first_name +' '+ row.student.profile.last_name +'" class="btn btn-default btn-xs" title="View Attendance Profile" data-toggle="modal"><i class="fa fa-eye"></i></a>';
+}
+
 function statusFormatter(value, row) {
 	if (row.status == 1) {
 		return "<span class='text-success'>Active</span>";
@@ -658,7 +702,11 @@ function messageNameFormatter(value, row) {
 }
 
 function examStatusFormatter(value, row) {
-    return examStatus[row.status];
+    return examStatuses[row.status];
+}
+
+function gradeFormatter(value, row) {
+    return Math.round(row.grade);
 }
 
 $(function() {

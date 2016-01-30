@@ -76,4 +76,9 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->hasMany('\App\StudentParent', 'parent_id');
     }
+
+    public function attendance()
+    {
+        return $this->HasMany('\App\Attendance', 'student_id');
+    }
 }

@@ -36,8 +36,8 @@
                             </ul>
                         </div>
                     </div>
-                                    
-                    <table data-toggle="table" data-url="{{ action('Admin\AssessmentController@getApi') }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
+
+                    <table data-toggle="table" data-show-columns="true" data-show-export="true" data-url="{{ action('Admin\AssessmentController@getApi') }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
                         <thead>
                             <tr>
                                 <th data-field="assessmentGradeFormatter" data-sortable="true">Grade</th>
