@@ -108,8 +108,9 @@ class ClassSubjectController extends Controller
                                 ->findOrFail((int) $id);
         $lessons = Lesson::with('user.profile')
                         ->whereHas('school', function($query) use($class_subject) {
-                            $query->where('id', $class_subject->class_section->id);
+                            $query->where('id', $class_subject->class_section->school_id);
                         })
+						->orWhere('school_id', 0)
                         ->orderBy('title')
                         ->get();
         $users = Profile::whereHas('user.class_student.class_section', function($query) use($class_subject) {
@@ -135,7 +136,7 @@ class ClassSubjectController extends Controller
             }
 
             ClassSubject::findOrFail($id)->delete();
-            
+
             $msg = trans('class_subject.delete.success');
         }
         catch (\Exception $e)

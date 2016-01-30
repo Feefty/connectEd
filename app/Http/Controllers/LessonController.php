@@ -27,7 +27,7 @@ class LessonController extends Controller
         }
 
 		$lesson = Lesson::with('file', 'subject', 'user.profile');
-                        
+
 		if ($request->has('school_id'))
 		{
             $school_id = (int) $request->school_id;
@@ -48,8 +48,13 @@ class LessonController extends Controller
 
     	$subjects = Subject::orderBy('name', 'asc')
     						->get();
-    	$school_id = SchoolMember::where('user_id', auth()->user()->id)
-    						->pluck('school_id');
+							
+		$school_id = 0;
+		if (auth()->user()->school_member)
+		{
+			$school_id = auth()->user()->school_member->school_id;
+		}
+
     	return view('lesson.index', compact('subjects', 'school_id'));
     }
 
@@ -69,7 +74,7 @@ class LessonController extends Controller
 
     	$lesson_file = LessonFile::with('lesson')->findOrFail($file_id);
     	$file = config('lesson.file.path').$lesson_file->lesson->subject_id.'/'.$lesson_file->file_name;
-    	
+
     	$fs = Storage::getDriver();
     	$stream = $fs->readStream($file);
 
@@ -96,7 +101,7 @@ class LessonController extends Controller
         	$lesson = Lesson::findOrFail($id);
 	    	$lesson->file()->delete();
 	    	$lesson->delete();
-            
+
             $msg = trans('lesson.delete.success');
         }
         catch (\Exception $e)
@@ -123,7 +128,7 @@ class LessonController extends Controller
 
     		Storage::delete(config('lesson.file.path').$lesson_files->lesson->subject_id .'/'. $lesson_files->file_name);
 
-            
+
             $msg = trans('lesson.delete.success');
         }
         catch (\Exception $e)
@@ -174,7 +179,7 @@ class LessonController extends Controller
             		$name = $file->getClientOriginalName();
 
             		Storage::put($path.$request->subject.'/'.$file_name, file_get_contents($file->getRealPath()));
-            		
+
             		$data_file[] = [
             			'name'		=> $name,
             			'file_name'	=> $file_name,
@@ -186,7 +191,7 @@ class LessonController extends Controller
 
             	LessonFile::insert($data_file);
             }
-            
+
             $msg = trans('lesson.edit.success');
         }
         catch (\Exception $e)
@@ -223,7 +228,7 @@ class LessonController extends Controller
             		$name = $file->getClientOriginalName();
 
             		Storage::put($path.$request->subject.'/'.$file_name, file_get_contents($file->getRealPath()));
-            		
+
             		$data_file[] = [
             			'name'		=> $name,
             			'file_name'	=> $file_name,
@@ -235,7 +240,7 @@ class LessonController extends Controller
 
             	LessonFile::insert($data_file);
             }
-            
+
             $msg = trans('lesson.add.success');
         }
         catch (\Exception $e)
