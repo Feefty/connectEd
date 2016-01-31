@@ -9,5 +9,6 @@ return [
         'Project',
         'Report',
         'Group Report',
+        'Examination'
     ]
 ];

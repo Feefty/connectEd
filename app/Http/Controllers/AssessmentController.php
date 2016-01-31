@@ -18,65 +18,59 @@ class AssessmentController extends Controller
     {
         $data = [];
 
-        if ($request->has('student_id'))
+        if ($request->has('student_id') && $request->has('subject_id'))
         {
             $student_id = (int) $request->student_id;
+            $subject_id = (int) $request->subject_id;
         }
         else
         {
             die(401);
         }
 
-        $labels = Subject::whereHas('class_subject.class_section.student', function($query) use($student_id) {
+        $assessments = Assessment::whereHas('class_subject', function($query) use($subject_id) {
+            $query->where('subject_id', $subject_id);
+        })
+        ->whereHas('class_student', function($query) use($student_id) {
             $query->where('student_id', $student_id);
-        })->orderBy('name')->get();
+        })
+        ->groupBy('source')
+        ->orderBy('source')
+        ->get();
 
-        $data_label = [];
-        $data_subject = [];
+        $data = [];
 
-        foreach ($labels as $label)
-        {
-            $data_label[] = $label->name;
-
-            $assessment = Assessment::whereHas('class_student.student', function($query) use($student_id) {
-                $query->where('id', $student_id);
-            })
-            ->whereHas('class_subject.subject', function($query) use($label) {
-                $query->where('id', $label->id);
-            })
-            ->orWhereHas('class_subject_exam.class_subject.subject', function($query) use($label) {
-                $query->where('id', $label->id);
-            })
-            ->get();
-
-            $score = (double) $assessment->sum('score');
-            $total = (double) $assessment->sum('total');
-
-            if ($total == 0)
-            {
-                $data_subject[] = 0;
-            }
-            else
-            {
-                $data_subject[] = floor(($score/$total)*100);
-            }
-        }
-
-        $data = [
-            'labels' => $data_label,
-            'datasets' => [
-                [
-                'label' => "My Performance",
-                'fillColor' => "rgba(220,220,220,0.2)",
-                'strokeColor' => "rgba(220,220,220,1)",
-                'pointColor' => "rgba(220,220,220,1)",
-                'pointStrokeColor' => "#fff",
-                'pointHighlightFill' => "#fff",
-                'pointHighlightStroke' => "rgba(220,220,220,1)",
-                'data' => $data_subject
-                ]
-            ]
+        $data['datasets'][0] = [
+                'fillColor' => 'rgba(96, 179, 255, 0.5)',
+                'strokeColor' => 'rgba(16, 127, 190, 0.8)',
+                'highlightFill' => 'rgba(66, 163, 224, 0.75)',
+                'highlightStroke' => 'rgba(76, 171, 240, 1)'
         ];
+
+        foreach ($assessments as $assessment)
+        {
+            $data['labels'][] = $assessment->source;
+
+            $score = Assessment::whereHas('class_subject', function($query) use($subject_id) {
+                $query->where('subject_id', $subject_id);
+            })
+            ->whereHas('class_student', function($query) use($student_id) {
+                $query->where('student_id', $student_id);
+            })
+            ->where('source', $assessment->source)
+            ->sum('score');
+
+            $total = Assessment::whereHas('class_subject', function($query) use($subject_id) {
+                $query->where('subject_id', $subject_id);
+            })
+            ->whereHas('class_student', function($query) use($student_id) {
+                $query->where('student_id', $student_id);
+            })
+            ->where('source', $assessment->source)
+            ->sum('total');
+
+            $data['datasets'][0]['data'][] = round(($score / $total) * 100);
+        }
 
         return $data;
     }

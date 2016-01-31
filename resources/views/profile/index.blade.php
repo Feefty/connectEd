@@ -134,7 +134,32 @@
 				<div class="panel panel-default" id="performance">
 					<div class="panel-heading">Performances</div>
 					<div class="panel-body">
-						<canvas id="assessment-radar" data-student-id="{{ $user->id }}" class="center-block" width="500" height="500"></canvas>
+						<div class="row">
+							<div class="col-sm-3">
+								<ul class="nav nav-pills nav-stacked">
+									@foreach ($subjects as $subject)
+										@if ($subjects[0]->id == $subject->id)
+											<li class="active"><a href="#subject{{ $subject->id }}" data-target="#subject{{ $subject->id }}" data-toggle="tab"><i class="fa fa-arrow-right fa-fw"></i> {{ $subject->name }}</a></li>
+										@else
+											<li><a href="#subject{{ $subject->id }}" data-target="#subject{{ $subject->id }}" data-toggle="tab"><i class="fa fa-arrow-right fa-fw"></i> {{ $subject->name }}</a></li>
+										@endif
+									@endforeach
+								</ul>
+							</div>
+							<div class="col-sm-9">
+								<div class="tab-content">
+									@foreach ($subjects as $subject)
+										@if ($subjects[0]->id == $subject->id)
+											<div id="subject{{ $subject->id }}" class="tab-pane fade in active">
+										@else
+											<div id="subject{{ $subject->id }}" class="tab-pane fade">
+										@endif
+											<canvas class="chartjs" data-type="radar" data-url="{{ action('AssessmentController@getData') }}?student_id={{ $user->id }}&subject_id={{ $subject->id }}"></canvas>
+										</div>
+									@endforeach
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 					<div class="panel panel-default" id="grades">

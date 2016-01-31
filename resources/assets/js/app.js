@@ -3,6 +3,8 @@ String.prototype.replaceAll = function(search, replacement) {
     return target.split(search).join(replacement);
 };
 
+Chart.defaults.global.responsive = true;
+
 var days = [
 	'',
 	'Monday',
@@ -767,42 +769,50 @@ function gradeFormatter(value, row) {
     return Math.round(row.grade);
 }
 
-$(function() {
-    $('#assessment-radar').ready(function() {
-        var student_id = $('#assessment-radar').data('student-id');
-    	$.get('/assessment/data?student_id='+ student_id, function(data) {
-    		var ctx = $('#assessment-radar').get(0).getContext("2d");
-    		var assessmentRadar = new Chart(ctx).Radar(data);
-    	});
-    });
+function chartjs(target, url, type) {
+    var $this = $(target);
 
-    $('[data-toggle="chart"]').ready(function() {
-        var $this = $('[data-toggle="chart"]');
-        var url = $this.data('url');
+    $.get(url, function(data) {
+        var ctx = $this.get(0).getContext("2d");
+        var options = {
+            pointHitDetectionRadius: 100
+        }
 
-        $.get(url, function(data) {
-            var ctx = $this.get(0).getContext("2d");
-            var type = $this.data('type');
-            var chart;
-
+        if (data.datasets[0].hasOwnProperty('data')) {
             if (type == 'line') {
-                chart = new Chart(ctx).Line(data);
+                new Chart(ctx).Line(data, options);
             } else
             if (type == 'bar') {
-                chart = new Chart(ctx).Bar(data);
+                new Chart(ctx).Bar(data, options);
             } else
             if (type == 'radar') {
-                chart = new Chart(ctx).Radar(data);
+                new Chart(ctx).Radar(data, options);
             } else
             if (type == 'polararea') {
-                chart = new Chart(ctx).PolarArea(data);
+                new Chart(ctx).PolarArea(data, options);
             } else
             if (type == 'pie') {
-                chart = new Chart(ctx).Pie(data);
+                new Chart(ctx).Pie(data, options);
             } else
             if (type == 'doughnut') {
-                chart = new Chart(ctx).Doughnut(data);
+                new Chart(ctx).Doughnut(data, options);
             }
-        });
+        }
+    });
+}
+
+$(function() {
+
+    var $this = $('canvas.chartjs:first');
+    var url = $this.data('url');
+    var type = $this.data('type');
+    chartjs($this, url, type);
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+        var $this = $($(e.target).data('target') +' canvas');
+        var url = $this.data('url');
+        var type = $this.data('type');
+
+        chartjs($(e.target).data('target') +' canvas', url, type);
     });
 });
