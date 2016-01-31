@@ -30,6 +30,13 @@ class ClassStudentController extends Controller
                             });
         }
 
+        if ($request->has('class_subject_id'))
+        {
+            $class_student = $class_student->whereHas('class_section.subject', function($query) use($request) {
+                                $query->where('id', (int) $request->class_subject_id);
+                            });
+        }
+
         if ($request->has('school_id'))
         {
             $class_student = $class_student->whereHas('class_section', function($query) use($request) {

@@ -321,13 +321,14 @@
 						<div class="modal fade" id="addAssessmentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 							<div class="modal-dialog" role="document">
 						 		<div class="modal-content">
-							      	<form action="{{ action('AssessmentController@postAdd') }}" method="post">
+							      	<form action="{{ action('AssessmentController@postAdd') }}" method="post" id="addAssessmentForm">
 							    		<div class="modal-header">
 							        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 							        		<h4 class="modal-title" id="myModalLabel">Assessments</h4>
 							      		</div>
 								      	<div class="modal-body" id="attendance">
 								      		{!! csrf_field() !!}
+											<div class="assessment-message-container"></div>
 
 								      		<input type="hidden" name="class_subject_id" value="{{ $class_subject->id }}">
 
@@ -410,7 +411,7 @@
 								      	</div>
 								      	<div class="modal-footer">
 								        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								      		<button type="submit" class="btn btn-primary">Add</button>
+								      		<button type="button" id="add" class="btn btn-primary">Add</button>
 								      	</div>
 							      	</form>
 						    	</div>
@@ -472,6 +473,7 @@
 
 						<ul class="nav nav-tabs">
 							<li class="active"><a data-toggle="tab" href="#schedules-tab"><i class="fa fa-calendar"></i> Schedules</a></li>
+							<li><a data-toggle="tab" href="#students-tab"><i class="fa fa-users"></i> Students</a></li>
 							<li><a data-toggle="tab" href="#lessons-tab"><i class="fa fa-book"></i> Lessons</a></li>
 							<li><a data-toggle="tab" href="#exams-tab"><i class="fa fa-file-text"></i> Exams</a></li>
 							<li><a data-toggle="tab" href="#attendance-tab"><i class="fa fa-star"></i> Attendance</a></li>
@@ -587,6 +589,22 @@
 											<th data-sortable="true" data-field="quarter">Quarter</th>
 											<th data-sortable="true" data-field="created_at">Date Added</th>
 											<th data-sortable="true" data-formatter="remarksFormatter">Remarks</th>
+										</tr>
+									</thead>
+								</table>
+							</div><!-- end of grade summaries tab -->
+
+
+							<div id="students-tab" class="tab-pane fade">
+								<table data-toggle="table" data-url="{{ action('ClassStudentController@getApi') }}?class_subject_id={{ $class_subject->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar7">
+									<thead>
+										<tr>
+											<th colspan="9" data-align="center">Students</th>
+										</tr>
+										<tr>
+											<th data-sortable="true" data-formatter="studentProfileNameFormatter">Name</th>
+											<th data-sortable="true" data-formatter="studentProfileGenderFormatter">Gender</th>
+											<th data-formatter="actionClassSubjectStudentFormatter" data-align="center"></th>
 										</tr>
 									</thead>
 								</table>

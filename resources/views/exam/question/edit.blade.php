@@ -35,7 +35,7 @@
 
 						<div class="form-group">
 							<label>Question</label>
-							<textarea name="question" class="form-control">{{ $exam_question->question }}</textarea>
+							<textarea name="question" data-toggle="wysiwyg" class="form-control">{{ $exam_question->question }}</textarea>
 						</div>
 
 						<div class="form-group">

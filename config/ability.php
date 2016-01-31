@@ -8,13 +8,40 @@
 // SCHOOL_LEVEL = school
 // ADMIN_LEVEL = admin/deped
 //
-define('BANNED_LEVEL', 0);
-define('GUEST_LEVEL', 1);
-define('PARENT_LEVEL', 2);
-define('STUDENT_LEVEL', 3);
-define('TEACHER_LEVEL', 5);
-define('SCHOOL_LEVEL', 25);
-define('ADMIN_LEVEL', 99);
+if ( ! defined('BANNED_LEVEL'))
+{
+	define('BANNED_LEVEL', 0);
+}
+
+if ( ! defined('GUEST_LEVEL'))
+{
+	define('GUEST_LEVEL', 1);
+}
+
+if ( ! defined('PARENT_LEVEL'))
+{
+	define('PARENT_LEVEL', 2);
+}
+
+if ( ! defined('STUDENT_LEVEL'))
+{
+	define('STUDENT_LEVEL', 3);
+}
+
+if ( ! defined('TEACHER_LEVEL'))
+{
+	define('TEACHER_LEVEL', 5);
+}
+
+if ( ! defined('SCHOOL_LEVEL'))
+{
+	define('SCHOOL_LEVEL', 25);
+}
+
+if ( ! defined('ADMIN_LEVEL'))
+{
+	define('ADMIN_LEVEL', 99);
+}
 
 return [
 

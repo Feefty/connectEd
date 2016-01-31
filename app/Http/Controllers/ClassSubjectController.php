@@ -27,7 +27,7 @@ class ClassSubjectController extends Controller
             abort(401);
         }
 
-        $class_subject = ClassSubject::with('teacher.profile', 'subject', 'class_section');
+        $class_subject = ClassSubject::select('class_subjects.*')->with('teacher.profile', 'subject', 'class_section');
 
         if ($request->has('class_section_id'))
         {
@@ -39,7 +39,7 @@ class ClassSubjectController extends Controller
             $class_subject = $class_subject->where('teacher_id', (int) $request->teacher_id);
         }
 
-        return $class_subject->orderBy('created_at', 'desc')->get();
+        return $class_subject->leftJoin('subjects', 'subjects.id', '=', 'class_subjects.subject_id')->orderBy('subjects.name')->get();
 	}
 
 	public function getEdit($id)
@@ -113,7 +113,7 @@ class ClassSubjectController extends Controller
 						->orWhere('school_id', 0)
                         ->orderBy('title')
                         ->get();
-        $users = Profile::whereHas('user.class_student.class_section', function($query) use($class_subject) {
+        $users = Profile::whereHas('user.class_student.class_section.subject', function($query) use($class_subject) {
                         $query->where('id', $class_subject->id);
                     })
                     ->orderBy('last_name')

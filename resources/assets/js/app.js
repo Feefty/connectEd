@@ -57,6 +57,7 @@ $(function() {
 	var isLogged = parseInt($('meta[name="is-logged"]').attr('content')) === 1 ? true : false;
 
 	$('[data-toggle="tooltip"]').tooltip();
+	$('.tooltips').tooltip();
 	$('[data-toggle="select"]').selectpicker();
 
 	$('#add-more, [data-toggle="add-more"]').on('click', function() {
@@ -338,6 +339,55 @@ $(function() {
             }]
         });
     });
+
+    $('#addAssessmentForm #add').on('click', function(e) {
+        e.preventDefault();
+        $('.assessment-message-container').html('');
+        var form = $('#addAssessmentForm');
+        var form_data = {
+            class_subject_id: $('[name="class_subject_id"]', form).val(),
+            score: $('[name="score"]', form).val(),
+            total: $('[name="total"]', form).val(),
+            date: $('[name="date"]', form).val(),
+            assessment_category_id: $('[name="assessment_category_id"]', form).val(),
+            source: $('[name="source"]', form).val(),
+            other: $('[name="other"]', form).val(),
+            quarter: $('[name="quarter"]', form).val(),
+            recorded: $('[name="recorded"]:checked', form).val(),
+            students: $('[name="students[]"]', form).map(function(){return $(this).val();}).get()
+        };
+
+        $.post('/assessment/add', form_data, function(data) {
+            if (data.status == 'success') {
+                var msg = '<div class="alert alert-success">';
+                msg += '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+                msg += '<p>'+ data.msg +'</p>';
+                msg += '</div>';
+
+                $('.assessment-message-container').html(msg);
+                $('#assessments-tab table').bootstrapTable('refresh');
+                $('[name="score"]', form).val('');
+                $('[name="total"]', form).val('');
+            }
+        }).fail(function(data) {
+            var msg = '<div class="alert alert-danger">';
+            msg += '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+            $.each(data.responseJSON, function(key, value) {
+                msg += '<p>'+ value +'</p>';
+            });
+
+            msg += '</div>';
+
+            $('.assessment-message-container').html(msg);
+        });
+
+        return false;
+    });
+
+    $('[data-toggle="wysiwyg"]').summernote();
+    $('#viewCreateLessonModal').on('show.bs.modal', function(e) {
+        $('[data-toggle="wysiwyg"]').summernote();
+    });
 });
 
 function readAll() {
@@ -389,9 +439,13 @@ function submitAnswer(timer, exam_question_id, class_subject_exam_id, category, 
 		$answer = $('[name="answer"]:checked').val();
 	}
 
-	if (category == 'identification' || category == 'essay' || category == 'fillintheblank') {
+	if (category == 'identification' || category == 'essay') {
 		$answer = $('[name="answer"]').val();
 	}
+
+    if (category == 'fillintheblank') {
+        $answer = $('[name="answer[]"]').map(function(){return $(this).val();}).get();
+    }
 
 	$.post('/class/subject/exam/answer', { answer: $answer, timer: timer, exam_question_id: exam_question_id, class_subject_exam_id: class_subject_exam_id, class_subject_id: class_subject_id }, function(res) {
 		$('#start-exam').click();
@@ -523,6 +577,10 @@ function actionClassSubjectExamUserFormatter(value, row) {
 
 function actionMyClassFormatter(value, row) {
 	return "<a href='/class/subject/view/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='View'><i class='fa fa-eye'></i></a>";
+}
+
+function actionClassSubjectStudentFormatter(value, row) {
+    return ["<a href='#addAchievementStudent' data-toggle='modal' class='btn btn-default btn-xs tooltips' title='Add Achievement'><i class='fa fa-trophy'></i></a>"].join(" ");
 }
 
 function actionClassSubjectStudentsFormatter(value, row) {
@@ -710,9 +768,41 @@ function gradeFormatter(value, row) {
 }
 
 $(function() {
-    var student_id = $('#assessment-radar').data('student-id');
-	$.get('/assessment/data?student_id='+ student_id, function(data) {
-		var ctx = $('#assessment-radar').get(0).getContext("2d");
-		var assessmentRadar = new Chart(ctx).Radar(data);
-	});
+    $('#assessment-radar').ready(function() {
+        var student_id = $('#assessment-radar').data('student-id');
+    	$.get('/assessment/data?student_id='+ student_id, function(data) {
+    		var ctx = $('#assessment-radar').get(0).getContext("2d");
+    		var assessmentRadar = new Chart(ctx).Radar(data);
+    	});
+    });
+
+    $('[data-toggle="chart"]').ready(function() {
+        var $this = $('[data-toggle="chart"]');
+        var url = $this.data('url');
+
+        $.get(url, function(data) {
+            var ctx = $this.get(0).getContext("2d");
+            var type = $this.data('type');
+            var chart;
+
+            if (type == 'line') {
+                chart = new Chart(ctx).Line(data);
+            } else
+            if (type == 'bar') {
+                chart = new Chart(ctx).Bar(data);
+            } else
+            if (type == 'radar') {
+                chart = new Chart(ctx).Radar(data);
+            } else
+            if (type == 'polararea') {
+                chart = new Chart(ctx).PolarArea(data);
+            } else
+            if (type == 'pie') {
+                chart = new Chart(ctx).Pie(data);
+            } else
+            if (type == 'doughnut') {
+                chart = new Chart(ctx).Doughnut(data);
+            }
+        });
+    });
 });

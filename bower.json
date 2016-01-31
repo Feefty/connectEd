@@ -19,7 +19,9 @@
     "Chart.js": "~1.0.2",
     "jquery-minicolors": "claviska/jquery-minicolors#~2.2.2",
     "tableExport.jquery.plugin": "kayalshri/tableExport.jquery.plugin",
-    "bootstrap-table-filter": "lukaskral/bootstrap-table-filter#~1.1.0"
+    "bootstrap-table-filter": "lukaskral/bootstrap-table-filter#~1.1.0",
+    "bootstrap-wysiwyg": "mindmup/bootstrap-wysiwyg",
+    "summernote": "^0.7.3"
   },
   "resolutions": {
     "font-awesome": "~4.4"

@@ -38,7 +38,6 @@ class AssessmentController extends Controller
         {
             $data_label[] = $label->name;
 
-
             $assessment = Assessment::whereHas('class_student.student', function($query) use($student_id) {
                 $query->where('id', $student_id);
             })
@@ -164,9 +163,9 @@ class AssessmentController extends Controller
         }
         catch (\Exception $e)
         {
-            return redirect()->back()->withErrors($e->getMessage());
+            return ['error' => $e->getMessage()];
         }
 
-        return redirect()->back()->with(compact('msg'));
+        return ['status' => 'success', 'msg' => $msg];
     }
 }

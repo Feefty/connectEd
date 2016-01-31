@@ -90,7 +90,7 @@
 
 												<div class="form-group">
 													<label>Question</label>
-													<textarea name="question" class="form-control"></textarea>
+													<textarea name="question" data-toggle="wysiwyg" class="form-control"></textarea>
 												</div>
 
 												<div class="form-group">
@@ -138,7 +138,7 @@
 
 												<div class="form-group">
 													<label>Question</label>
-													<textarea name="question" class="form-control"></textarea>
+													<textarea name="question" data-toggle="wysiwyg" class="form-control"></textarea>
 												</div>
 
 												<div class="form-group">
@@ -185,7 +185,7 @@
 
 												<div class="form-group">
 													<label>Question</label>
-													<textarea name="question" class="form-control"></textarea>
+													<textarea name="question" data-toggle="wysiwyg" class="form-control"></textarea>
 												</div>
 
 												<div class="form-group">
@@ -233,7 +233,7 @@
 
 												<div class="form-group">
 													<label>Question</label>
-													<textarea name="question" class="form-control"></textarea>
+													<textarea name="question" data-toggle="wysiwyg" class="form-control"></textarea>
 												</div>
 
 												<div class="form-group">
@@ -287,7 +287,7 @@
 													<div class="text-helper text-muted">
 														Use the keyword :answer in the question to replace as answer from below. All must be in order.
 													</div>
-													<textarea name="question" class="form-control"></textarea>
+													<textarea name="question" data-toggle="wysiwyg" class="form-control"></textarea>
 												</div>
 
 												<div class="form-group">
@@ -335,7 +335,7 @@
 					<table data-toggle="table" data-url="{{ action('ExamQuestionController@getApi') }}?exam_id={{ $exam->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar">
 						<thead>
 							<tr>
-								<th data-field="question" data-sortable="true">Question</th>
+								<th data-field="id" data-sortable="true">ID</th>
 								<th data-field="category" data-sortable="true">Category</th>
 								<th data-field="time_limit" data-sortable="true">Time Limit</th>
 								@can ('manage-exam')

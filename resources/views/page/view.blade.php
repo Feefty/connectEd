@@ -34,7 +34,7 @@
                             <li><i class="fa fa-clock-o"></i> {{ $page->created_at->diffForHumans() }}</li>
                             <li><i class="fa fa-flag"></i> {{ ucwords(str_replace('_', ' ', $page->category)) }}</li>
                         </ul>
-                        {!! nl2br($page->content) !!}
+                        {!! $page->content !!}
 					</div>
 				</div>
 			</div>

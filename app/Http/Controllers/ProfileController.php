@@ -6,13 +6,19 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\GradeSummary;
+use App\Subject;
 
 class ProfileController extends Controller
 {
     public function getIndex(Request $request)
     {
         $user = auth()->user();
-    	return view('profile.index', compact('user'));
+
+        $school_years = GradeSummary::where('student_id', $user->id)->groupBy('school_year')->get();
+        $grades = GradeSummary::where('student_id', $user->id)->groupBy('school_year')->get();
+
+    	return view('profile.index', compact('user', 'school_years', 'grades'));
     }
 
     public function getUser($username)
@@ -28,6 +34,13 @@ class ProfileController extends Controller
             return abort(404);
         }
 
-        return view('profile.index', compact('user'));
+        $school_years = GradeSummary::where('student_id', $user->id)->groupBy('school_year')->get();
+        $grades = GradeSummary::where('student_id', $user->id)->get();
+
+        $subjects = Subject::whereHas('class_subject.class_section', function($query) use($user) {
+            $query->where('id', $user->class_student->class_section->id);
+        })->orderBy('name')->get();
+
+        return view('profile.index', compact('user', 'school_years', 'grades', 'subjects'));
     }
 }

@@ -13,7 +13,7 @@
 				<div class="panel-body">
 					<h2>{{ $exam_question->exam->title }}</h2>
 					<div class="well">
-						<p>{{ $exam_question->question }}</p>
+						<p>{!! $exam_question->question !!}</p>
 					</div>
 
 					<div id="toolbar">

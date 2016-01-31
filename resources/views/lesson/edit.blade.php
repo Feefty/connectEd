@@ -27,7 +27,7 @@
 							<p>{{ session()->get('msg') }}</p>
 						</div>
 					@endif
-					
+
 					<form method="POST" action="{{ action('LessonController@postEdit') }}" enctype="multipart/form-data">
 						{!! csrf_field() !!}
 						<input type="hidden" name="lesson_id" value="{{ $lesson->id }}">
@@ -39,7 +39,7 @@
 		   				</div>
 		   				<div class="form-group">
 		   					<label for="content">Content</label>
-		   					<textarea id="content" name="content" class="form-control">{{ $lesson->content }}</textarea>
+		   					<textarea id="content" name="content" data-toggle="wysiwyg" class="form-control">{{ $lesson->content }}</textarea>
 		   				</div>
 		   				<div class="form-group">
 		   					<label for="subject">Subject</label>
@@ -66,7 +66,7 @@
 		   						@endforeach
 	   						</ul>
 
-	   						<div class="add-more-items">
+	   						<div class="add-more-items" data-id="lesson">
 	   							<div class="row">
 		   							<div class="col-xs-12">
 			   							<input type="file" name="file[]">
@@ -74,11 +74,11 @@
 	   							</div>
 	   						</div>
 
-	   						<div id="add-more-holder"></div>
+	   						<div id="add-more-holder" data-holder="lesson"></div>
 	   					</div>
 
 	   					<div class="margin-lg-top">
-	   						<button type="button" id="add-more" class="btn btn-info">Add More File</button>
+	   						<button type="button" id="add-more" data-toggle="add-more" data-target="lesson" class="btn btn-info">Add More File</button>
 	   						<button type="submit" class="btn btn-primary">Save Changes</button>
 	   					</div>
 					</form>

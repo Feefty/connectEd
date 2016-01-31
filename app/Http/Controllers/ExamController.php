@@ -33,7 +33,7 @@ class ExamController extends Controller
                     $query->where('user_id', auth()->user()->id);
                 });
                 break;
-            case 'school':
+            case 'school admin':
             case 'teacher':
                 if ($request->has('school_id'))
                 {

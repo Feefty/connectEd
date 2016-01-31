@@ -26,10 +26,10 @@ class PostAddAssessmentFormRequest extends Request
     {
         return [
             'quarter'           => 'required|integer',
-            'score'             => 'numeric',
+            'score'             => 'required|integer',
             'total'             => 'required|integer',
-            'source'            => 'max:255',
-            'other'             => 'max:255',
+            'source'            => 'max:255|required_without:other',
+            'other'             => 'max:255|required_without:source',
             'students'          => 'required',
             'recorded'          => 'integer',
             'date'              => 'required|date',

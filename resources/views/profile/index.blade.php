@@ -44,7 +44,6 @@
 							<li><a href="#"><i class="fa fa-ban"></i> Block</a></li>
 						</ul>
 
-
 						<div class="modal fade" id="composeMessageModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">
 							<div class="modal-dialog" role="document">
 								<div class="modal-content">
@@ -141,6 +140,77 @@
 					<div class="panel panel-default" id="grades">
 						<div class="panel-heading">Grades</div>
 						<div class="panel-body">
+							<ul class="nav nav-tabs">
+								@foreach ($school_years as $row)
+									@if ($school_years[0]->school_year == $row->school_year)
+										<li class="active"><a href="#grade{{ $row->school_year }}" data-toggle="tab">{{ $row->school_year }} - {{ $row->school_year+1 }}</a></li>
+									@else
+										<li><a href="#grade{{ $row->school_year }}" data-toggle="tab">{{ $row->school_year }} - {{ $row->school_year+1 }}</a></li>
+									@endif
+								@endforeach
+							</ul>
+
+							<div class="tab-content">
+								@foreach ($school_years as $row)
+									@if ($school_years[0]->school_year == $row->school_year)
+										<div class="tab-pane active fade in" id="grade{{ $row->school_year }}">
+									@else
+										<div class="tab-pane fade" id="grade{{ $row->school_year }}">
+									@endif
+
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th>
+													Subject
+												</th>
+												<th>
+													1st Quarter
+												</th>
+												<th>
+													2nd Quarter
+												</th>
+												<th>
+													3rd Quarter
+												</th>
+												<th>
+													4th Quarter
+												</th>
+												<th>
+													Final
+												</th>
+												<th>
+													Remarks
+												</th>
+											</tr>
+										</thead>
+										@foreach ($subjects as $subject)
+											<tr>
+												<td>
+													{{ $subject->name }}
+												</td>
+												@for ($quarter = 1; $quarter <= 4; $quarter++)
+													<td>
+														{{ round(\App\GradeSummary::whereHas('class_subject', function($query) use($subject) {
+															$query->where('subject_id', $subject->id);
+														})->where('quarter', $quarter)->pluck('grade')) }}
+													</td>
+												@endfor
+												<td>
+													<?php $average = round(\App\GradeSummary::whereHas('class_subject', function($query) use($subject) {
+														$query->where('subject_id', $subject->id);
+													})->avg('grade')) ?>
+													{{ $average }}
+												</td>
+												<td>
+													{!! $average < 75 ? '<strong class="text-danger">Failed</strong>' : '<strong class="text-success">Passed</strong>' !!}
+												</td>
+											</tr>
+										@endforeach
+									</table>
+								</div>
+								@endforeach
+							</div>
 						</div>
 					</div>
 			@endif
