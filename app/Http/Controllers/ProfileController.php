@@ -15,10 +15,16 @@ class ProfileController extends Controller
     {
         $user = auth()->user();
 
-        $school_years = GradeSummary::where('student_id', $user->id)->groupBy('school_year')->get();
-        $grades = GradeSummary::where('student_id', $user->id)->groupBy('school_year')->get();
+        if (strtolower(auth()->user()->group->name) == 'student')
+        {
+            $school_years = GradeSummary::where('student_id', $user->id)->groupBy('school_year')->get();
+            $grades = GradeSummary::where('student_id', $user->id)->get();
+            $subjects = Subject::whereHas('class_subject.class_section', function($query) use($user) {
+                $query->where('id', $user->class_student->class_section->id);
+            })->orderBy('name')->get();
+        }
 
-    	return view('profile.index', compact('user', 'school_years', 'grades'));
+        return view('profile.index', compact('user', 'school_years', 'grades', 'subjects'));
     }
 
     public function getUser($username)

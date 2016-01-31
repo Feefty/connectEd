@@ -360,7 +360,30 @@ return [
 		'delete' => TEACHER_LEVEL,
 		'manage' => TEACHER_LEVEL,
 		'read' => PARENT_LEVEL
-	]
+	],
 
+	'course-calendar' => [
+		'create' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+		'update' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+		'delete' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+		'manage' => [
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL
+		],
+		'read' => [
+			STUDENT_LEVEL,
+			TEACHER_LEVEL,
+			SCHOOL_LEVEL,
+		],
+	]
 
 ];

@@ -43,7 +43,9 @@ elixir(function(mix) {
             'bootstrap-table/dist/extensions/export/bootstrap-table-export.js',
             'bootstrap-table/dist/extensions/multiple-search/bootstrap-table-multiple-search.js',
             'Chart.js/Chart.min.js',
-			'summernote/dist/summernote.min.js'
+			'summernote/dist/summernote.min.js',
+			'moment/min/moment.min.js',
+			'fullcalendar/dist/fullcalendar.min.js'
     	], 'public/js/app.vendor.js', vendorDir)
         .scripts([
             'app.js',
@@ -67,7 +69,9 @@ elixir(function(mix) {
             'bootstrap-table/dist/extensions/multiple-search/bootstrap-table-multiple-search.js',
             'Chart.js/Chart.min.js',
 			'jquery-minicolors/jquery.minicolors.min.js',
-			'summernote/dist/summernote.min.js'
+			'summernote/dist/summernote.min.js',
+			'moment/min/moment.min.js',
+			'fullcalendar/dist/fullcalendar.min.js'
         ], 'public/js/admin.vendor.js', vendorDir)
         .scripts([
             'admin.js'
@@ -81,6 +85,7 @@ elixir(function(mix) {
             vendorDir + 'jquery-minicolors/jquery.minicolors.css',
 			vendorDir + 'bootstrap-table-filter/src/bootstrap-table-filter.css',
 			vendorDir + 'summernote/dist/summernote.css',
+			vendorDir + 'fullcalendar/dist/fullcalendar.min.css',
             publicDir + 'css/admin.css',
         ], 'public/css/all.admin.css')
         .styles([
@@ -90,6 +95,7 @@ elixir(function(mix) {
             publicDir + 'css/jasny-bootstrap.min.css',
 			vendorDir + 'bootstrap-table-filter/src/bootstrap-table-filter.css',
 			vendorDir + 'summernote/dist/summernote.css',
+			vendorDir + 'fullcalendar/dist/fullcalendar.min.css',
             publicDir + 'css/app.css'
         ], 'public/css/all.app.css');
 });

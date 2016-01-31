@@ -26,36 +26,39 @@
 
 		    <div class="collapse navbar-collapse" id="bs-navbar-collapse">
 		     	<ul class="nav navbar-nav">
-			        <li><a href="{{ action('HomeController@getIndex') }}"><i class="fa fa-home"></i> Home</a></li>
+			        <li><a href="{{ action('HomeController@getIndex') }}"><i class="fa-fw fa fa-home"></i> Home</a></li>
 			        @can ('read-my-room', 'strict')
-			        	<li><a href="{{ action('RoomController@getIndex') }}"><i class="fa fa-umbrella"></i> My Room</a></li>
+			        	<li><a href="{{ action('RoomController@getIndex') }}"><i class="fa-fw fa fa-umbrella"></i> My Room</a></li>
 			        @endcan
 			        @can ('read-parent', 'strict')
-			        	<li><a href="{{ action('ParentController@getIndex') }}"><i class="fa fa-heart"></i> Parent</a></li>
+			        	<li><a href="{{ action('ParentController@getIndex') }}"><i class="fa-fw fa fa-heart"></i> Parent</a></li>
 			        @endcan
 			        @can ('read-my-class', 'strict')
-			        	<li><a href="{{ action('MyClassController@getIndex') }}"><i class="fa fa-hourglass-1"></i> My Class</a></li>
+			        	<li><a href="{{ action('MyClassController@getIndex') }}"><i class="fa-fw fa fa-hourglass-1"></i> My Class</a></li>
 			        @endcan
 			        @can ('manage-lesson', 'strict')
-			        	<li><a href="{{ action('LessonController@getIndex') }}"><i class="fa fa-book"></i> Lessons</a></li>
+			        	<li><a href="{{ action('LessonController@getIndex') }}"><i class="fa-fw fa fa-book"></i> Lessons</a></li>
 			        @endcan
 			        @can ('read-assessment', 'strict')
-			        	<li><a href="{{ action('AssessmentController@getIndex') }}"><i class="fa fa-line-chart"></i> Assessment</a></li>
+			        	<li><a href="{{ action('AssessmentController@getIndex') }}"><i class="fa-fw fa fa-line-chart"></i> Assessment</a></li>
 			        @endcan
 			        @can ('read-class-section', 'strict')
-			        	<li><a href="{{ action('ClassSectionController@getIndex') }}"><i class="fa fa-thumb-tack"></i> Sections</a></li>
+			        	<li><a href="{{ action('ClassSectionController@getIndex') }}"><i class="fa-fw fa fa-thumb-tack"></i> Sections</a></li>
 			        @endcan
 			        @can ('read-school-member', 'strict')
-			        	<li><a href="{{ action('SchoolMemberController@getIndex') }}"><i class="fa fa-users"></i> Members</a></li>
+			        	<li><a href="{{ action('SchoolMemberController@getIndex') }}"><i class="fa-fw fa fa-users"></i> Members</a></li>
 			        @endcan
 			        @can ('read-exam', 'strict')
-			            <li><a href="{{ action('ExamController@getIndex') }}"><i class="fa fa-file-text"></i> Exams</a></li>
+			            <li><a href="{{ action('ExamController@getIndex') }}"><i class="fa-fw fa fa-file-text"></i> Exams</a></li>
+			        @endcan
+			        @can ('read-course-calendar', 'strict')
+			            <li><a href="{{ action('CourseCalendarController@getIndex') }}"><i class="fa-fw fa fa-calendar"></i> Course Calendar</a></li>
 			        @endcan
 		      	</ul>
 		      	<ul class="nav navbar-nav navbar-right">
 		      		@if ( ! auth()->check())
-			        	<li><a href="{{ action('Auth\AuthController@getLogin') }}">Sign In</a></li>
-			        	<li><a href="{{ action('Auth\AuthController@getRegister') }}">Register</a></li>
+			        	<li><a href="{{ action('Auth\AuthController@getLogin') }}"><i class="fa fa-fw fa-sign-in"></i> Sign In</a></li>
+			        	<li><a href="{{ action('Auth\AuthController@getRegister') }}"><i class="fa fa-fw fa-user-plus"></i> Register</a></li>
 			        @else
 			        	<li class="dropdown">
 			        		<a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell notification-icon"></i></a>

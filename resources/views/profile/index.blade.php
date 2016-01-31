@@ -3,7 +3,7 @@
 @section('content')
 	<div class="row">
 		<div class="col-md-2 profile-sidebar" id="profile-spy">
-			<ul class="nav nav-pills nav-stacked col-md-2" data-spy="affix">
+			<ul class="nav nav-pills nav-stacked col-md-2 hidden-sm" data-spy="affix">
 				<li><a href="#basic-info"><i class="fa fa-info fa-fw"></i> Basic Information</a></li>
 				@if (strtolower($user->group->name) == 'student')
 					<li><a href="#performance"><i class="fa fa-line-chart fa-fw"></i> Performances</a></li>
@@ -40,8 +40,6 @@
 					@if (auth()->user()->id != $user->id)
 						<ul class="list-inline">
 							<li><a href="#composeMessageModal" data-toggle="modal"><i class="fa fa-envelope"></i> Send Message</a></li>
-							<li><a href="#"><i class="fa fa-heart"></i> Follow</a></li>
-							<li><a href="#"><i class="fa fa-ban"></i> Block</a></li>
 						</ul>
 
 						<div class="modal fade" id="composeMessageModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel">

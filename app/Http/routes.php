@@ -98,6 +98,8 @@ Route::group(['middleware' => 'auth'], function()
 	Route::controller('message', 'MessageController');
 	Route::get('m/{username}', 'MessageController@getView');
 
+	Route::controller('course_calendar', 'CourseCalendarController');
+
 	Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function()
 	{
 		Route::get('dashboard', 'DashboardController@getIndex');

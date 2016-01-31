@@ -51,6 +51,8 @@ var question_duration;
 
 $(function() {
 
+    $('[data-toggle="calendar"]').fullCalendar();
+
 	$.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
