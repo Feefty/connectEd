@@ -85,7 +85,11 @@
 								<label for="status">Status</label>
 								<select class="form-control" name="status" id="status">
 									@foreach (config('exam_status') as $row => $col)
-										<option value="{{ $row }}">{{ $col }}</option>
+										@if ($exam->status == $row)
+											<option value="{{ $row }}" selected>{{ $col }}</option>
+										@else
+											<option value="{{ $row }}">{{ $col }}</option>
+										@endif
 									@endforeach
 								</select>
 							</div>
