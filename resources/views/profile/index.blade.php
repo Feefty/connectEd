@@ -226,7 +226,7 @@
 													{{ $average }}
 												</td>
 												<td>
-													{!! $average < 75 ? '<strong class="text-danger">Failed</strong>' : '<strong class="text-success">Passed</strong>' !!}
+													{!! $average < 75 ? ($average == 0 ? '-' : '<strong class="text-danger">Failed</strong>') : '<strong class="text-success">Passed</strong>' !!}
 												</td>
 											</tr>
 										@endforeach

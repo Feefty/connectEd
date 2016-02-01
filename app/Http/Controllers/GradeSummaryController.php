@@ -70,6 +70,11 @@ class GradeSummaryController extends Controller
             $grade_summary = $grade_summary->where('class_subject_id', (int) $request->class_subject_id);
         }
 
+        if ($request->has('quarter'))
+        {
+            $grade_summary = $grade_summary->where('quarter', (int) $request->quarter);
+        }
+
         return $grade_summary->orderBy('created_at', 'desc')->get();
     }
 
@@ -82,11 +87,6 @@ class GradeSummaryController extends Controller
             $data = $request->only('student_id', 'quarter', 'school_year', 'class_subject_id');
             $grade = 0;
             $grade_data = [];
-
-            if (GradeSummary::where($data)->exists())
-            {
-                throw new \Exception(trans('grade_summary.already_exists.error'));
-            }
 
             $subject_id = ClassSubject::findOrfail($data['class_subject_id'])->subject_id;
 
@@ -132,7 +132,7 @@ class GradeSummaryController extends Controller
                 }
             }
 
-            $data['grade'] = $grade;
+            $data['grade'] = round($grade);
 
             if ($grade < 75)
             {
@@ -142,9 +142,18 @@ class GradeSummaryController extends Controller
             {
                 $data['remarks'] = 1;
             }
-            GradeSummary::create($data);
 
-            $msg = trans('grade_summary.add.success');
+            $grade_summary = GradeSummary::where($request->only('student_id', 'quarter', 'school_year', 'class_subject_id'));
+            if ($grade_summary->exists())
+            {
+                $grade_summary->update($data);
+            }
+            else
+            {
+                GradeSummary::create($data);
+            }
+
+            $msg = trans('grade_summary.submit.success');
         }
         catch (\Exception $e)
         {

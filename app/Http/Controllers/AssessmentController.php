@@ -87,6 +87,11 @@ class AssessmentController extends Controller
             $assessment = $assessment->where('class_subject_id', (int) $request->class_subject_id);
         }
 
+        if ($request->has('source'))
+        {
+            $assessment = $assessment->where('source', rawurldecode($request->source));
+        }
+
         switch (strtolower(auth()->user()->group->name))
         {
             case 'student':
@@ -161,5 +166,24 @@ class AssessmentController extends Controller
         }
 
         return ['status' => 'success', 'msg' => $msg];
+    }
+
+    public function getDelete($id)
+    {
+        $msg = [];
+
+        try
+        {
+            Assessment::findOrFail($id)
+                        ->delete();
+
+            $msg = trans('assessment.delete.success');
+        }
+        catch (\Exception $e)
+        {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+
+        return redirect()->back()->with(compact('msg'));
     }
 }

@@ -110,7 +110,7 @@
 								<th data-field="name">Name</th>
 								<th data-formatter="teacherProfileNameFormatter">Adviser</th>
 								<th data-formatter="gradeLevelFormatter">Level</th>
-								<th data-formatter="yearLevelFormatter">Year</th>
+								<th data-formatter="schoolYearFormatter">Year</th>
 								<th data-formatter="statusFormatter">Status</th>
 								@can ('update-class-section')
 								<th data-formatter="actionUpdateClassSectionFormatter" data-align="center">Actions</th>

@@ -41,7 +41,7 @@
 								<td><strong>Section:</strong> <a href="{{ action('ClassSectionController@getView', $class_subject->class_section_id) }}">{{ '['. config('grade_level')[$class_subject->class_section->level] .'] '. $class_subject->class_section->name }}</a></td>
 							</tr>
 							<tr>
-								<td><strong>Subject:</strong> {{ '['. $class_subject->subject->code .'] '. $class_subject->subject->name .' '. $class_subject->subject->level .' - '. $class_subject->subject->description }}</td>
+								<td><strong>Subject:</strong> {{ '['. $class_subject->subject->code .'] '. $class_subject->subject->name }}</td>
 							</tr>
 							<tr>
 								<td><strong>Room:</strong> {{ $class_subject->room }}</td>
@@ -97,23 +97,45 @@
 							@endcan
 						</div>
 
-						<div id="toolbar5">
-							@can ('manage-assessment')
+						<div id="toolbarq1">
+							@can ('manage-grade-summary')
 							<div class="dropdown">
 								<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
 								<ul class="dropdown-menu">
-									<li><a href="#addAssessmentModal" data-toggle="modal"><i class="fa fa-plus"></i> Add Assessment</a></li>
+									<li><a href="#addGradeSummaryModal" data-toggle="modal"><i class="fa fa-plus"></i> Submit Grade Summary</a></li>
 								</ul>
 							</div>
 							@endcan
 						</div>
 
-						<div id="toolbar6">
+						<div id="toolbarq2">
 							@can ('manage-grade-summary')
 							<div class="dropdown">
 								<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
 								<ul class="dropdown-menu">
-									<li><a href="#addGradeSummaryModal" data-toggle="modal"><i class="fa fa-plus"></i> Add Grade Summary</a></li>
+									<li><a href="#addGradeSummaryModal" data-toggle="modal"><i class="fa fa-plus"></i> Submit Grade Summary</a></li>
+								</ul>
+							</div>
+							@endcan
+						</div>
+
+						<div id="toolbarq3">
+							@can ('manage-grade-summary')
+							<div class="dropdown">
+								<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
+								<ul class="dropdown-menu">
+									<li><a href="#addGradeSummaryModal" data-toggle="modal"><i class="fa fa-plus"></i> Submit Grade Summary</a></li>
+								</ul>
+							</div>
+							@endcan
+						</div>
+
+						<div id="toolbarq4">
+							@can ('manage-grade-summary')
+							<div class="dropdown">
+								<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
+								<ul class="dropdown-menu">
+									<li><a href="#addGradeSummaryModal" data-toggle="modal"><i class="fa fa-plus"></i> Submit Grade Summary</a></li>
 								</ul>
 							</div>
 							@endcan
@@ -443,8 +465,8 @@
 											<div class="form-group">
 												<div class="row">
 													<div class="col-sm-6">
-														<label for="quarter2">Quarter</label>
-														<select class="form-control" name="quarter" id="quarter2">
+														<label for="quarterselect">Quarter</label>
+														<select class="form-control" name="quarter" id="quarterselect">
 															@for ($i = 1; $i <= 4; $i++)
 																<option value="{{ $i }}">{{ $i }}</option>
 															@endfor
@@ -461,6 +483,41 @@
 												</div>
 											</div>
 
+								      	</div>
+								      	<div class="modal-footer">
+								        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								        	<button type="submit" class="btn btn-primary">Submit</button>
+								      	</div>
+							      	</form>
+						    	</div>
+						  	</div>
+						</div><!-- end of modal -->
+
+						<div class="modal fade" id="addAchievementStudent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+							<div class="modal-dialog modal-lg" role="document">
+						 		<div class="modal-content">
+							      	<form action="{{ action('SubjectScheduleController@postAdd') }}" method="post">
+							    		<div class="modal-header">
+							        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							        		<h4 class="modal-title" id="myModalLabel">Achievement</h4>
+							      		</div>
+								      	<div class="modal-body">
+								      		{!! csrf_field() !!}
+											<input type="hidden" name="student_id" value="">
+
+											<div class="row">
+												@foreach ($achievements as $row)
+													<div class="col-sm-2">
+														<div class="checkbox">
+															<label>
+																<input type="checkbox" name="achievement_ids[]" value="{{ $row->id }}">
+																<strong>{{ $row->title }}</strong>
+																<img src="{{ asset(config('achievement.icon.path')).'/'. $row->icon }}" class="img-responsive" alt="" />
+															</label>
+														</div>
+													</div>
+												@endforeach
+											</div>
 								      	</div>
 								      	<div class="modal-footer">
 								        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -557,41 +614,196 @@
 
 
 							<div id="assessments-tab" class="tab-pane fade">
-								<table data-toggle="table" data-url="{{ action('AssessmentController@getApi') }}?class_subject_id={{ $class_subject->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar5">
-									<thead>
-										<tr>
-											<th colspan="9" data-align="center">Assessments</th>
-										</tr>
-										<tr>
-											<th data-sortable="true" data-formatter="assessmentGradeFormatter">Grade</th>
-											<th data-sortable="true" data-field="source">Source</th>
-											<th data-sortable="true" data-field="quarter">Quarter</th>
-											@if (strtolower(auth()->user()->group->name) != 'student')
-												<th data-formatter="classStudentProfileNameFormatter">Student</th>
-											@endif
-											<th data-sortable="true" data-formatter="recordedFormatter">Recorded</th>
-											<th data-sortable="true" data-field="created_at">Date</th>
-										</tr>
-									</thead>
-								</table>
+								<div class="row">
+									<div class="col-sm-3">
+										<ul class="nav nav-pills nav-stacked">
+											@foreach ($sources as $row)
+												<div id="toolbar{{ str_replace(' ', '_', strtolower($row->source)) }}">
+													@can ('manage-assessment')
+													<div class="dropdown">
+														<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
+														<ul class="dropdown-menu">
+															<li><a href="#addAssessmentModal" data-toggle="modal"><i class="fa fa-plus"></i> Add Assessment</a></li>
+														</ul>
+													</div>
+													@endcan
+												</div>
+												@if ($sources[0]->id == $row->id)
+													<li class="active"><a data-toggle="tab" href="#{{ str_replace(' ', '_', strtolower($row->source)) }}"><i class="fa fa-arrow-right fa-fw"></i> {{ $row->source }}</a></li>
+												@else
+													<li><a data-toggle="tab" href="#{{ str_replace(' ', '_', strtolower($row->source)) }}"><i class="fa fa-arrow-right fa-fw"></i> {{ $row->source }}</a></li>
+												@endif
+											@endforeach
+										</ul>
+									</div>
+									<div class="col-sm-9">
+										<div class="tab-content">
+											@foreach ($sources as $row)
+												@if ($sources[0]->id == $row->id)
+													<div id="{{ str_replace(' ', '_', strtolower($row->source)) }}" class="tab-pane fade in active">
+												@else
+													<div id="{{ str_replace(' ', '_', strtolower($row->source)) }}" class="tab-pane fade">
+												@endif
+													<table data-toggle="table" data-url="{{ action('AssessmentController@getApi') }}?class_subject_id={{ $class_subject->id }}&source={{ rawurlencode($row->source) }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar{{ str_replace(' ', '_', strtolower($row->source)) }}">
+														<thead>
+															<tr>
+																<th colspan="9" data-align="center">Assessments</th>
+															</tr>
+															<tr>
+																<th data-sortable="true" data-formatter="assessmentGradeFormatter">Grade</th>
+																<th data-sortable="true" data-field="quarter">Quarter</th>
+																@if (strtolower(auth()->user()->group->name) != 'student')
+																	<th data-formatter="classStudentProfileNameFormatter">Student</th>
+																@endif
+																<th data-sortable="true" data-formatter="recordedFormatter">Recorded</th>
+																<th data-sortable="true" data-field="date">Date</th>
+																@can ('delete-assessment')
+																	<th data-align="center" data-formatter="actionClassSubjectAssessmentFormatter"></th>
+																@endcan
+															</tr>
+														</thead>
+													</table>
+												</div>
+											@endforeach
+										</div>
+									</div>
+								</div>
 							</div><!-- end of assessments tab -->
 
 
 							<div id="grade-summary-tab" class="tab-pane fade">
-								<table data-toggle="table" data-url="{{ action('GradeSummaryController@getApi') }}?class_subject_id={{ $class_subject->id }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar6">
-									<thead>
-										<tr>
-											<th colspan="9" data-align="center">Grade Summary</th>
-										</tr>
-										<tr>
-											<th data-sortable="true" data-formatter="studentProfileNameFormatter">Student</th>
-											<th data-sortable="true" data-field="grade">Grade</th>
-											<th data-sortable="true" data-field="quarter">Quarter</th>
-											<th data-sortable="true" data-field="created_at">Date Added</th>
-											<th data-sortable="true" data-formatter="remarksFormatter">Remarks</th>
-										</tr>
-									</thead>
-								</table>
+								<div class="row">
+									<div class="col-sm-3">
+										<ul class="nav nav-pills nav-stacked">
+											<li class="active"><a href="#quarter1" data-toggle="tab"><i class="fa fa-arrow-right fa-fw"></i> 1st Quarter</a></li>
+											<li><a href="#quarter2" data-toggle="tab"><i class="fa fa-arrow-right fa-fw"></i> 2nd Quarter</a></li>
+											<li><a href="#quarter3" data-toggle="tab"><i class="fa fa-arrow-right fa-fw"></i> 3rd Quarter</a></li>
+											<li><a href="#quarter4" data-toggle="tab"><i class="fa fa-arrow-right fa-fw"></i> 4th Quarter</a></li>
+											<li><a href="#fullgrade" data-toggle="tab"><i class="fa fa-arrow-right fa-fw"></i> Final</a></li>
+										</ul>
+									</div>
+									<div class="col-sm-9">
+										<div class="tab-content">
+											<div id="quarter1" class="tab-pane fade in active">
+												<table data-toggle="table" data-url="{{ action('GradeSummaryController@getApi') }}?class_subject_id={{ $class_subject->id }}&quarter=1" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbarq1">
+													<thead>
+														<tr>
+															<th colspan="9" data-align="center">Grade Summary</th>
+														</tr>
+														<tr>
+															<th data-sortable="true" data-formatter="studentProfileNameFormatter">Student</th>
+															<th data-sortable="true" data-field="grade">Grade</th>
+															<th data-sortable="true" data-field="created_at">Date Added</th>
+															<th data-sortable="true" data-formatter="remarksFormatter">Remarks</th>
+														</tr>
+													</thead>
+												</table>
+											</div>
+											<div id="quarter2" class="tab-pane fade">
+												<table data-toggle="table" data-url="{{ action('GradeSummaryController@getApi') }}?class_subject_id={{ $class_subject->id }}&quarter=2" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbarq2">
+													<thead>
+														<tr>
+															<th colspan="9" data-align="center">Grade Summary</th>
+														</tr>
+														<tr>
+															<th data-sortable="true" data-formatter="studentProfileNameFormatter">Student</th>
+															<th data-sortable="true" data-field="grade">Grade</th>
+															<th data-sortable="true" data-field="created_at">Date Added</th>
+															<th data-sortable="true" data-formatter="remarksFormatter">Remarks</th>
+														</tr>
+													</thead>
+												</table>
+											</div>
+											<div id="quarter3" class="tab-pane fade">
+												<table data-toggle="table" data-url="{{ action('GradeSummaryController@getApi') }}?class_subject_id={{ $class_subject->id }}&quarter=3" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbarq3">
+													<thead>
+														<tr>
+															<th colspan="9" data-align="center">Grade Summary</th>
+														</tr>
+														<tr>
+															<th data-sortable="true" data-formatter="studentProfileNameFormatter">Student</th>
+															<th data-sortable="true" data-field="grade">Grade</th>
+															<th data-sortable="true" data-field="created_at">Date Added</th>
+															<th data-sortable="true" data-formatter="remarksFormatter">Remarks</th>
+														</tr>
+													</thead>
+												</table>
+											</div>
+											<div id="quarter4" class="tab-pane fade">
+												<table data-toggle="table" data-url="{{ action('GradeSummaryController@getApi') }}?class_subject_id={{ $class_subject->id }}&quarter=4" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbarq4">
+													<thead>
+														<tr>
+															<th colspan="9" data-align="center">Grade Summary</th>
+														</tr>
+														<tr>
+															<th data-sortable="true" data-formatter="studentProfileNameFormatter">Student</th>
+															<th data-sortable="true" data-field="grade">Grade</th>
+															<th data-sortable="true" data-field="created_at">Date Added</th>
+															<th data-sortable="true" data-formatter="remarksFormatter">Remarks</th>
+														</tr>
+													</thead>
+												</table>
+											</div>
+											<div id="fullgrade" class="tab-pane fade">
+												<table class="table table-bordered table-hover margin-lg-top">
+													<thead>
+														<tr>
+															<th>
+																Student
+															</th>
+															<th>
+																1st Quarter
+															</th>
+															<th>
+																2nd Quarter
+															</th>
+															<th>
+																3rd Quarter
+															</th>
+															<th>
+																4th	Quarter
+															</th>
+															<th>
+																Final
+															</th>
+															<th>
+																Remarks
+															</th>
+														</tr>
+													</thead>
+													<tbody>
+														@foreach ($users as $row)
+															<tr>
+																<td>
+																	{{ ucwords(strtolower($row->last_name .', '. $row->first_name)) }}
+																</td>
+																<td>
+																	{{ \App\GradeSummary::where(['quarter' => 1, 'class_subject_id' => $class_subject->id, 'school_year' => $class_subject->class_section->year, 'student_id' => $row->user_id])->pluck('grade') }}
+																</td>
+																<td>
+																	{{ \App\GradeSummary::where(['quarter' => 2, 'class_subject_id' => $class_subject->id, 'school_year' => $class_subject->class_section->year, 'student_id' => $row->user_id])->pluck('grade') }}
+																</td>
+																<td>
+																	{{ \App\GradeSummary::where(['quarter' => 3, 'class_subject_id' => $class_subject->id, 'school_year' => $class_subject->class_section->year, 'student_id' => $row->user_id])->pluck('grade') }}
+																</td>
+																<td>
+																	{{ \App\GradeSummary::where(['quarter' => 4, 'class_subject_id' => $class_subject->id, 'school_year' => $class_subject->class_section->year, 'student_id' => $row->user_id])->pluck('grade') }}
+																</td>
+																<td>
+																	<?php $avg = \App\GradeSummary::where(['class_subject_id' => $class_subject->id, 'school_year' => $class_subject->class_section->year, 'student_id' => $row->user_id])->avg('grade') ?>
+																	{{ $avg }}
+																</td>
+																<td>
+																	{!! $avg < 75 ? ('<span class="text-danger">Failed</span>' == 0 ? '-' : '<span class="text-danger">Failed</span>') : '<span class="text-success">Passed</span>' !!}
+																</td>
+															</tr>
+														@endforeach
+													</tbody>
+											 	</table>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div><!-- end of grade summaries tab -->
 
 

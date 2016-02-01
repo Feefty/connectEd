@@ -23,10 +23,10 @@ var gradeLevels = [
 	"Grade 4",
 	"Grade 5",
 	"Grade 6",
-	"1st Year High School",
-	"2nd Year High School",
-	"3rd Year High School",
-	"4th Year High School"
+	"Grade 7",
+	"Grade 8",
+	"Grade 9",
+	"Grade 10"
 ];
 
 var attendanceStatuses = [
@@ -587,6 +587,10 @@ function actionClassSubjectStudentFormatter(value, row) {
     return ["<a href='#addAchievementStudent' data-toggle='modal' class='btn btn-default btn-xs tooltips' title='Add Achievement'><i class='fa fa-trophy'></i></a>"].join(" ");
 }
 
+function actionClassSubjectAssessmentFormatter(value, row) {
+	return ["<a href='/assessment/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-remove'></i></a>"].join(" ");
+}
+
 function actionClassSubjectStudentsFormatter(value, row) {
     return "";
 }
@@ -621,7 +625,7 @@ function lessonTitleFormatter(value, row) {
 }
 
 function subjectNameFormatter(value, row) {
-	return '['+ row.subject.code +'] '+ row.subject.name +' - '+ row.subject.description;
+	return '['+ row.subject.code +'] '+ row.subject.name;
 }
 
 function profileNameFormatter(value, row) {
@@ -676,8 +680,8 @@ function remarksFormatter(value, row) {
     return remarks[row.remarks];
 }
 
-function yearLevelFormatter(value, row) {
-	return row.level +' - '+ row.level+1;
+function schoolYearFormatter(value, row) {
+	return row.year +' - '+ (row.year+1);
 }
 
 function dayFormatter(value, row) {
@@ -729,7 +733,7 @@ function recordedFormatter(value, row) {
 	return row.recorded ? 'Yes' : 'No';
 }
 
-function assessmentClassSubjectNameFormatter(value, row) {
+function assessmentClass(value, row) {
     if (row.class_subject == null) {
         return '['+ row.class_subject_exam.class_subject.subject.code +'] '+ row.class_subject_exam.class_subject.subject.name +' - '+ row.class_subject_exam.class_subject.subject.description;
     } else {

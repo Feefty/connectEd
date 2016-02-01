@@ -16,6 +16,8 @@ use App\Exam;
 use App\User;
 use App\Profile;
 use App\AssessmentCategory;
+use App\Assessment;
+use App\Achievement;
 use Gate;
 
 class ClassSubjectController extends Controller
@@ -118,10 +120,22 @@ class ClassSubjectController extends Controller
                     })
                     ->orderBy('last_name')
                     ->orderBy('first_name')
+					->orderBy('gender')
                     ->get();
 
         $assessment_categories = AssessmentCategory::orderBy('name')->get();
-		return view('class.subject.view', compact('class_subject', 'lessons', 'users', 'assessment_categories'));
+		$sources = Assessment::whereHas('class_subject_exam.class_subject', function($query) use($id) {
+								$query->where('id', (int) $id);
+							})
+							->orWhereHas('class_subject', function($query) use($id) {
+								$query->where('id', (int) $id);
+							})
+							->groupBy('source')
+							->orderBy('source')
+							->get();
+		$achievements = Achievement::orderBy('title')->get();
+
+		return view('class.subject.view', compact('class_subject', 'lessons', 'users', 'assessment_categories', 'sources', 'achievements'));
 	}
 
 	public function getDelete($id)

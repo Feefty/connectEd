@@ -32,7 +32,7 @@
 						@endif
 
 						<form action="{{ action('ClassSectionController@postEdit') }}" method="POST">
-							
+
 							{!! csrf_field() !!}
 
 							<input type="hidden" name="id" value="{{ (int) $class_section->id }}">
@@ -46,9 +46,9 @@
 			      				<select id="adviser" name="adviser" class="form-control">
 			      					@foreach ($teachers as $row)
 			      						@if ($class_section->adviser_id == $row->id)
-			      							<option value="{{ $row->id }}" selected>{{ $row->username }}</option>
+			      							<option value="{{ $row->id }}" selected>{{ ucwords(strtolower($row->profile->first_name .' '. $row->profile->last_name)) }}</option>
 			      						@else
-			      							<option value="{{ $row->id }}">{{ $row->username }}</option>
+			      							<option value="{{ $row->id }}">{{ ucwords(strtolower($row->profile->first_name .' '. $row->profile->last_name)) }}</option>
 			      						@endif
 			      					@endforeach
 			      				</select>
