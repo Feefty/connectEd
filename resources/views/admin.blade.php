@@ -67,9 +67,6 @@
                                 </li>
                             </ul>
                         </li>
-                        <li>
-                            <a href="{{ action('Admin\ConfigurationController@getIndex') }}"><i class="fa fa-gear"></i> Configurations</a>
-                        </li>
                     </ul>
                 </div>
             </div>
