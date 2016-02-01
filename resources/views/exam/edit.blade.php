@@ -80,7 +80,7 @@
 		   					</select>
 		   				</div>
 
-						@if (strtolower(auth()->user()->group->name) == 'school')
+						@if (strtolower(auth()->user()->group->name) == 'school admin')
 							<div class="form-group">
 								<label for="status">Status</label>
 								<select class="form-control" name="status" id="status">
