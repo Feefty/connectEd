@@ -244,7 +244,7 @@
 						<div class="panel-body">
 							@foreach ($achievements as $row)
 								<div class="col-sm-3">
-									<strong>{{ $row->achievement->title }}</strong>
+									<strong class="text-center">{{ $row->achievement->title }}</strong>
 									<img src="{{ config('achievement.icon.path').$row->achievement->icon }}" alt="" class="img-responsive" />
 								</div>
 							@endforeach

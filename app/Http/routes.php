@@ -123,6 +123,7 @@ Route::group(['middleware' => 'auth'], function()
 		Route::get('school/{id}/view', 'SchoolController@getView')->where(['id' => '[0-9]+']);
 		Route::get('school/{id}/edit', 'SchoolController@getEdit')->where(['id' => '[0-9]+']);
 		Route::get('school/{id}/delete', 'SchoolController@getDelete')->where(['id' => '[0-9]+']);
+		Route::get('school/data', 'SchoolController@getData');
 		Route::post('school/edit', 'SchoolController@postEdit');
 		Route::post('school/member/add', 'SchoolController@postAddMember');
 		Route::get('school/member/api/{school_id}', 'SchoolController@getMemberAPI')->where(['id' => '[0-9]+']);
@@ -162,5 +163,7 @@ Route::group(['middleware' => 'auth'], function()
 		Route::controller('quarter_calendar', 'QuarterCalendarController');
 
 		Route::controller('message', 'MessageController');
+
+		Route::controller('student', 'StudentController');
 	});
 });

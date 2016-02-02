@@ -14,6 +14,11 @@ use Gate;
 
 class UserController extends Controller
 {
+    public function getData(Request $request)
+    {
+        
+    }
+
     public function getAPI(Request $request)
     {
         if (Gate::denies('api-user'))

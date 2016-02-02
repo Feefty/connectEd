@@ -14,6 +14,38 @@ use Gate;
 
 class SchoolController extends Controller
 {
+	public function getData(Request $request)
+	{
+		$data = [];
+
+		$data['datasets'][0] = [
+                'fillColor' => 'rgba(96, 179, 255, 0.5)',
+                'strokeColor' => 'rgba(16, 127, 190, 0.8)',
+                'highlightFill' => 'rgba(66, 163, 224, 0.75)',
+                'highlightStroke' => 'rgba(76, 171, 240, 1)'
+        ];
+
+		$schools = School::select('schools.*')
+							->leftJoin('school_members', 'school_members.school_id', '=', 'schools.id')
+							->leftJoin('users', 'users.id', '=', 'school_members.user_id')
+							->leftJoin('groups', 'groups.id', '=', 'users.group_id')
+							->where('groups.name', 'Student')
+							->limit('5')
+							->orderBy(\DB::raw('COUNT(users.id)'))
+							->groupBy('schools.id')
+							->get();
+
+		foreach ($schools as $school)
+		{
+			$data['labels'][] = $school->name;
+			$data['datasets'][0]['data'][] = School::findOrFail($school->id)->whereHas('member.user.group', function($query) {
+				$query->where('name', 'Student');
+			})->count();
+		}
+
+		return $data;
+	}
+
 	public function getAPI()
 	{
         if (Gate::denies('api-school'))
