@@ -124,7 +124,7 @@ class GradeComponentController extends Controller
 
         try
         {
-            GradeComponent::findOrFail((int) $id);
+            GradeComponent::findOrFail((int) $id)->delete();
             $msg = trans('grade_component.delete.success');
         }
         catch (\Exception $e)

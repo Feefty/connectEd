@@ -14094,7 +14094,7 @@ a.fc-more:hover {
   border-bottom-color: transparent;
 }
 body {
-  background: url("/img/bg.jpg") bottom center no-repeat fixed;
+  background: url("/img/bg.jpg");
   padding-top: 70px;
 }
 
