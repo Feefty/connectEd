@@ -27,8 +27,10 @@
 							<p>{{ session()->get('msg') }}</p>
 						</div>
 					@endif
-					<button type="button" data-toggle="modal" data-target="#addCourseCalendarModal" name="button" class="btn btn-success btn-xs"><i class="fa fa-plus"></i> Add</button>
-                    <div data-toggle="calendar"></div>
+					@can ('create-course-calendar', 'strict')
+						<button type="button" data-toggle="modal" data-target="#addCourseCalendarModal" name="button" class="btn btn-success btn-xs"><i class="fa fa-plus"></i> Add</button>
+					@endcan
+					<div data-toggle="calendar" class="fullcalendar" data-source="{{ action('CourseCalendarController@getData') }}?school_id={{ @auth()->user()->school_member->school_id }}"></div>
 				</div>
 			</div>
 		</div>
@@ -43,6 +45,7 @@
 				</div>
 				<form action="{{ action('CourseCalendarController@postAdd') }}" method="post">
 					{!! csrf_field() !!}
+					<input type="hidden" name="school_id" value="{{ auth()->user()->school_member->school_id }}">
 					<div class="modal-body">
 						<div class="form-group">
 							<label for="title">Title</label>
@@ -51,6 +54,15 @@
 						<div class="form-group">
 							<label for="description">Description</label>
 							<textarea name="description" id="description" class="form-control"></textarea>
+						</div>
+						<div class="form-group">
+							<label for="date_from">Date</label>
+							<div class="input-group">
+								<span class="input-group-addon">From</span>
+								<input type="date" name="date_from" class="form-control">
+								<span class="input-group-addon">To</span>
+								<input type="date" name="date_to" class="form-control">
+							</div>
 						</div>
 					</div>
 					<div class="modal-footer">

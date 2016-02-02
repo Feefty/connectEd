@@ -91,7 +91,6 @@ class GradeSummaryController extends Controller
             $class_subject = ClassSubject::findOrfail($data['class_subject_id']);
             $level = $class_subject->class_section->level;
             $subject_id = $class_subject->subject_id;
-            dd($level .' - '. $subject_id);
 
             foreach (AssessmentCategory::get() as $assessment_category)
             {

@@ -51,7 +51,14 @@ var question_duration;
 
 $(function() {
 
-    $('[data-toggle="calendar"]').fullCalendar();
+    var source = $('.fullcalendar').data('source');
+    $('[data-toggle="calendar"]').fullCalendar({
+        eventSources: [
+            {
+                url: source
+            }
+        ]
+    });
 
 	$.ajaxSetup({
         headers: {

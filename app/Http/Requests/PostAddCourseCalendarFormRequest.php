@@ -13,7 +13,7 @@ class PostAddCourseCalendarFormRequest extends Request
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class PostAddCourseCalendarFormRequest extends Request
     public function rules()
     {
         return [
-            //
+            'title'     => 'required|max:255',
+            'description' => 'max:1000',
+            'date_from' => 'required|date',
+            'date_to' => 'date'
         ];
     }
 }
