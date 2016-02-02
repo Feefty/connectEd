@@ -112,6 +112,7 @@ function achievementIconFormatter(value, row) {
 
 
 $(function() {
+	$('[data-toggle="select"]').selectpicker();
 	$('[data-toggle="table"]').on('load-success.bs.table', function() {
 		$('[data-toggle="tooltip"]').tooltip();
 	});
