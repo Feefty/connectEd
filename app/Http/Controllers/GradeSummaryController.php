@@ -88,48 +88,35 @@ class GradeSummaryController extends Controller
             $grade = 0;
             $grade_data = [];
 
-            $level = ClassSubject::with('class_section')->findOrfail($data['class_subject_id'])->class_section->level;
-            $subject_id = ClassSubject::findOrfail($data['class_subject_id'])->subject_id;
+            $class_subject = ClassSubject::findOrfail($data['class_subject_id']);
+            $level = $class_subject->class_section->level;
+            $subject_id = $class_subject->subject_id;
 
             foreach (AssessmentCategory::get() as $assessment_category)
             {
-                foreach (GradeComponent::where('assessment_category_id', $assessment_category->id)->where('level', $level)->where('subject_id', $subject_id)->get() as $grade_component)
+                foreach (GradeComponent::where('assessment_category_id', $assessment_category->id)
+                                        ->where('level', $level)
+                                        ->where('subject_id', $subject_id)
+                                        ->get() as $grade_component)
                 {
-                    $score = Assessment::whereHas('class_subject', function($query) use($data) {
-                                            $query->where('id', $data['class_subject_id']);
-                                        })
-                                        ->orWhereHas('class_subject_exam.class_subject', function($query) use($data) {
-                                            $query->where('id', $data['class_subject_id']);
-                                        })
-                                        ->whereHas('class_student.student', function($query) use($data) {
-                                            $query->where('id', $data['student_id']);
-                                        })
-                                        ->whereHas('class_student.class_section', function($query) use($data, $level) {
-                                            $query->where('year', $data['school_year'])
-                                                    ->where('level', $level);
-                                        })
-                                        ->where('quarter', $data['quarter'])
-                                        ->where('assessment_category_id', $assessment_category->id)
-                                        ->sum('score');
-                    $total = Assessment::whereHas('class_subject', function($query) use($data) {
-                                            $query->where('id', $data['class_subject_id']);
-                                        })
-                                        ->orWhereHas('class_subject_exam.class_subject', function($query) use($data) {
-                                            $query->where('id', $data['class_subject_id']);
+                    $tmp_grade = Assessment::select(\DB::raw('SUM(score) as score, SUM(total) as total'))
+                                        ->where(function($query) use($subject_id) {
+                                            $query->whereHas('class_subject_exam.class_subject', function($query) use($subject_id) {
+                                                $query->where('id', $subject_id);
+                                            })->orWhereHas('class_subject', function($query) use($subject_id) {
+                                                $query->where('id', $subject_id);
+                                            });
                                         })
                                         ->whereHas('class_student.student', function($query) use($data) {
                                             $query->where('id', $data['student_id']);
                                         })
-                                        ->whereHas('class_student.class_section', function($query) use($data, $level) {
-                                            $query->where('year', $data['school_year'])
-                                                    ->where('level', $level);
-                                        })
                                         ->where('quarter', $data['quarter'])
                                         ->where('assessment_category_id', $assessment_category->id)
-                                        ->sum('total');
-                    $assessment_category_grade = ($score/$total) * 100;
+                                        ->first();
+                    $assessment_category_grade = ($tmp_grade->score/$tmp_grade->total) * 100;
                     $grade += ($assessment_category_grade / 100) * $grade_component->percentage;
                     $grade_data[] = [
+                        $data['quarter'],
                         $assessment_category_grade,
                         $grade
                     ];
