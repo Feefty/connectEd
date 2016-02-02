@@ -88,11 +88,12 @@ class GradeSummaryController extends Controller
             $grade = 0;
             $grade_data = [];
 
+            $level = ClassSubject::with('class_section')->findOrfail($data['class_subject_id'])->class_section->level;
             $subject_id = ClassSubject::findOrfail($data['class_subject_id'])->subject_id;
 
             foreach (AssessmentCategory::get() as $assessment_category)
             {
-                foreach (GradeComponent::where('assessment_category_id', $assessment_category->id)->where('subject_id', $subject_id)->get() as $grade_component)
+                foreach (GradeComponent::where('assessment_category_id', $assessment_category->id)->where('level', $level)->where('subject_id', $subject_id)->get() as $grade_component)
                 {
                     $score = Assessment::whereHas('class_subject', function($query) use($data) {
                                             $query->where('id', $data['class_subject_id']);
@@ -103,9 +104,9 @@ class GradeSummaryController extends Controller
                                         ->whereHas('class_student.student', function($query) use($data) {
                                             $query->where('id', $data['student_id']);
                                         })
-                                        ->whereHas('class_student.class_section', function($query) use($data, $grade_component) {
+                                        ->whereHas('class_student.class_section', function($query) use($data, $level) {
                                             $query->where('year', $data['school_year'])
-                                                    ->where('level', $grade_component->level);
+                                                    ->where('level', $level);
                                         })
                                         ->where('quarter', $data['quarter'])
                                         ->where('assessment_category_id', $assessment_category->id)
@@ -119,14 +120,13 @@ class GradeSummaryController extends Controller
                                         ->whereHas('class_student.student', function($query) use($data) {
                                             $query->where('id', $data['student_id']);
                                         })
-                                        ->whereHas('class_student.class_section', function($query) use($data, $grade_component) {
+                                        ->whereHas('class_student.class_section', function($query) use($data, $level) {
                                             $query->where('year', $data['school_year'])
-                                                    ->where('level', $grade_component->level);
+                                                    ->where('level', $level);
                                         })
                                         ->where('quarter', $data['quarter'])
                                         ->where('assessment_category_id', $assessment_category->id)
                                         ->sum('total');
-                    //dd($grade_component->percentage);
                     $assessment_category_grade = ($score/$total) * 100;
                     $grade += ($assessment_category_grade / 100) * $grade_component->percentage;
                     $grade_data[] = [
@@ -135,7 +135,6 @@ class GradeSummaryController extends Controller
                     ];
                 }
             }
-            dd($grade_data);
             $data['grade'] = round($grade);
 
             if ($grade < 75)
