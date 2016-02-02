@@ -26,8 +26,8 @@ Route::group(['middleware' => 'auth'], function()
 	Route::controller('settings', 'SettingsController');
 
 	Route::get('profile', 'ProfileController@getIndex');
-	Route::get('achievement', 'AchievementController@getIndex');
-	Route::get('achievement/api/{studentid?}', 'AchievementController@getAPI')->where(['studentid' => '[0-9]+']);
+
+	Route::controller('achievement', 'AchievementController');
 
 	// My Class
 	Route::controller('myclass', 'MyClassController');

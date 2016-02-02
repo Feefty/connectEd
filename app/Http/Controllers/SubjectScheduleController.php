@@ -55,7 +55,7 @@ class SubjectScheduleController extends Controller
             $class_subject_id = (int) $request->class_subject_id;
 
             $class_subject = ClassSubject::with('class_section.school')->findOrFail($class_subject_id);
-            
+
             // To check if the schedule is conflict to other existing schedule
             $school = School::whereHas('class_section.subject.subject_schedule', function($query) use($data) {
                 $query->where('day', $data['day'])
@@ -131,8 +131,8 @@ class SubjectScheduleController extends Controller
                 return abort(401);
             }
 
-            SubjectSchedule::findOrFail('id', $id)->delete();
-            
+            SubjectSchedule::findOrFail($id)->delete();
+
             $msg = trans('subject_schedule.delete.success');
         }
         catch (\Exception $e)

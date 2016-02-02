@@ -496,7 +496,7 @@
 						<div class="modal fade" id="addAchievementStudent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 							<div class="modal-dialog modal-lg" role="document">
 						 		<div class="modal-content">
-							      	<form action="{{ action('SubjectScheduleController@postAdd') }}" method="post">
+							      	<form action="{{ action('AchievementController@postAdd') }}" method="post">
 							    		<div class="modal-header">
 							        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 							        		<h4 class="modal-title" id="myModalLabel">Achievement</h4>

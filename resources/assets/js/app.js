@@ -315,7 +315,7 @@ $(function() {
 
         $('#profile-name').html(ucwords(name));
 
-        var photo_src = photo;
+        var photo_src = '/img/photos/'+ photo;
         if (photo == '') {
             photo_src = 'http://placehold.it/200x250';
         }
@@ -391,6 +391,11 @@ $(function() {
     $('[data-toggle="wysiwyg"]').summernote();
     $('#viewCreateLessonModal').on('show.bs.modal', function(e) {
         $('[data-toggle="wysiwyg"]').summernote();
+    });
+
+    $('#addAchievementStudent').on('show.bs.modal', function(e) {
+        var student_id = $(e.relatedTarget).data('student-id');
+        $('[name="student_id"]').val(student_id);
     });
 });
 
@@ -584,7 +589,7 @@ function actionMyClassFormatter(value, row) {
 }
 
 function actionClassSubjectStudentFormatter(value, row) {
-    return ["<a href='#addAchievementStudent' data-toggle='modal' class='btn btn-default btn-xs tooltips' title='Add Achievement'><i class='fa fa-trophy'></i></a>"].join(" ");
+    return ["<a href='#addAchievementStudent' data-student-id='"+ row.student_id +"' data-toggle='modal' class='btn btn-default btn-xs tooltips' title='Add Achievement'><i class='fa fa-trophy'></i></a>"].join(" ");
 }
 
 function actionClassSubjectAssessmentFormatter(value, row) {
