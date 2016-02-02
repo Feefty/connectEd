@@ -91,6 +91,7 @@ class GradeSummaryController extends Controller
             $class_subject = ClassSubject::findOrfail($data['class_subject_id']);
             $level = $class_subject->class_section->level;
             $subject_id = $class_subject->subject_id;
+            dd($level .' - '. $subject_id);
 
             foreach (AssessmentCategory::get() as $assessment_category)
             {
@@ -113,7 +114,6 @@ class GradeSummaryController extends Controller
                                         ->where('quarter', $data['quarter'])
                                         ->where('assessment_category_id', $assessment_category->id)
                                         ->first();
-                    dd($tmp_grade);
                     $assessment_category_grade = ($tmp_grade->score/$tmp_grade->total) * 100;
                     $grade += ($assessment_category_grade / 100) * $grade_component->percentage;
                     $grade_data[] = [
