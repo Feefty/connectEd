@@ -55,7 +55,7 @@ class GradeComponentController extends Controller
             {
 
                 $tmp_data = $request->only('description', 'subject_id', 'percentage', 'assessment_category_id', 'color');
-                $percentage = GradeComponent::where('subject_id', $tmp_data['subject_id'])->where('level', $tmp_data['level'])->sum('percentage');
+                $percentage = GradeComponent::where('subject_id', $tmp_data['subject_id'])->where('level', $level)->sum('percentage');
 
                 if ($percentage >= 100 ||
                     ($percentage + $tmp_data['percentage']) > 100)
