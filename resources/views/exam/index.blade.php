@@ -85,7 +85,7 @@
 						   					<label for="subject">Subject</label>
 						   					<select id="subject" name="subject" class="form-control">
 						   						@foreach ($subjects as $row)
-						   							<option value="{{ $row->id }}">{{ '['. $row->code .'] '. $row->name .' - '. $row->description }}</option>
+						   							<option value="{{ $row->id }}">{{ '['. $row->code .'] '. $row->name }}</option>
 						   						@endforeach
 						   					</select>
 						   				</div>

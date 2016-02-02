@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\PostAddPageFormRequest;
+use App\Http\Requests\PostEditPageFormRequest;
 use App\Http\Controllers\Controller;
 use App\Page;
 
@@ -36,9 +37,52 @@ class PageController extends Controller
         }
         catch (\Exception $e)
         {
-            return redirect()->back()->withErrors($msg);
+            return redirect()->back()->withErrors($e->getMessage());
         }
 
         return redirect()->back()->with(compact('msg'));
+    }
+
+    public function getEdit($id)
+    {
+        $page = Page::findOrFail($id);
+        return view('page.edit', compact('page'));
+    }
+
+    public function postEdit(PostEditPageFormRequest $request)
+    {
+        $msg = [];
+
+        try
+        {
+            $data = $request->only('title', 'content', 'category', 'privacy');
+            Page::findOrFail($request->page_id)->update($data);
+
+            $msg = trans('page.edit.success');
+        }
+        catch (\Exception $e)
+        {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+
+        return redirect()->back()->with(compact('msg'));
+    }
+
+    public function getDelete($id)
+    {
+        $msg = [];
+
+        try
+        {
+            Page::findOrFail($id)->delete();
+
+            $msg = trans('page.delete.success');
+        }
+        catch (\Exception $e)
+        {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+
+        return redirect()->home()->with(compact('msg'));
     }
 }

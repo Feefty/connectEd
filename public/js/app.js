@@ -681,7 +681,7 @@ function remarksFormatter(value, row) {
 }
 
 function schoolYearFormatter(value, row) {
-	return row.year +' - '+ (row.year+1);
+	return row.year +' - '+ (parseInt(row.year)+1);
 }
 
 function dayFormatter(value, row) {

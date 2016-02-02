@@ -351,7 +351,8 @@ return [
 		'create' => SCHOOL_LEVEL,
 		'update' => SCHOOL_LEVEL,
 		'delete' => SCHOOL_LEVEL,
-		'read' => GUEST_LEVEL
+		'read' => GUEST_LEVEL,
+		'manage' => SCHOOL_LEVEL
 	],
 
 	'grade-summary' => [
