@@ -18,10 +18,10 @@ Route::post('login', 'Auth\AuthController@postLogin');
 Route::get('register', 'Auth\AuthController@getRegister');
 Route::post('register', 'Auth\AuthController@postRegister');
 Route::get('logout', 'Auth\AuthController@getLogout');
-Route::get('user/{username}', 'ProfileController@getUser')->where(['username' => '[a-zA-Z0-9]+']);
 
 Route::group(['middleware' => 'auth'], function()
 {
+	Route::get('user/{username}', 'ProfileController@getUser')->where(['username' => '[a-zA-Z0-9]+']);
 	// Settings
 	Route::controller('settings', 'SettingsController');
 

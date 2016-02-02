@@ -226,32 +226,32 @@ $(function() {
 			}
 		});
 
-		setInterval(function() {
-			$.get('/notification/api', function(data) {
-				notif_data = data;
-
-				if (notif_num != notif_data.length) {
-					notif_num = notif_data.length;
-
-					if (notif_num > 0) {
-						var notif_html = "<li class='notification-title'><strong>Notifications</strong><span class='text-underline pull-right text-warning mark-as-read' onClick='readAll()'>Mark all as read</span></li>";
-
-						$('.notification-icon').html("<span class='badge'>"+ notif_data.length +"</span>");
-
-						$.each(notif_data, function(key, val) {
-							if (val.url != "") {
-								notif_html += "<li><a href="+ val.url +"><strong>"+ val.subject +"</strong><br>"+ val.content +"<br><span class='small'><i class='fa fa-clock'></i><time class='timeago' datetime='"+ val.created_at +"'>"+ val.created_at +"</time></span></a></li>";
-							}
-							else {
-								notif_html += "<li><a href='javsacript:void(0)'><strong>"+ val.subject +"</strong><br>"+ val.content +"<br><span class='small'><i class='fa fa-clock'></i><time class='timeago' datetime='"+ val.created_at +"'>"+ val.created_at +"</time></span></a></li>";
-							}
-						});
-
-						$('.notification-holder').html(notif_html);
-					}
-				}
-			});
-		}, 5000);
+		// setInterval(function() {
+		// 	$.get('/notification/api', function(data) {
+		// 		notif_data = data;
+        //
+		// 		if (notif_num != notif_data.length) {
+		// 			notif_num = notif_data.length;
+        //
+		// 			if (notif_num > 0) {
+		// 				var notif_html = "<li class='notification-title'><strong>Notifications</strong><span class='text-underline pull-right text-warning mark-as-read' onClick='readAll()'>Mark all as read</span></li>";
+        //
+		// 				$('.notification-icon').html("<span class='badge'>"+ notif_data.length +"</span>");
+        //
+		// 				$.each(notif_data, function(key, val) {
+		// 					if (val.url != "") {
+		// 						notif_html += "<li><a href="+ val.url +"><strong>"+ val.subject +"</strong><br>"+ val.content +"<br><span class='small'><i class='fa fa-clock'></i><time class='timeago' datetime='"+ val.created_at +"'>"+ val.created_at +"</time></span></a></li>";
+		// 					}
+		// 					else {
+		// 						notif_html += "<li><a href='javsacript:void(0)'><strong>"+ val.subject +"</strong><br>"+ val.content +"<br><span class='small'><i class='fa fa-clock'></i><time class='timeago' datetime='"+ val.created_at +"'>"+ val.created_at +"</time></span></a></li>";
+		// 					}
+		// 				});
+        //
+		// 				$('.notification-holder').html(notif_html);
+		// 			}
+		// 		}
+		// 	});
+		// }, 5000);
 
         $.get('/message/unread', function(data) {
             var unread = data.unread;
@@ -261,18 +261,18 @@ $(function() {
             }
         });
 
-        setInterval(function() {
-            $.get('/message/unread', function(data) {
-                var unread = data.unread;
-
-                if (unread > 0) {
-                    $('#message-icon').text(unread).addClass('text-danger');
-                }
-                else {
-                    $('#message-icon').text('').removeClass('text-danger');
-                }
-            });
-        }, 5000);
+        // setInterval(function() {
+        //     $.get('/message/unread', function(data) {
+        //         var unread = data.unread;
+        //
+        //         if (unread > 0) {
+        //             $('#message-icon').text(unread).addClass('text-danger');
+        //         }
+        //         else {
+        //             $('#message-icon').text('').removeClass('text-danger');
+        //         }
+        //     });
+        // }, 5000);
 	}
     $('.messages').animate({ scrollTop: $('.messages').prop('scrollHeight') }, "slow");
 

@@ -104,7 +104,7 @@ class AssessmentController extends Controller
                     $query->where('teacher_id', auth()->user()->id);
                 });
                 break;
-            case 'school':
+            case 'school admin':
                 $assessment = $assessment->where(function($query) {
                     $query->whereHas('class_subject.class_section', function($query) {
                         $query->where('school_id', auth()->user()->school_member->school_id);
