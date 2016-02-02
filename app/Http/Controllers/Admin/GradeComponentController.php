@@ -11,12 +11,22 @@ use App\GradeComponent;
 
 class GradeComponentController extends Controller
 {
-    public function getData($subject_id)
+    public function getData(Request $request)
     {
         $data = [];
-        $grade_component = GradeComponent::with('assessment_category')->where('subject_id', (int) $subject_id)->get();
+        $grade_component = GradeComponent::with('assessment_category');
 
-        foreach ($grade_component as $row)
+        if ($request->has('subject_id'))
+        {
+            $grade_component = $grade_component->where('subject_id', (int) $request->subject_id);
+        }
+
+        if ($request->has('level'))
+        {
+            $grade_component = $grade_component->where('level', (int) $request->level);
+        }
+
+        foreach ($grade_component->get() as $row)
         {
             $data[] = [
                 'value'     => $row->percentage,
@@ -39,7 +49,7 @@ class GradeComponentController extends Controller
 
         try
         {
-            $data = $request->only('description', 'subject_id', 'percentage', 'assessment_category_id', 'color');
+            $data = $request->only('description', 'subject_id', 'percentage', 'assessment_category_id', 'color', 'level');
             $percentage = GradeComponent::where('subject_id', $data['subject_id'])->sum('percentage');
 
             if ($percentage >= 100 ||
@@ -72,7 +82,7 @@ class GradeComponentController extends Controller
 
         try
         {
-            $data = $request->only('color', 'percentage');
+            $data = $request->only('color', 'percentage', 'level');
             $percentage = GradeComponent::where('subject_id', $request->subject_id)->where('id', '<>', (int) $request->grade_component_id)->sum('percentage');
 
             if ($percentage >= 100 ||

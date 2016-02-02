@@ -39,6 +39,18 @@
 		                    			<input type="hidden" name="grade_component_id" value="{{ $grade_component->id }}">
 		                    			<input type="hidden" name="subject_id" value="{{ $grade_component->subject_id }}">
 
+                                        <div class="form-group">
+                                            <label for="level">Level</label>
+                                            <select class="form-control" name="level" id="level">
+                                                @foreach (config('grade_level') as $row => $col)
+                                                    @if ($grade_component->level == $row)
+                                                        <option value="{{ $row }}" selected>{{ $col }}</option>
+                                                    @else
+                                                        <option value="{{ $row }}">{{ $col }}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </div>
 		                    			<div class="form-group">
 		                    				<label for="percentage">Percentage</label>
 		                    				<input type="text" name="percentage" id="percentage" class="form-control" value="{{ $grade_component->percentage }}">
@@ -47,8 +59,11 @@
 		                    				<label for="color">Color</label>
 		                    				<input type="text" name="color" id="color" data-toggle="color-picker" class="form-control" value="{{ $grade_component->color }}">
 		                    			</div>
-		                    			<button type="submit" class="btn btn-primary">Save Changes</button> <span class="small text-muted">Last updated: {{ $grade_component->updated_at or 'not yet updated' }}</span>
-		                    		</form>
+		                    			<button type="submit" class="btn btn-primary">Save Changes</button>
+                                        <a class="btn btn-link" href="{{ action('Admin\SubjectController@getGradeComponents', $grade_component->subject_id) }}">Cancel</a>
+                                        <span class="small text-muted">Last updated: {{ $grade_component->updated_at or 'not yet updated' }}</span>
+
+                                    </form>
 		                    	</div>
 		                    </div>
                     	</div>

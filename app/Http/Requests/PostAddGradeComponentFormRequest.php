@@ -24,6 +24,7 @@ class PostAddGradeComponentFormRequest extends Request
     public function rules()
     {
         return [
+            'level'                 => 'required|integer',
             'subject_id'            => 'required|exists:subjects,id',
             'percentage'            => 'required|max:100|integer',
             'assessment_category_id'=> 'required|exists:assessment_categories,id',

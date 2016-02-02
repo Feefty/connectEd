@@ -137,18 +137,11 @@ $(function() {
         theme: 'bootstrap'
 	});
 
-	var subject_id = $('#gradeComponentChart').data('subject-id');
-
 	$('[data-toggle="chart"]').each(function(value, element) {
 		var target = $(this).data('target');
 		var url = $(this).data('url');
 		var type = $(this).data('type');
 		chartjs(target, url, type);
-	});
-
-	$.get('/admin/grade/component/data/'+ subject_id, function(data) {
-		var ctx = $('#gradeComponentChart').get(0).getContext("2d");
-		var gradeComponentChart = new Chart(ctx).Pie(data);
 	});
 });
 
@@ -163,27 +156,40 @@ function chartjs(target, url, type) {
             pointHitDetectionRadius: 100
         }
 
-        if (data.datasets[0].hasOwnProperty('data')) {
-            if (type == 'line') {
-                new Chart(ctx).Line(data, options);
-            } else
-            if (type == 'bar') {
-                new Chart(ctx).Bar(data, options);
-            } else
-            if (type == 'radar') {
-                new Chart(ctx).Radar(data, options);
-            } else
-            if (type == 'polararea') {
-                new Chart(ctx).PolarArea(data, options);
-            } else
-            if (type == 'pie') {
-                new Chart(ctx).Pie(data, options);
-            } else
-            if (type == 'doughnut') {
-                new Chart(ctx).Doughnut(data, options);
-            }
+        if (type == 'line') {
+            new Chart(ctx).Line(data, options);
+        } else
+        if (type == 'bar') {
+            new Chart(ctx).Bar(data, options);
+        } else
+        if (type == 'radar') {
+            new Chart(ctx).Radar(data, options);
+        } else
+        if (type == 'polararea') {
+            new Chart(ctx).PolarArea(data, options);
+        } else
+        if (type == 'pie') {
+            new Chart(ctx).Pie(data, options);
+        } else
+        if (type == 'doughnut') {
+            new Chart(ctx).Doughnut(data, options);
         }
     });
 }
+
+$(function() {
+	var $this = $('canvas.chartjs:first');
+    var url = $this.data('url');
+    var type = $this.data('type');
+    chartjs($this, url, type);
+
+	$('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+        var $this = $($(e.target).data('target') +' canvas');
+        var url = $this.data('url');
+        var type = $this.data('type');
+
+        chartjs($(e.target).data('target') +' canvas', url, type);
+    });
+})
 
 //# sourceMappingURL=admin.js.map

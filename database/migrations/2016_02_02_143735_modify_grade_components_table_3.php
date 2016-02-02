@@ -12,8 +12,8 @@ class ModifyGradeComponentsTable3 extends Migration
      */
     public function up()
     {
-        Schema::table('grade_components', function (Blueprint $table) {
-            //
+        Schema::table('grade_components', function (Blueprint $t) {
+            $t->integer('level');
         });
     }
 
@@ -24,8 +24,8 @@ class ModifyGradeComponentsTable3 extends Migration
      */
     public function down()
     {
-        Schema::table('grade_components', function (Blueprint $table) {
-            //
+        Schema::table('grade_components', function (Blueprint $t) {
+            $t->dropColumn('level');
         });
     }
 }

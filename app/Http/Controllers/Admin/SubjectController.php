@@ -123,12 +123,7 @@ class SubjectController extends Controller
 	public function getGradeComponents($id)
 	{
 		$subject = Subject::findOrFail((int) $id);
-		$assessment_categories = AssessmentCategory::whereNotIn('id', function($query) use($id) {
-			$query->select('assessment_category_id')
-					->from('grade_components')
-					->whereRaw('grade_components.subject_id = '. (int) $id);
-		})->orderBy('name')->get();
-		$grade_components_percent = GradeComponent::where('subject_id', (int) $id)->sum('percentage');
-		return view('admin.subject.grade.component', compact('subject', 'assessment_categories', 'grade_components_percent'));
+		$assessment_categories = AssessmentCategory::orderBy('name')->get();
+		return view('admin.subject.grade.component', compact('subject', 'assessment_categories'));
 	}
 }

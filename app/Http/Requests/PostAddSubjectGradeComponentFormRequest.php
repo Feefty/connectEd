@@ -24,7 +24,8 @@ class PostAddSubjectGradeComponentFormRequest extends Request
     public function rules()
     {
         return [
-            'color'     => 'required|max:255',
+            'level'         => 'required|integer',
+            'color'         => 'required|max:255',
             'percentage'    => 'required|integer'
         ];
     }

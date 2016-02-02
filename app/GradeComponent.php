@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class GradeComponent extends Model
 {
     protected $table = 'grade_components';
-    protected $fillable = ['subject_id', 'description', 'percentage', 'created_at', 'updated_at', 'assessment_category_id', 'color'];
+    protected $fillable = ['level', 'subject_id', 'description', 'percentage', 'created_at', 'updated_at', 'assessment_category_id', 'color'];
 
     public function assessment_category()
     {

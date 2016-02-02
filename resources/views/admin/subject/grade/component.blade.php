@@ -53,6 +53,14 @@
                                             </select>
 						      			</div>
                                         <div class="form-group">
+                                            <label for="level">Level</label>
+                                            <select class="form-control" name="level" id="level">
+                                                @foreach (config('grade_level') as $row => $col)
+                                                    <option value="{{ $row }}">{{ $col }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
                                             <label for="percentage">Percentage</label>
                                             <input type="number" name="percentage" id="percentage" class="form-control" min="0" max="100">
                                         </div>
@@ -77,20 +85,39 @@
                     				<tr>
                                         <th data-field="color" data-formatter="colorFormatter">Color</th>
                     					<th data-field="percentage" data-sortable="true">Percentage</th>
+                                        <th data-field="level" data-sortable="true">Grade</th>
                     					<th data-field="assessment_category.name" data-sortable="true">Category</th>
-                    					<th data-field="description" data-sortable="true">Description</th>
                     					<th data-field="updated_at" data-sortable="true">Last Updated</th>
                     					<th data-field="created_at" data-sortable="true">Date Added</th>
-                                        <th data-align="true" data-formatter="actionGradeComponentFormatter"></th>
+                                        <th data-align="center" data-formatter="actionGradeComponentFormatter"></th>
                     				</tr>
                     			</thead>
                     		</table>
                         </div>
                         <div class="col-xs-12">
-                            <div class="text-center">
-                                <h3>{{ $grade_components_percent }}%</h3>
+                            <ul class="nav nav-tabs">
+                                @foreach (config('grade_level') as $row => $col)
+                                    @if ($row == 1)
+                                        <li class="active"><a href="#grade{{ $row }}"  data-target="#grade{{ $row }}"data-toggle="tab">{{ $col }}</a></li>
+                                    @else
+                                        <li><a href="#grade{{ $row }}" data-target="#grade{{ $row }}" data-toggle="tab">{{ $col }}</a></li>
+                                    @endif
+                                @endforeach
+                            </ul>
+                            <div class="tab-content">
+                                @foreach (config('grade_level') as $row => $col)
+                                    @if ($row == 1)
+                                        <div id="grade{{ $row }}" class="tab-pane active fade in">
+                                    @else
+                                        <div id="grade{{ $row }}" class="tab-pane fade">
+                                    @endif
+                                        <div class="text-center">
+                                            {{ \App\GradeComponent::where('subject_id', $subject->id)->where('level', $row)->sum('percentage') }}%
+                                        </div>
+                                        <canvas class="center-block chartjs" data-toggle="chart" data-type="pie" data-url="{{ action('Admin\GradeComponentController@getData') }}?subject_id={{ $subject->id }}&level={{ $row }}"></canvas>
+                                    </div>
+                                @endforeach
                             </div>
-                            <canvas id="gradeComponentChart" class="center-block" data-subject-id="{{ $subject->id }}"></canvas>
                         </div>
                     </div>
                 </div>
