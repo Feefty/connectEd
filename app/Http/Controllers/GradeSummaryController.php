@@ -126,6 +126,7 @@ class GradeSummaryController extends Controller
                                         ->where('quarter', $data['quarter'])
                                         ->where('assessment_category_id', $assessment_category->id)
                                         ->sum('total');
+                    //dd($grade_component->percentage);
                     $assessment_category_grade = ($score/$total) * 100;
                     $grade += ($assessment_category_grade / 100) * $grade_component->percentage;
                     $grade_data[] = [
@@ -134,7 +135,7 @@ class GradeSummaryController extends Controller
                     ];
                 }
             }
-
+            dd($grade_data);
             $data['grade'] = round($grade);
 
             if ($grade < 75)
