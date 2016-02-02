@@ -43,15 +43,18 @@ class AchievementController extends Controller
         try
         {
 			$data = [];
-            $student_id = $request->only('student_id');
+            $student_id = (int) $request->student_id;
 
 			foreach ($request->achievement_ids as $achievement_id)
 			{
-				$data[] = [
-					'student_id'	=> $student_id,
-					'achievement_id'=> $achievement_id,
-					'created_at' => new \DateTime
-				];
+				if ( ! StudentAchievement::where('student_id', $student_id)->where('achievement_id', $achievement_id)->exists())
+				{
+					$data[] = [
+						'student_id'	=> $student_id,
+						'achievement_id'=> $achievement_id,
+						'created_at' => new \DateTime
+					];
+				}
 			}
 
             StudentAchievement::insert($data);

@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\GradeSummary;
 use App\Subject;
+use App\StudentAchievement;
 
 class ProfileController extends Controller
 {
@@ -22,9 +23,10 @@ class ProfileController extends Controller
             $subjects = Subject::whereHas('class_subject.class_section', function($query) use($user) {
                 $query->where('id', $user->class_student->class_section->id);
             })->orderBy('name')->get();
+            $achievements = StudentAchievement::where('student_id', $user->id)->get();
         }
 
-        return view('profile.index', compact('user', 'school_years', 'grades', 'subjects'));
+        return view('profile.index', compact('user', 'school_years', 'grades', 'subjects', 'achievements'));
     }
 
     public function getUser($username)
@@ -48,8 +50,10 @@ class ProfileController extends Controller
             $subjects = Subject::whereHas('class_subject.class_section', function($query) use($user) {
                 $query->where('id', $user->class_student->class_section->id);
             })->orderBy('name')->get();
+
+            $achievements = StudentAchievement::where('student_id', $user->id)->get();
         }
 
-        return view('profile.index', compact('user', 'school_years', 'grades', 'subjects'));
+        return view('profile.index', compact('user', 'school_years', 'grades', 'subjects', 'achievements'));
     }
 }

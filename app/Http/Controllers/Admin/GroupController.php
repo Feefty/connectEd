@@ -18,7 +18,7 @@ class GroupController extends Controller
             return abort(401);
         }
 
-		return Group::get();
+		return Group::orderBy('name')->get();
 	}
 
     public function getIndex()

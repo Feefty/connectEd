@@ -118,7 +118,7 @@ class GradeSummaryController extends Controller
                                         ->whereHas('class_student.student', function($query) use($data) {
                                             $query->where('id', $data['student_id']);
                                         })
-                                        ->whereHas('class_student.class_section', function($query) use($data) {
+                                        ->whereHas('class_student.class_section', function($query) use($data, $grade_component) {
                                             $query->where('year', $data['school_year'])
                                                     ->where('level', $grade_component->level);
                                         })

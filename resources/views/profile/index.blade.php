@@ -8,6 +8,7 @@
 				@if (strtolower($user->group->name) == 'student')
 					<li><a href="#performance"><i class="fa fa-line-chart fa-fw"></i> Performances</a></li>
 					<li><a href="#grades"><i class="fa fa-file-text-o fa-fw"></i> Grades</a></li>
+					<li><a href="#achievements"><i class="fa fa-trophy fa-fw"></i> Achievements</a></li>
 				@endif
 			</ul>
 		</div>
@@ -234,6 +235,19 @@
 								</div>
 								@endforeach
 							</div>
+						</div>
+					</div>
+					<div class="panel panel-default" id="achievements">
+						<div class="panel-heading">
+							Achievements
+						</div>
+						<div class="panel-body">
+							@foreach ($achievements as $row)
+								<div class="col-sm-3">
+									<strong>{{ $row->achievement->title }}</strong>
+									<img src="{{ config('achievement.icon.path').$row->achievement->icon }}" alt="" class="img-responsive" />
+								</div>
+							@endforeach
 						</div>
 					</div>
 			@endif

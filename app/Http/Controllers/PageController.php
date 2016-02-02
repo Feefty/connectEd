@@ -83,6 +83,6 @@ class PageController extends Controller
             return redirect()->back()->withErrors($e->getMessage());
         }
 
-        return redirect()->home()->with(compact('msg'));
+        return redirect('/')->with(compact('msg'));
     }
 }
