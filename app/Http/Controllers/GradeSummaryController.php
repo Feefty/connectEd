@@ -99,6 +99,7 @@ class GradeSummaryController extends Controller
                                         ->where('subject_id', $subject_id)
                                         ->get() as $grade_component)
                 {
+                    dd($assessment_category->id .' - '. $subject_id);
                     $tmp_grade = Assessment::select(\DB::raw('SUM(score) as score, SUM(total) as total'))
                                         ->where(function($query) use($subject_id) {
                                             $query->whereHas('class_subject_exam.class_subject', function($query) use($subject_id) {
@@ -122,7 +123,6 @@ class GradeSummaryController extends Controller
                     ];
                 }
             }
-            dd($grade_data);
             $data['grade'] = round($grade);
 
             if ($grade < 75)
