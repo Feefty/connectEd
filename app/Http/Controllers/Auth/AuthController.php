@@ -114,7 +114,7 @@ class AuthController extends Controller
             'group_id' => (int) $data['group'],
             'status' => config('auth.status')
         ]);
-        
+
         $parent_code = $user->id . str_random(10);
 
         Profile::insert([
@@ -158,6 +158,10 @@ class AuthController extends Controller
                 'class_section_code_id' => (int) $class_section_code->id,
                 'student_id'        => $user->id
             ]);
+
+            $user = User::findOrFail($user->id);
+            $user->status = 1;
+            $user->save();
         }
 
         return $user;

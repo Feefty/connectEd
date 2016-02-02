@@ -57,6 +57,10 @@ class RoomController extends Controller
                 'class_section_code_id' => $class_section_code->id,
             ]);
 
+            $user = auth()->user();
+            $user->status = 1;
+            $user->save();
+
             $msg = trans('room.enroll.success');
         }
         catch (\Exception $e)

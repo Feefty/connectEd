@@ -12,7 +12,7 @@ class HomeController extends Controller
 {
     public function getIndex()
     {
-        if (auth()->check() && auth()->user()->group->level != 99)
+        if (auth()->check() && auth()->user()->group->level != 99 && auth()->user()->status != 0)
         {
         	$school_id = (int) auth()->user()->school_member->school_id;
         	$news = Page::where('school_id', $school_id)->where('category', 'news_&_events')->orderBy('created_at', 'desc')->get();

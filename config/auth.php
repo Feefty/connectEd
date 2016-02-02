@@ -64,6 +64,6 @@ return [
         'expire' => 60,
     ],
 
-    'status' => 1,
+    'status' => 0,
 
 ];

@@ -37,11 +37,15 @@
 			        	<li><a href="{{ action('MyClassController@getIndex') }}"><i class="fa-fw fa fa-hourglass-1"></i> My Class</a></li>
 			        @endcan
 			        @can ('manage-lesson', 'strict')
-			        	<li><a href="{{ action('LessonController@getIndex') }}"><i class="fa-fw fa fa-book"></i> Lessons</a></li>
+                        @if (auth()->user()->status != 0)
+    			        	<li><a href="{{ action('LessonController@getIndex') }}"><i class="fa-fw fa fa-book"></i> Lessons</a></li>
+                        @endif
 			        @endcan
 			        @can ('read-assessment', 'strict')
-			        	<li><a href="{{ action('AssessmentController@getIndex') }}"><i class="fa-fw fa fa-line-chart"></i> Assessment</a></li>
-			        @endcan
+                        @if (auth()->user()->status != 0)
+    			        	<li><a href="{{ action('AssessmentController@getIndex') }}"><i class="fa-fw fa fa-line-chart"></i> Assessment</a></li>
+                        @endif
+                    @endcan
 			        @can ('read-class-section', 'strict')
 			        	<li><a href="{{ action('ClassSectionController@getIndex') }}"><i class="fa-fw fa fa-thumb-tack"></i> Sections</a></li>
 			        @endcan
@@ -49,11 +53,15 @@
 			        	<li><a href="{{ action('SchoolMemberController@getIndex') }}"><i class="fa-fw fa fa-users"></i> Members</a></li>
 			        @endcan
 			        @can ('read-exam', 'strict')
-			            <li><a href="{{ action('ExamController@getIndex') }}"><i class="fa-fw fa fa-file-text"></i> Exams</a></li>
-			        @endcan
+                        @if (auth()->user()->status != 0)
+    			            <li><a href="{{ action('ExamController@getIndex') }}"><i class="fa-fw fa fa-file-text"></i> Exams</a></li>
+                        @endif
+                    @endcan
 			        @can ('read-course-calendar', 'strict')
-			            <li><a href="{{ action('CourseCalendarController@getIndex') }}"><i class="fa-fw fa fa-calendar"></i> Course Calendar</a></li>
-			        @endcan
+                        @if (auth()->user()->status != 0)
+    			            <li><a href="{{ action('CourseCalendarController@getIndex') }}"><i class="fa-fw fa fa-calendar"></i> Course Calendar</a></li>
+                        @endif
+                    @endcan
 		      	</ul>
 		      	<ul class="nav navbar-nav navbar-right">
 		      		@if ( ! auth()->check())
