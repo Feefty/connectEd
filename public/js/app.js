@@ -728,13 +728,13 @@ function attendanceStatusFormatter(value, row) {
 
 	switch (row.status) {
 		case 0:
-			status = "<i class='fa fa-times text-danger' data-toggle='tooltip' title='Absent'></i> Absent";
+			status = "Absent";
 			break;
 		case 1:
-			status = "<i class='fa fa-check text-success' data-toggle='tooltip' title='Present'></i> Present";
+			status = "Present";
 			break;
 		case 2:
-			status = "<i class='fa fa-exclamation text-warning' data-toggle='tooltip' title='Late'></i> Late";
+			status = "Late";
 			break;
 	}
 
