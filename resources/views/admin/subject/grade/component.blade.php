@@ -54,7 +54,7 @@
 						      			</div>
                                         <div class="form-group">
                                             <label for="level">Level</label>
-                                            <select class="form-control" name="level" id="level">
+                                            <select class="form-control" name="level[]" id="level" data-toggle="select" data-live-search="true" multiple>
                                                 @foreach (config('grade_level') as $row => $col)
                                                     <option value="{{ $row }}">{{ $col }}</option>
                                                 @endforeach

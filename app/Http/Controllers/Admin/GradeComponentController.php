@@ -49,16 +49,31 @@ class GradeComponentController extends Controller
 
         try
         {
-            $data = $request->only('description', 'subject_id', 'percentage', 'assessment_category_id', 'color', 'level');
-            $percentage = GradeComponent::where('subject_id', $data['subject_id'])->where('level', $data['level'])->sum('percentage');
+            $data = [];
 
-            if ($percentage >= 100 ||
-                ($percentage + $data['percentage']) > 100)
+            foreach ($request->level as $level)
             {
-                throw new \Exception(trans('grade_component.percentage.error'));
+
+                $tmp_data = $request->only('description', 'subject_id', 'percentage', 'assessment_category_id', 'color');
+                $percentage = GradeComponent::where('subject_id', $tmp_data['subject_id'])->where('level', $tmp_data['level'])->sum('percentage');
+
+                if ($percentage >= 100 ||
+                    ($percentage + $tmp_data['percentage']) > 100)
+                {
+                    throw new \Exception(trans('grade_component.percentage.error'));
+                }
+
+                $data[] = [
+                    'description' => $request->description,
+                    'subject_id' => $request->subject_id,
+                    'percentage' => $request->percentage,
+                    'assessment_category_id' => $request->assessment_category_id,
+                    'color' => $request->color,
+                    'level' => $level
+                ];
             }
 
-            GradeComponent::create($data);
+            GradeComponent::insert($data);
 
             $msg = trans('grade_component.add.success');
         }
