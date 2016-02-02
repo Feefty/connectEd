@@ -41,11 +41,6 @@
     			        	<li><a href="{{ action('LessonController@getIndex') }}"><i class="fa-fw fa fa-book"></i> Lessons</a></li>
                         @endif
 			        @endcan
-			        @can ('read-assessment', 'strict')
-                        @if (auth()->user()->status != 0)
-    			        	<li><a href="{{ action('AssessmentController@getIndex') }}"><i class="fa-fw fa fa-line-chart"></i> Assessment</a></li>
-                        @endif
-                    @endcan
 			        @can ('read-class-section', 'strict')
 			        	<li><a href="{{ action('ClassSectionController@getIndex') }}"><i class="fa-fw fa fa-thumb-tack"></i> Sections</a></li>
 			        @endcan
