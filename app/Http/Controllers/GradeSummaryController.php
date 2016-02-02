@@ -122,6 +122,7 @@ class GradeSummaryController extends Controller
                     ];
                 }
             }
+            dd($grade_data);
             $data['grade'] = round($grade);
 
             if ($grade < 75)
