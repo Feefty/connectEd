@@ -618,16 +618,6 @@
 									<div class="col-sm-3">
 										<ul class="nav nav-pills nav-stacked">
 											@foreach ($sources as $row)
-												<div id="toolbar{{ str_replace(' ', '_', strtolower($row->source)) }}">
-													@can ('manage-assessment')
-													<div class="dropdown">
-														<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
-														<ul class="dropdown-menu">
-															<li><a href="#addAssessmentModal" data-toggle="modal"><i class="fa fa-plus"></i> Add Assessment</a></li>
-														</ul>
-													</div>
-													@endcan
-												</div>
 												@if ($sources[0]->id == $row->id)
 													<li class="active"><a data-toggle="tab" href="#{{ str_replace(' ', '_', strtolower($row->source)) }}"><i class="fa fa-arrow-right fa-fw"></i> {{ $row->source }}</a></li>
 												@else
@@ -637,6 +627,16 @@
 										</ul>
 									</div>
 									<div class="col-sm-9">
+										<div id="toolbarassessment" class="margin-lg-top">
+											@can ('manage-assessment')
+											<div class="dropdown">
+												<button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-list"></i> Menu</button>
+												<ul class="dropdown-menu">
+													<li><a href="#addAssessmentModal" data-toggle="modal"><i class="fa fa-plus"></i> Add Assessment</a></li>
+												</ul>
+											</div>
+											@endcan
+										</div>
 										<div class="tab-content">
 											@foreach ($sources as $row)
 												@if ($sources[0]->id == $row->id)
@@ -644,7 +644,7 @@
 												@else
 													<div id="{{ str_replace(' ', '_', strtolower($row->source)) }}" class="tab-pane fade">
 												@endif
-													<table data-toggle="table" data-url="{{ action('AssessmentController@getApi') }}?class_subject_id={{ $class_subject->id }}&source={{ rawurlencode($row->source) }}" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar="#toolbar{{ str_replace(' ', '_', strtolower($row->source)) }}">
+													<table data-toggle="table" data-url="{{ action('AssessmentController@getApi') }}?class_subject_id={{ $class_subject->id }}&source={{ rawurlencode($row->source) }}" data-pagination="true" data-search="true" data-show-refresh="true">
 														<thead>
 															<tr>
 																<th colspan="9" data-align="center">Assessments</th>
