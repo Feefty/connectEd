@@ -814,6 +814,13 @@ $(function() {
     var type = $this.data('type');
     chartjs($this, url, type);
 
+    $('#school-stats').ready(function() {
+        $this = $('#school-stats');
+        var url = $this.data('url');
+        var type = $this.data('type');
+        chartjs('#school-stats', url, type);
+    });
+
     $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
         var $this = $($(e.target).data('target') +' canvas');
         var url = $this.data('url');

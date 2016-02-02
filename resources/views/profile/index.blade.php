@@ -108,7 +108,7 @@
 									@if ( ! is_null($user->school_member))
 									<tr>
 										<td><strong>School</strong></td>
-										<td>: <a href="{{ action('SchoolController@getIndex') }}/{{ $user->school_member->school->id }}">{{ $user->school_member->school->name }}</a></td>
+										<td>: <a href="{{ action('SchoolController@getView') }}/{{ $user->school_member->school->id }}">{{ $user->school_member->school->name }}</a></td>
 									</tr>
 									@endif
 									@if (strtolower($user->group->name) == 'student')

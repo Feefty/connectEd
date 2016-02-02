@@ -81,6 +81,7 @@
                     					<th data-field="description" data-sortable="true">Description</th>
                     					<th data-field="updated_at" data-sortable="true">Last Updated</th>
                     					<th data-field="created_at" data-sortable="true">Date Added</th>
+                                        <th data-align="true" data-formatter="actionGradeComponentFormatter"></th>
                     				</tr>
                     			</thead>
                     		</table>

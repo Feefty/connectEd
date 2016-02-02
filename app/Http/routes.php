@@ -86,7 +86,6 @@ Route::group(['middleware' => 'auth'], function()
 	// Exam
 	Route::controller('exam', 'ExamController');
 
-	Route::get('school/{school_id}', 'SchoolController@getIndex')->where(['id' => '[0-9]+']);
 	Route::controller('school', 'SchoolController');
 
 	Route::controller('page', 'PageController');
@@ -161,5 +160,7 @@ Route::group(['middleware' => 'auth'], function()
 		Route::controller('configuration', 'ConfigurationController');
 
 		Route::controller('quarter_calendar', 'QuarterCalendarController');
+
+		Route::controller('message', 'MessageController');
 	});
 });

@@ -19,7 +19,7 @@ class SchoolController extends Controller
 
         if ($request->has('school_id'))
         {
-            $school = $school->findOrFail((int) $request->school_id);
+            $school = $school->where('id', $request->school_id);
         }
 
         $data['labels'] = [
@@ -31,14 +31,13 @@ class SchoolController extends Controller
         ];
 
         $data['datasets'][0] = [
-                'label' => 'Teacher', 
                 'fillColor' => 'rgba(96, 179, 255, 0.5)',
                 'strokeColor' => 'rgba(16, 127, 190, 0.8)',
                 'highlightFill' => 'rgba(66, 163, 224, 0.75)',
                 'highlightStroke' => 'rgba(76, 171, 240, 1)'
         ];
         $section = number_format($school->class_section->count());
-        $exam = number_format($school->exam->count());
+        $school = number_format($school->exam->count());
         $lesson = number_format($school->lesson->count());
 
         $data['datasets'][0]['data'] = [
@@ -48,9 +47,9 @@ class SchoolController extends Controller
             number_format($school->whereHas('member.user.group', function($query) {
                 $query->where('name', 'Student');
             })->count()),
-            $section,
-            $exam,
-            $lesson
+            number_format()),
+            ,
+
         ];
 
         return $data;

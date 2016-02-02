@@ -15,11 +15,11 @@ class SchoolController extends Controller
     {
         $data = [];
 
-        $school = School::with('class_section', 'exam', 'lesson');
+        $school = new School;
 
         if ($request->has('school_id'))
         {
-            $school = $school->findOrFail((int) $request->school_id);
+            $school = $school->where('id', $request->school_id);
         }
 
         $data['labels'] = [
@@ -30,33 +30,20 @@ class SchoolController extends Controller
             'Lessons'
         ];
 
-        $data['datasets'][0] = [
-                'label' => 'Teacher', 
-                'fillColor' => 'rgba(96, 179, 255, 0.5)',
-                'strokeColor' => 'rgba(16, 127, 190, 0.8)',
-                'highlightFill' => 'rgba(66, 163, 224, 0.75)',
-                'highlightStroke' => 'rgba(76, 171, 240, 1)'
-        ];
-        $section = number_format($school->class_section->count());
-        $exam = number_format($school->exam->count());
-        $lesson = number_format($school->lesson->count());
-
-        $data['datasets'][0]['data'] = [
+        $data['datasets']['data'] = [
             number_format($school->whereHas('member.user.group', function($query) {
                 $query->where('name', 'Teacher');
             })->count()),
             number_format($school->whereHas('member.user.group', function($query) {
                 $query->where('name', 'Student');
             })->count()),
-            $section,
-            $exam,
-            $lesson
-        ];
-
-        return $data;
+            number_format($school->class_section->count()),
+            number_format($school->exam->count()),
+            number_format($school->lesson->count())
+        ]
     }
 
-    public function getView($id)
+    public function getIndex($id)
     {
     	$school = School::with('member', 'class_section')->findOrFail((int) $id);
 

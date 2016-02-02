@@ -61,29 +61,7 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">Statistic</div>
 				<div class="panel-body">
-					<table class="table table-bordered">
-						<tr>
-							<td>
-								<label>Teachers:</label> {{ number_format($school->whereHas('member.user.group', function($query) {
-									$query->where('name', 'Teacher');
-								})->count()) }}
-							</td>
-							<td>
-								<label>Students:</label> {{ number_format($school->whereHas('member.user.group', function($query) {
-									$query->where('name', 'Student');
-								})->count()) }}
-							</td>
-							<td>
-								<label>Sections:</label> {{ number_format($school->class_section->count()) }}
-							</td>
-							<td>
-								<label>Exams:</label> {{ number_format($school->exam->count()) }}
-							</td>
-							<td>
-								<label>Lessons:</label> {{ number_format($school->lesson->count()) }}
-							</td>
-						</tr>
-					</table>
+					<canvas data-url="{{ action('SchoolController@getData') }}?school_id={{ $school->id }}" data-type="bar" id="school-stats"></canvas>
 				</div>
 			</div>
 		</div>

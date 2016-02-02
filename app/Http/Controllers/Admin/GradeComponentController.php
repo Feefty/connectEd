@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\PostAddGradeComponentFormRequest;
+use App\Http\Requests\PostAddSubjectGradeComponentFormRequest;
 use App\Http\Controllers\Controller;
 use App\GradeComponent;
 
@@ -50,6 +51,56 @@ class GradeComponentController extends Controller
             GradeComponent::create($data);
 
             $msg = trans('grade_component.add.success');
+        }
+        catch (\Exception $e)
+        {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+
+        return redirect()->back()->with(compact('msg'));
+    }
+
+    public function getEdit($id)
+    {
+        $grade_component = GradeComponent::findOrFail($id);
+        return view('admin.subject.grade.edit', compact('grade_component'));
+    }
+
+    public function postEdit(PostAddSubjectGradeComponentFormRequest $request)
+    {
+        $msg = [];
+
+        try
+        {
+            $data = $request->only('color', 'percentage');
+            $percentage = GradeComponent::where('subject_id', $request->subject_id)->where('id', '<>', (int) $request->grade_component_id)->sum('percentage');
+
+            if ($percentage >= 100 ||
+                ($percentage + $data['percentage']) > 100)
+            {
+                throw new \Exception(trans('grade_component.percentage.error'));
+            }
+
+            GradeComponent::findOrFail((int) $request->grade_component_id)->update($data);
+
+            $msg = trans('grade_component.edit.success');
+        }
+        catch (\Exception $e)
+        {
+            return redirect()->back()->withErrors($e->getMessage());
+        }
+
+        return redirect()->back()->with(compact('msg'));
+    }
+
+    public function getDelete($id)
+    {
+        $msg = [];
+
+        try
+        {
+            GradeComponent::findOrFail((int) $id);
+            $msg = trans('grade_component.delete.success');
         }
         catch (\Exception $e)
         {

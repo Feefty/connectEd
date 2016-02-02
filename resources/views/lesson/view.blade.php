@@ -16,9 +16,9 @@
 					<h2>{{ $lesson->title }}</h2>
 
 					<ul class="list-inline">
-						<li><i class="fa fa-building"></i> {{ $lesson->school->name }}</li>
-						<li><i class="fa fa-user"></i> {{ ucwords($lesson->user->profile->first_name .' '. $lesson->user->profile->last_name) }}</li>
-						<li><i class="fa fa-book"></i> {{ '['. $lesson->subject->code .'] '.$lesson->subject->subject .' '. $lesson->subject->level .' - '. $lesson->subject->description }}</li>
+						<li><i class="fa fa-building"></i> <a href="{{ action('SchoolController@getView').'/'. $lesson->school_id }}">{{ $lesson->school->name }}</a></li>
+						<li><i class="fa fa-user"></i> <a href="{{ action('ProfileController@getUser', $lesson->user->username) }}">{{ ucwords($lesson->user->profile->first_name .' '. $lesson->user->profile->last_name) }}</a></li>
+						<li><i class="fa fa-book"></i> {{ '['. $lesson->subject->code .'] '.$lesson->subject->subject }}</li>
 						<li><i class="fa fa-clock-o"></i> {{ $lesson->created_at }}</li>
 					</ul>
 
