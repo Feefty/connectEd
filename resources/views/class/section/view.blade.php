@@ -185,7 +185,7 @@
 								<td><strong>School Year:</strong> {{ $section->year }} - {{ $section->year+1 }}</td>
 							</tr>
 							<tr>
-								<td><strong>School:</strong> <a href="{{ action('SchoolController@getIndex', $section->school->id) }}">{{ $section->school->name }}</a></td>
+								<td><strong>School:</strong> <a href="{{ action('SchoolController@getView', $section->school->id) }}">{{ $section->school->name }}</a></td>
 							</tr>
 						</table>
 

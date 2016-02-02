@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\SchoolMember;
 use App\ExamType;
 use App\Exam;
+use App\ExamQuestion;
 use App\Subject;
 use App\User;
 use App\AssessmentCategory;

@@ -35,10 +35,11 @@
 
 					<h2>{{ $exam->title }} <small>{{ $exam->exam_type->name }}</small></h2>
 					<ul class="list-inline">
-						<li><i class="fa fa-book"></i> {{ '['. $exam->subject->code .'] '. $exam->subject->name .' - '. $exam->subject->description }}</li>
+						<li><i class="fa fa-book"></i> {{ '['. $exam->subject->code .'] '. $exam->subject->name }}</li>
 						<li><i class="fa fa-flag"></i> {{ $exam->assessment_category->name }}</li>
 						<li><i class="fa fa-clock-o"></i> {{ $exam->created_at }}</li>
 						<li><i class="fa fa-bolt"></i> {{ config('exam_status')[$exam->status] }}</li>
+						<li><i class="fa fa-user"></i> {{ ucwords(strtolower($exam->author->profile->first_name .' '. $exam->author->profile->last_name)) }}</li>
 					</ul>
 
 					<input type="hidden" id="user_id" value="{{ auth()->user()->id }}">

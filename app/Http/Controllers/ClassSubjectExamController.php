@@ -96,7 +96,7 @@ class ClassSubjectExamController extends Controller
 
     public function getTake($id)
     {
-        $class_subject_exam = ClassSubjectExam::with('exam.subject', 'exam.school')
+        $class_subject_exam = ClassSubjectExam::with('exam.subject', 'exam.school', 'author.profile')
                                 ->whereHas('class_subject_exam_user', function($query) {
                                     $query->where('user_id', auth()->user()->id);
                                 })
