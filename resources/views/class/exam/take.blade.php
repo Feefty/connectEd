@@ -20,7 +20,6 @@
 								<li><i class="fa fa-book"></i> {{ $class_subject_exam->exam->subject->name }}</li>
 								<li><i class="fa fa-flag"></i> {{ $class_subject_exam->exam->assessment_category->name }}</li>
 								<li><i class="fa fa-calendar"></i> {{ $class_subject_exam->start .' to '. $class_subject_exam->end }}</li>
-								<li><i class="fa fa-user"></i> {{ ucwords(strtolower($class_subject_exam->exam->author->profile->first_name .' '. $class_subject_exam->exam->author->profile->last_name)) }}</li>
 							</ul>
 
 							<hr>
