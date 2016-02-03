@@ -822,7 +822,9 @@
 										<tr>
 											<th data-sortable="true" data-formatter="studentProfileNameFormatter">Name</th>
 											<th data-sortable="true" data-formatter="studentProfileGenderFormatter">Gender</th>
-											<th data-formatter="actionClassSubjectStudentFormatter" data-align="center"></th>
+											@can ('create-student-achievement')
+												<th data-formatter="actionClassSubjectStudentFormatter" data-align="center"></th>
+											@endif
 										</tr>
 									</thead>
 								</table>
