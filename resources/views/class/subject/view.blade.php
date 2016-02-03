@@ -751,7 +751,8 @@
 												</table>
 											</div>
 											<div id="fullgrade" class="tab-pane fade">
-												<table class="table table-bordered table-hover margin-lg-top">
+												<button type="button" data-target="#finalGrade" data-toggle="print"></button>
+												<table class="table table-bordered table-hover margin-lg-top" id="finalGrade">
 													<thead>
 														<tr>
 															<th>
