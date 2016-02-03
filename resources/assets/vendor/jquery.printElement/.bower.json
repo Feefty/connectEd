@@ -1,0 +1,14 @@
+{
+  "name": "jquery.printElement",
+  "homepage": "https://github.com/erikzaadi/jquery.printElement",
+  "_release": "32ee52f214",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "32ee52f21491576de63f41d7436086526c9b8ea4"
+  },
+  "_source": "git://github.com/erikzaadi/jquery.printElement.git",
+  "_target": "*",
+  "_originalSource": "erikzaadi/jquery.printElement",
+  "_direct": true
+}

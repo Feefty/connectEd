@@ -181,8 +181,8 @@
 									@else
 										<div class="tab-pane fade" id="grade{{ $row->school_year }}">
 									@endif
-
-									<table class="table table-bordered">
+									<button type="button" class="btn btn-xs btn-default" data-toggle="print" data-target="#grade{{ $row->school_year }}">Print</button>
+									<table class="table table-bordered" id="grade{{ $row->school_year }}">
 										<thead>
 											<tr>
 												<th>
@@ -217,13 +217,13 @@
 													<td>
 														{{ round(\App\GradeSummary::whereHas('class_subject', function($query) use($subject) {
 															$query->where('subject_id', $subject->id);
-														})->where('quarter', $quarter)->pluck('grade')) }}
+														})->where('student_id', auth()->user()->id)->where('quarter', $quarter)->pluck('grade')) }}
 													</td>
 												@endfor
 												<td>
 													<?php $average = round(\App\GradeSummary::whereHas('class_subject', function($query) use($subject) {
 														$query->where('subject_id', $subject->id);
-													})->avg('grade')) ?>
+													})->where('student_id', auth()->user()->id)->avg('grade')) ?>
 													{{ $average }}
 												</td>
 												<td>

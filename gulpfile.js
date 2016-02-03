@@ -45,7 +45,8 @@ elixir(function(mix) {
             'Chart.js/Chart.min.js',
 			'summernote/dist/summernote.min.js',
 			'moment/min/moment.min.js',
-			'fullcalendar/dist/fullcalendar.min.js'
+			'fullcalendar/dist/fullcalendar.min.js',
+			'jquery.printElement/dist/jquery.printelement.js'
     	], 'public/js/app.vendor.js', vendorDir)
         .scripts([
             'app.js',
@@ -72,7 +73,8 @@ elixir(function(mix) {
 			'jquery-minicolors/jquery.minicolors.min.js',
 			'summernote/dist/summernote.min.js',
 			'moment/min/moment.min.js',
-			'fullcalendar/dist/fullcalendar.min.js'
+			'fullcalendar/dist/fullcalendar.min.js',
+			'jquery.printElement/dist/jquery.printelement.js'
         ], 'public/js/admin.vendor.js', vendorDir)
         .scripts([
             'admin.js'

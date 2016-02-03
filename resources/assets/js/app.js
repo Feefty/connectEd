@@ -50,7 +50,11 @@ var examStatuses = [
 var question_duration;
 
 $(function() {
-
+    $('[data-toggle="print"]').on('click', function() {
+        var target = $(this).data('target');
+        $(target).printElement();
+    });
+    
     var source = $('.fullcalendar').data('source');
     $('[data-toggle="calendar"]').fullCalendar({
         eventSources: [

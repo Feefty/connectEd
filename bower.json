@@ -21,7 +21,8 @@
     "tableExport.jquery.plugin": "kayalshri/tableExport.jquery.plugin",
     "bootstrap-table-filter": "lukaskral/bootstrap-table-filter#~1.1.0",
     "bootstrap-wysiwyg": "mindmup/bootstrap-wysiwyg",
-    "summernote": "^0.7.3"
+    "summernote": "^0.7.3",
+    "jquery.printElement": "erikzaadi/jquery.printElement"
   },
   "resolutions": {
     "font-awesome": "~4.4"
