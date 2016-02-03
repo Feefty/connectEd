@@ -217,13 +217,13 @@
 													<td>
 														{{ round(\App\GradeSummary::whereHas('class_subject', function($query) use($subject) {
 															$query->where('subject_id', $subject->id);
-														})->where('student_id', auth()->user()->id)->where('quarter', $quarter)->pluck('grade')) }}
+														})->where('student_id', $user->id)->where('quarter', $quarter)->pluck('grade')) }}
 													</td>
 												@endfor
 												<td>
 													<?php $average = round(\App\GradeSummary::whereHas('class_subject', function($query) use($subject) {
 														$query->where('subject_id', $subject->id);
-													})->where('student_id', auth()->user()->id)->avg('grade')) ?>
+													})->where('student_id', $user->id)->avg('grade')) ?>
 													{{ $average }}
 												</td>
 												<td>
