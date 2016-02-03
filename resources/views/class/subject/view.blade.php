@@ -95,6 +95,12 @@
 								</ul>
 							</div>
 							@endcan
+							<ul class="list-inline">
+								<li><strong>Legends</strong></li>
+								@foreach (config('attendance.status') as $row => $col)
+									<li>{{ $row }} {{ $col }}</li>
+								@endforeach
+							</ul>
 						</div>
 
 						<div id="toolbarq1">
@@ -604,7 +610,7 @@
 										</tr>
 										<tr>
 											<th data-searchable="true" data-formatter="studentProfileNameFormatter" data-sortable="true">Student</th>
-											<th data-searchable="true" data-formatter="attendanceStatusFormatter" data-align="center" data-sortable="true">Status</th>
+											<th data-searchable="true" data-align="center" data-field="status" data-sortable="true">Status</th>
 											<th data-searchable="true" data-field="date" data-sortable="true">Date</th>
 											<th data-formatter="attendanceStudentProfileFormatter" data-align="center"></th>
 										</tr>

@@ -340,7 +340,7 @@ $(function() {
             url: '/attendance/api?student_id='+ user_id,
             columns: [{
                 title: 'Status',
-                formatter: 'attendanceStatusFormatter',
+                field: 'status',
                 align: 'center',
                 sortable: true
             }, {
