@@ -20,20 +20,16 @@
 								<li><i class="fa fa-book"></i> {{ $class_subject_exam->exam->subject->name }}</li>
 								<li><i class="fa fa-flag"></i> {{ $class_subject_exam->exam->assessment_category->name }}</li>
 								<li><i class="fa fa-calendar"></i> {{ $class_subject_exam->start .' to '. $class_subject_exam->end }}</li>
+								<li><i class="fa fa-user"></i> {{ ucwords(strtolower($class_subject_exam->exam->author->profile->first_name .' '. $class_subject_exam->exam->author->profile->last_name)) }}</li>
 							</ul>
 
 							<hr>
 
-							@if ($show_questions)
 								<button type="button" id="start-exam" data-class-subject-exam-id="{{ $class_subject_exam->id }}" data-exam-id="{{ $class_subject_exam->exam->id }}" class="btn btn-primary center-block">Start asnwering</button>
 								<div id="exam-question-block">
 									<div id="question-block"></div>
 									<div id="question-answer-block"></div>
 								</div>
-							@else
-								<h3 class='text-center'>Your grade</h3>
-								<h2 class='text-center'>{{ $grade['score'] .' / '. $grade['total'] }} <small>{{ round(($grade['score']/$grade['total'])*100) }}%</small></h2>
-							@endif
 						@else
 							<div class="text-helper">
 								The exam has already ended {{ $class_subject_exam->end->diffForHumans() }}.
