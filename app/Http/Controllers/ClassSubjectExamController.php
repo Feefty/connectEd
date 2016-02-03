@@ -235,7 +235,7 @@ class ClassSubjectExamController extends Controller
                 $data = [
                     'target_id'     => $target_id,
                     'subject'       => 'Examination Completed',
-                    'content'       => 'Your grade for '. $exam_question->exam->title .' is '. $score .'/'. $total .' ('. ($score/$total)*100 .'%).',
+                    'content'       => 'Your grade for '. $exam_question->exam->title .' is '. $grade['score'] .'/'. $grade['total'] .' ('. ($grade['score']/$grade['total'])*100 .'%).',
                     'url'           => action('ClassSubjectExamController@getTake', $request->class_subject_exam_id)
                 ];
                 Notification::create($data);
