@@ -138,6 +138,7 @@ class ClassSubjectExamController extends Controller
                             })
                             ->has('student_exam_question_answer', '<', 1)
                             ->where('exam_id', (int) $id)
+                            ->orderBy('category')
                             ->orderBy(\DB::raw('RAND()'))
                             ->first();
     }
@@ -179,20 +180,48 @@ class ClassSubjectExamController extends Controller
 
         if ( ! $student_answer)
         {
-            // get the points
-            $points = (int) ExamQuestionAnswer::where([
-                                'exam_question_id'  => $exam_question_id,
-                                'answer'            => $request->answer
-                            ])->pluck('points');
+            $answers = $request->answer;
 
-            StudentExamQuestionAnswer::create([
-                'answer'            => $request->answer,
-                'user_id'           => (int) $request->user()->id,
-                'time_answered'     => (int) $request->timer,
-                'exam_question_id'  => $exam_question_id,
-                'points'            => $points,
-                'created_at'        => new \DateTime
-            ]);
+            if (is_array($answers))
+            {
+                $data_answers = [];
+                foreach ($answers as $answer)
+                {
+                    // get the points
+                    $points = (int) ExamQuestionAnswer::where([
+                                        'exam_question_id'  => $exam_question_id,
+                                        'answer'            => $answer
+                                    ])->pluck('points');
+
+                    $data_answers[] = [
+                        'answer'            => $answer,
+                        'user_id'           => (int) $request->user()->id,
+                        'time_answered'     => (int) $request->timer,
+                        'exam_question_id'  => $exam_question_id,
+                        'points'            => $points,
+                        'created_at'        => new \DateTime
+                    ];
+                }
+
+                StudentExamQuestionAnswer::insert($data_answers);
+            }
+            else
+            {
+                // get the points
+                $points = (int) ExamQuestionAnswer::where([
+                                    'exam_question_id'  => $exam_question_id,
+                                    'answer'            => $request->answer
+                                ])->pluck('points');
+
+                StudentExamQuestionAnswer::create([
+                    'answer'            => $answers,
+                    'user_id'           => (int) $request->user()->id,
+                    'time_answered'     => (int) $request->timer,
+                    'exam_question_id'  => $exam_question_id,
+                    'points'            => $points,
+                    'created_at'        => new \DateTime
+                ]);
+            }
 
             $exam_question = ExamQuestion::with('exam.author')->findOrFail($exam_question_id);
 

@@ -88,8 +88,10 @@
 						      				<label for="group">Group</label>
 						      				<select id="group" name="group" class="form-control">
 						      					@foreach ($groups as $row)
-						      					<option value="{{ $row->id }}">{{ $row->name .' ('. $row->level }})</option>
-						      					@endforeach
+                                                    @if ($row->level == 99)
+					                                   <option value="{{ $row->id }}">{{ $row->name .' ('. $row->level }})</option>
+                                                   @endif
+                                                @endforeach
 						      				</select>
 						      			</div>
 						      			<hr>
@@ -160,7 +162,7 @@
                             		</table>
                                 </div>
                                 <div class="tab-pane" id="school-admins-tab">
-                            		<table data-toggle="table" data-show-columns="true" data-show-export="true" data-url="{{ action('Admin\UserController@getAPI') }}?show=school%20admin" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar=".toolbar3">
+                            		<table data-toggle="table" data-show-columns="true" data-show-export="true" data-url="{{ action('Admin\UserController@getAPI') }}?show=school%20admin" data-pagination="true" data-search="true" data-show-refresh="true">
                             			<thead>
                             				<tr>
                             					<th data-field="username" data-sortable="true">Username</th>
@@ -175,7 +177,7 @@
                             		</table>
                                 </div>
                                 <div class="tab-pane" id="teachers-tab">
-                                    <table data-toggle="table" data-show-columns="true" data-show-export="true" data-url="{{ action('Admin\UserController@getAPI') }}?show=teacher" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar=".toolbar2">
+                                    <table data-toggle="table" data-show-columns="true" data-show-export="true" data-url="{{ action('Admin\UserController@getAPI') }}?show=teacher" data-pagination="true" data-search="true" data-show-refresh="true">
                             			<thead>
                             				<tr>
                             					<th data-field="username" data-sortable="true">Username</th>
@@ -190,7 +192,7 @@
                             		</table>
                                 </div>
                                 <div class="tab-pane" id="students-tab">
-                                    <table data-toggle="table" data-show-columns="true" data-show-export="true" data-url="{{ action('Admin\UserController@getAPI') }}?show=student" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar=".toolbar1">
+                                    <table data-toggle="table" data-show-columns="true" data-show-export="true" data-url="{{ action('Admin\UserController@getAPI') }}?show=student" data-pagination="true" data-search="true" data-show-refresh="true">
                             			<thead>
                             				<tr>
                             					<th data-field="username" data-sortable="true">Username</th>
@@ -205,7 +207,7 @@
                             		</table>
                                 </div>
                                 <div class="tab-pane" id="parents-tab">
-                                    <table data-toggle="table" data-show-columns="true" data-show-export="true" data-url="{{ action('Admin\UserController@getAPI') }}?show=parent" data-pagination="true" data-search="true" data-show-refresh="true" data-toolbar=".toolbar5">
+                                    <table data-toggle="table" data-show-columns="true" data-show-export="true" data-url="{{ action('Admin\UserController@getAPI') }}?show=parent" data-pagination="true" data-search="true" data-show-refresh="true">
                             			<thead>
                             				<tr>
                             					<th data-field="username" data-sortable="true">Username</th>

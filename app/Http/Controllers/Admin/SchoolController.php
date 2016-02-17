@@ -38,9 +38,12 @@ class SchoolController extends Controller
 		foreach ($schools as $school)
 		{
 			$data['labels'][] = $school->name;
-			$data['datasets'][0]['data'][] = School::findOrFail($school->id)->whereHas('member.user.group', function($query) {
-				$query->where('name', 'Student');
-			})->count();
+			$data['datasets'][0]['data'][] = SchoolMember::where('school_id', $school->id)
+														->whereHas('user.group', function($query) {
+															$query->where('name', 'Student');
+														})
+														->get()
+														->count();
 		}
 
 		return $data;

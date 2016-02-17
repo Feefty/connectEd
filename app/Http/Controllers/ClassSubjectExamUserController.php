@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PostAddClassSubjectExamUserFormRequest;
 use App\Http\Controllers\Controller;
 use App\ClassSubjectExamUser;
+use App\ClassSubjectExam;
+use App\ExamQuestionAnswer;
+use App\StudentExamQuestionAnswer;
 
 class ClassSubjectExamUserController extends Controller
 {
@@ -29,7 +32,32 @@ class ClassSubjectExamUserController extends Controller
                         })
                         ->orderBy('profiles.last_name')
                         ->orderBy('profiles.first_name')
+                        ->groupBy('profiles.user_id')
                         ->get();
+    }
+
+    public function getView($class_subject_exam_id, $user_id)
+    {
+        $class_subject_exam = ClassSubjectExam::with(['exam.question' => function($query) {
+                                                        $query->orderBy('category');
+                                                    },
+                                                    'exam.question.answer',
+                                                    'exam.question.student_exam_question_answer'])
+                                    ->whereHas('exam.question.student_exam_question_answer', function($query) use($user_id) {
+                                        $query->where('user_id', $user_id);
+                                    })
+                                    ->findOrFail($class_subject_exam_id);
+        $grade = [];
+        $grade['total'] = ExamQuestionAnswer::whereHas('exam_question.exam', function($query) use($class_subject_exam) {
+                                            $query->where('id', (int) $class_subject_exam->exam_id);
+                                         })
+                                        ->sum('points');
+        $grade['score'] = StudentExamQuestionAnswer::whereHas('exam_question.exam', function($query) use($class_subject_exam) {
+                                                    $query->where('id', (int) $class_subject_exam->exam_id);
+                                                 })
+                                                ->where('user_id', $user_id)
+                                                ->sum('points');
+        return view('class.exam.user.view', compact('class_subject_exam', 'grade'));
     }
 
     public function postAdd(PostAddClassSubjectExamUserFormRequest $request)

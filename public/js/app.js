@@ -47,6 +47,14 @@ var examStatuses = [
     "Undecided"
 ];
 
+var questionCategory = {
+    fillintheblank: 'Fill In The Blank',
+    identification: 'Identification',
+    trueorfalse: 'True Or False',
+    multiplechoice: 'Multiple Choice',
+    essay: 'Essay'
+};
+
 var question_duration;
 
 $(function() {
@@ -54,7 +62,7 @@ $(function() {
         var target = $(this).data('target');
         $(target).printElement();
     });
-    
+
     var source = $('.fullcalendar').data('source');
     $('[data-toggle="calendar"]').fullCalendar({
         eventSources: [
@@ -204,7 +212,7 @@ $(function() {
 				$question.question = $question.question.replaceAll(':answer', '_______');
 			}
 
-			var question_formatted = "<div class='well'>"+ $question.question +"</div>";
+			var question_formatted = "<h4>"+ questionCategory[$question.category] +"</h4><div class='well'>"+ $question.question +"</div>";
 			$('#question-block', $block).html(question_formatted).hide().fadeIn();
 		});
 	});
@@ -556,7 +564,7 @@ function actionSchoolCodeFormatter(value, row) {
 function actionClassCodeFormatter(value, row) {
 	return [
 		"<a href='/class/section/code/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-remove'></i></a>"
-	].join(" ");
+	].join(" "); 
 }
 
 function lessonFormatter(value, row) {
@@ -592,7 +600,8 @@ function actionClassSubjectExamFormatter(value, row) {
 }
 
 function actionClassSubjectExamUserFormatter(value, row) {
-	return ["<a href='/class/subject/exam/user/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-remove'></i></a>"].join(" ");
+	return ["<a href='/class/subject/exam/user/view/"+ row.class_subject_exam_id +"/"+ row.user_id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='View Answers'><i class='fa fa-eye'></i></a>",
+            "<a href='/class/subject/exam/user/delete/"+ row.id +"' class='btn btn-default btn-xs' data-toggle='tooltip' title='Delete' onclick='return confirm(\"Are you sure you want to delete this item?\")'><i class='fa fa-remove'></i></a>"].join(" ");
 }
 
 function actionMyClassFormatter(value, row) {

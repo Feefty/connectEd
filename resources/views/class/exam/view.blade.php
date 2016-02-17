@@ -70,7 +70,7 @@
 							   					<label for="user">Users</label>
 							   					<select id="user" name="users[]" class="form-control" data-toggle="select" data-live-search="true" multiple>
 							   						@foreach ($users as $row)
-							   							<option value="{{ $row->id }}">{{ ucwords($row->last_name .', '. $row->first_name) }}</option>
+							   							<option value="{{ $row->user_id }}">{{ ucwords($row->last_name .', '. $row->first_name) }}</option>
 							   						@endforeach
 							   					</select>
 							   				</div>

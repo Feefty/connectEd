@@ -21,7 +21,7 @@
                         <div class="col-sm-6">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    Top 5 school with highest amount of students
+                                    Top 5 school with highest number of students
                                 </div>
                                 <div class="panel-body">
                                     <canvas data-toggle="chart" data-url="{{ action('Admin\SchoolController@getData') }}" data-type="bar" data-target="#student-chart" id="student-chart"></canvas>

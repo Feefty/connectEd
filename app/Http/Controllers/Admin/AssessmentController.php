@@ -9,6 +9,11 @@ use App\Http\Controllers\Controller;
 
 class AssessmentController extends Controller
 {
+    public function getData(Request $reqest)
+    {
+        
+    }
+
     public function getApi(Request $request)
     {
         $assessment = Assessment::with('assessment_type');
